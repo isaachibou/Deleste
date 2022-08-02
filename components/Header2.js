@@ -1,0 +1,36 @@
+import Link from 'next/link';
+import Image from 'next/image';
+
+export default function Header2({ name, title }) {
+  return (
+    <header className="flex flex-row justify-between">
+     	<div className="p-3">
+	      	<Link href="/">
+	      		<a className="flex flex-row">
+	      			<div className="w-20 h-20 relative inline-block rounded-full mx-4 border-2 border-cyan-800">     
+		          		<Image
+		            		src="/images/profile.jpg"
+			            	alt="ma tête à yellowstone" 
+			            	layout="fill" // required
+				            objectFit="cover" // change to suit your needs
+			            	className="rounded-full" // just an example
+	          			/>
+	       			</div>
+			        <div className="self-end">
+			        	<h1 className="text-4xl text-cyan-800 font-bold lg:text-4xl">{name}</h1>
+			            <h2 className="text-base text-cyan-900 underline underline-offset-2" >{title}</h2>
+			        </div>
+	        	</a>
+	      	</Link>
+    	</div>
+    	<ul className=" flex flex-col pb-4  self-end text-xl text-cyan-900 ">
+	        <Link href="/matos">
+	          <a className="mr-5">> Matos</a>
+	        </Link>
+	        <Link href="/backpack">
+	          <a className="mr-5"> > Backpack</a>
+	        </Link>
+      </ul>
+    </header>
+  );
+}
