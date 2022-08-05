@@ -5,7 +5,17 @@ import clientPromise from "../../utils/mongodb";
 export default async (req, res) => {
   const client = await clientPromise;
 
-  const uniques = await client
+    const equips = await client
+    .db("ZakIGatsbyProject")
+    .collection("SleepingPads")
+    .find({Image: {$ne: null}})
+    
+    .sort({ SKU: -1 })
+    .limit(20)
+    .toArray();
+
+
+ /* const uniques = await client
   .db("ZakIGatsbyProject")
   .collection("SleepingPads")
   .aggregate([
@@ -15,19 +25,17 @@ export default async (req, res) => {
           detail: { $first: '$$ROOT' }
         },
     },
-    { "$out": "newcollection" }
+    { "$out": "newcollection1" }
   ]);
 
   const equips = await client
   .db("ZakIGatsbyProject")
-  .collection("newcollection")
+  .collection("newcollection1")
   .find({
-     //Image: {$exists: true} 
-    // {"detail.Image":{"$exists":true}}
      _id: {$ne: null}
   })
   .sort({ _id: -1 })
-  .toArray();
+  .toArray();*/
 
-  res.end(JSON.stringify(equips, undefined, 2));
+ res.end(JSON.stringify(equips, undefined, 2));
 };

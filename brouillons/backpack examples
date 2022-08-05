@@ -1,0 +1,30 @@
+{
+	'name': 'Equipement d'hiver Isaac',
+	'backpack': {
+		'brand': 'Deuter',
+		'model': 'Aircontact Pro',
+		'volume': '70+15L',	
+		'weight': '2.8',
+		'color': 'lava'
+	},
+	'sleepingpad': {
+		'brand': 'Therm-a-rest',
+		'model': 'Matelas NeoAir XT MAX',
+		'volume': '28 cm x 11 cm',	
+		'weight': '0.71',
+		'r-value': '6.9',
+		'color': 'vapor'
+	},
+	'sleepingbag': {
+		'brand': 'Therm-a-rest',
+		'model': 'Sac de couchage Questar 0F/-18C',
+		'volume': '20 x 25 cm',	
+		'weight': '1.38',
+		'color': 'Balsam'
+	},
+	'stove': {
+		'model': 'MSR',
+		'volume': '0.5L',	
+		'weight': '0.5',
+	}
+}

@@ -1,0 +1,10 @@
+{
+	"name": "Equipement d'hiver Isaac",
+	"backpack": [{
+		"brand": "Deuter",
+		"model": "Aircontact Pro",
+		"volume": "70+15L",	
+		"weight": "2.8",
+		"color": "lava"
+	}]
+}
