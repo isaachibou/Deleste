@@ -10,6 +10,34 @@ import { getGlobalData } from '../utils/global-data';
 import SEO from '../components/SEO';
 
 export default function Equips({  globalData }) {
+  // Handle the submit event on form submit.
+  const handleSubmit = async (event) => {
+    // Stop the form from submitting and refreshing the page.
+    event.preventDefault()
+
+    // Get data from the form.
+    const data = event.target.backpack.value;
+    const JSONdata = JSON.stringify(data)
+
+    // Send the form data to our API and get a response.
+    const response = await fetch('/api/backpack', {
+      // Body of the request is the JSON data we created above.
+      body: JSONdata,
+
+      // Tell the server we're sending JSON.
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      // The method is POST because we are sending data.
+      method: 'POST',
+    })
+
+    // Get the response data from server as JSON.
+    // If server returns the name submitted, that means the form works.
+    const result = await response.json()
+    alert(`Is this your full name: ${result.data}`)
+  }
+
   return (
     <LayoutPage>
       <div>
@@ -17,9 +45,16 @@ export default function Equips({  globalData }) {
         <Header2 name={globalData.name} title={globalData.blogTitle} />
         <main  className="flex flex-col items-center max-w-4xl w-full mx-auto mt-10">
           <h1 className="text-3xl lg:text-5xl text-center mb-12"> Build your backpack  </h1>
-          <div className="w-24 l-24 md:first:rounded-t-lg md:last:rounded-b-lg backdrop-blur-lg bg-white dark:bg-black dark:bg-opacity-30 bg-opacity-10 hover:bg-opacity-20 dark:hover:bg-opacity-50 transition border border-gray-800 dark:border-white border-opacity-10 dark:border-opacity-10 border-b-0 last:border-b hover:border-b hovered-sibling:border-t-0">
-          </div>
+         
+         <div>
+          <form onSubmit={handleSubmit}>
+          <label htmlFor="Backpack JSON">Bacpack</label>
+          <input type="text" id="backpack" name="first" size="50" height = "50" required />
+         
 
+        <button type="submit">Submit</button>
+        </form>
+      </div>
         </main>
         <Footer copyrightText={globalData.footerText} />
          <GradientBackground
