@@ -16,11 +16,11 @@ export default function Equips({  globalData }) {
     event.preventDefault()
 
     // Get data from the form.
-    const data = event.target.backpack.value;
+    const data = event.target.backpack.value; 
     const JSONdata = JSON.stringify(data)
 
     // Send the form data to our API and get a response.
-    const response = await fetch('/api/backpack', {
+    const response = await fetch('/api/backpacks', {
       // Body of the request is the JSON data we created above.
       body: JSONdata,
 
@@ -74,7 +74,7 @@ export default function Equips({  globalData }) {
 export async function getServerSideProps() {
   const globalData = getGlobalData();
   const client = await clientPromise;
-
+  /*
   var backpack= {
   "name": "Equipement d'hiver Isaac",
   "backpack": [{
@@ -107,7 +107,7 @@ export async function getServerSideProps() {
 };
 
   const backpackCollection = await client.db("ZakIGatsbyProject").collection("Backpacks");
-  const result = await backpackCollection.insertOne(backpack);
+  const result = await backpackCollection.insertOne(backpack);*/
 
   return {
     props: {

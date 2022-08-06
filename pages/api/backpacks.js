@@ -1,6 +1,6 @@
 import clientPromise from "../../utils/mongodb";
 
-export default async function handler(req, res) => {
+export default async function handler(req, res) {
   switch(req.method) {
     case 'POST':
       return addBackpack(req, res);
@@ -22,45 +22,47 @@ async function getBackpack(req, res) {
     console.log(`this is ${response}`)
     console.log(response.bpsArray)
 
-    return res.json(bpsArray)
-  }.catch(error) {
-    return json({
+    return res.json(bpsArray);
+  }catch(error) {
+    return res.json({
       message: new Error(error).message,
-      succes: false
+      success: false
     })
   }
 }
 
 async function addBackpack(req, res) {
   try {
-    let bp = JSON.pares(req.body);
-    console.Log(bp);
-
-    let{ name, age, description} =backpack
+    let bp = JSON.parse(req.body);
+    console.log(bp);
+/*
+    let{ name, age, description} =bp;
 
     if(!name || !age || !description){
       throw new Error("Invalid Request");
-    }
+    }*/
     
     //connect to database
-    const client = await clientPromise;
-    const db = client.db("ZakIGatsbyProject")
+    const client = await   clientPromise;
+    const db = client.db("ZakIGatsbyProject");
 
     //POST request
-    const response = await db.collection('Backpacks').updateOne({}, { $push: backpack })
-     console.log(response)
-    }
+    //const response = await db.collection('Backpacks').updateOne({}, { $push: bp });
+    const response = await db.collection('Backpacks').insertOne(bp);
+    console.log(response);
+  
 
     return res.json({
         message: 'Details updated successfully',
         success: response
-    })
-  }.catch (error) {
+    });
+  } catch (error) {
         // return an error
         return res.json({
             message: new Error(error).message,
             success: false,
         })
-    }
+  }
 }
+
 
