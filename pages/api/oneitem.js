@@ -8,9 +8,6 @@ export default async (req, res) => {
   const type = query.type;
   const model = query.model;
   
-
-  var filter = {"Model":model};
-
   var collection = "coucou";
 
   switch(type) {
@@ -29,7 +26,7 @@ export default async (req, res) => {
     .db("ZakIGatsbyProject")
     .collection(String(collection))
     .findOne(
-    { },
+    {"Model": model},
     { projection: { Model: 1, "Weight (Metric)": 1, Color: 1 } }
   );
 

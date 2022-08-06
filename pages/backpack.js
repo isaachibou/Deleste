@@ -38,6 +38,7 @@ export default function Equips({  globalData }) {
       }
 
       var weight = event.target.parentElement.querySelector("li input[name='weight']");
+
       weight.value= items[select.selectedIndex]["Weight (Metric)"]
 
       var color = event.target.parentElement.querySelector("li input[name='color']");
@@ -48,10 +49,11 @@ export default function Equips({  globalData }) {
   const onItemSelection = async (event) => {
     const target = event.target;
     const model = target.options[target.selectedIndex].text
+    console.log(model)
     
 
-    var type = event.target.parentElement.querySelector("li select[name='types']");
-
+    var type = event.target.parentElement.querySelector("li select[name='types']").value;
+      
     const response = await fetch('/api/oneitem?type='+type+"&model="+model, {
         headers: {
           'Content-Type': 'application/json'
@@ -60,9 +62,10 @@ export default function Equips({  globalData }) {
     });
 
     const item = await response.json()
-    console.debug(item.Model)
+    console.log(item)
     
     var weight = event.target.parentElement.querySelector("li input[name='weight']");
+      console.log(weight)
     weight.value= item["Weight (Metric)"];
 
     var color = event.target.parentElement.querySelector("li input[name='color']");
@@ -104,6 +107,22 @@ export default function Equips({  globalData }) {
              <span className="basis-1/6">Qté</span>
              <span className="basis-1/6">Poids</span>
              <span className="basis-1/6">Couleur</span>
+            </li>
+            <li className="flex flex-row flex-end text-right space-x-1">
+              <select name="types" id="itemTypes" className="basis-1/6 bg-inherit" onChange={onItemTypeSelection}>
+                <option value="backpack"  >Backpack</option>
+                <option value="pad">Pad</option>
+                <option value="bag">Bag</option>
+                <option value="stove">Stove</option>
+              </select>
+              <select name="items" id="itemsFetched" className="basis-3/6 bg-inherit" onChange={onItemSelection}>
+                {/*{items.map((items) => (
+                  <option value="backpack">Backpack</option>
+                ))}*/}
+              </select>
+              <input className="min-w-0 basis-1/6 bg-inherit text-right"  type="text" placeholder="1" />
+              <input name="weight" className="min-w-0 basis-1/6 bg-inherit text-right"  type="text" placeholder="1"/> 
+              <input name="color" className="min-w-0 basis-1/6 bg-inherit text-right"  type="text" placeholder="Black"/>
             </li>
             <li className="flex flex-row flex-end text-right space-x-1">
               <select name="types" id="itemTypes" className="basis-1/6 bg-inherit" onChange={onItemTypeSelection}>
