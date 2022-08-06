@@ -12,60 +12,75 @@ import SEO from '../components/SEO';
 export default function Equips({  globalData }) {
 
   const onItemTypeSelection = async (event) => {
-
     const data = event.target.value; 
     
     if(data=="pad" || data =="bag") {
-      console.log(`You have chosen type: ${data}`);
+      console.debug(`You have chosen type: ${data}`);
 
-      const response = await fetch('/api/oneitem?type='+data, {
+      const response = await fetch('/api/allitems?type='+data, {
         headers: {
           'Content-Type': 'application/json'
         },
         method: 'GET'
       })
 
-      const result = await response.json()
-      const model = result.Model;
+      const items = await response.json()
+      console.debug(`I have retrieved this: `+JSON.stringify(items));
 
-      console.log(`I have retrieved this: `+model)
+      var option, select = event.target.parentElement.querySelector("li select[name='items']");
+      select.options.length = 0;
+      for(let item in items) {
+        console.debug(items[item])
+        option = document.createElement("option");
+        option.text = items[item].Model
+        option.value = items[item]
+        select.appendChild(option);
+      }
 
-      var select =event.target.parentElement.querySelector("li select[name='items']");
-      var option = document.createElement("option");
-      option.text = model
-      option.value = model
-      select.appendChild(option);
-      console.log(select);
+      var weight = event.target.parentElement.querySelector("li input[name='weight']");
+      weight.value= items[select.selectedIndex]["Weight (Metric)"]
 
-
+      var color = event.target.parentElement.querySelector("li input[name='color']");
+      color.value=items[select.selectedIndex].Color  
     }
-
   }
 
-  // Handle the submit event on form submit.
-  const handleSubmit = async (event) => {
-    // Stop the form from submitting and refreshing the page.
-    event.preventDefault()
+  const onItemSelection = async (event) => {
+    const target = event.target;
+    const model = target.options[target.selectedIndex].text
+    
 
-    // Get data from the form.
+    var type = event.target.parentElement.querySelector("li select[name='types']");
+
+    const response = await fetch('/api/oneitem?type='+type+"&model="+model, {
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        method: 'GET'
+    });
+
+    const item = await response.json()
+    console.debug(item.Model)
+    
+    var weight = event.target.parentElement.querySelector("li input[name='weight']");
+    weight.value= item["Weight (Metric)"];
+
+    var color = event.target.parentElement.querySelector("li input[name='color']");
+    color.value= item.Color;
+  }
+
+  const handleSubmit = async (event) => {
     const data = event.target.backpack.value; 
     const JSONdata = JSON.stringify(data)
 
-    // Send the form data to our API and get a response.
     const response = await fetch('/api/backpacks', {
-      // Body of the request is the JSON data we created above.
       body: JSONdata,
-
-      // Tell the server we're sending JSON.
       headers: {
         'Content-Type': 'application/json',
       },
-      // The method is POST because we are sending data.
       method: 'POST',
     })
 
-    // Get the response data from server as JSON.
-    // If server returns the name submitted, that means the form works.
     const result = await response.json()
     alert(`Is this your full name: ${result.data}`)
   }
@@ -77,12 +92,11 @@ export default function Equips({  globalData }) {
         <Header2 name={globalData.name} title={globalData.blogTitle} />
         <main  className="flex flex-col max-w-4xl w-full mx-auto ">
           <h1 className="text-3xl lg:text-5xl text-center mb-12"> Build your backpack  </h1>
-          <div className="flex flex-col mb-5">
+          {/*<div className="flex flex-col mb-5">
               <label htmlFor="Backpack JSON">Backpack:</label>
-              {/*<input type="text" id="backpack" rows = "5" name="first" size="50" height = "50" required />*/}
               <textarea id ="backpack"  cols="40" rows="4" className="bg-cyan-100  border-2 border-black"></textarea>
               <button className="my-2 mx-auto rounded-full bg-cyan-100 w-1/5 border-2 border-black" type="submit">Envoyer le JSON</button>
-          </div>
+          </div>*/}
           <ul className="space-y-1">
             <li className="flex flex-row flex-end divide-x-1 divide-y-1">
              <span className="basis-1/6 ">Type</span>
@@ -93,38 +107,28 @@ export default function Equips({  globalData }) {
             </li>
             <li className="flex flex-row flex-end text-right space-x-1">
               <select name="types" id="itemTypes" className="basis-1/6 bg-inherit" onChange={onItemTypeSelection}>
-                <option value="backpack">Backpack</option>
+                <option value="backpack"  >Backpack</option>
                 <option value="pad">Pad</option>
                 <option value="bag">Bag</option>
                 <option value="stove">Stove</option>
               </select>
-              <select name="items" id="itemsFetched" className="basis-3/6 bg-inherit">>
+              <select name="items" id="itemsFetched" className="basis-3/6 bg-inherit" onChange={onItemSelection}>
                 {/*{items.map((items) => (
                   <option value="backpack">Backpack</option>
-                ))}*/}<option value="backpack"></option>
+                ))}*/}
               </select>
-              <input className="min-w-0 basis-1/6 bg-inherit text-right"  type="text" placeholder="0" />
-              <input className="min-w-0 basis-1/6 bg-inherit text-right"  type="text" placeholder="0"/> 
-              <input className="min-w-0 basis-1/6 bg-inherit text-right"  type="text" placeholder="Black"/>
+              <input className="min-w-0 basis-1/6 bg-inherit text-right"  type="text" placeholder="1" />
+              <input name="weight" className="min-w-0 basis-1/6 bg-inherit text-right"  type="text" placeholder="1"/> 
+              <input name="color" className="min-w-0 basis-1/6 bg-inherit text-right"  type="text" placeholder="Black"/>
             </li>
           </ul>
-          <form className="flex flex-col space-y-4 mt-10" onSubmit={handleSubmit}>
-            <select name="cars" id="cars">
-              <option value="volvo">Volvo</option>
-              <option value="saab">Saab</option>
-              <option value="mercedes">Mercedes</option>
-              <option value="audi">Audi</option>
-            </select>
+          <button className="my-5 mx-auto rounded-full bg-cyan-100 w-1/5 border-2 border-black" type="submit">Submit</button>
 
-              
-            </form>
-          
         </main>
         <GradientBackground
           variant="large"
           className="fixed top-20 opacity-40 dark:opacity-60"
         />
-        
       </div>
     </LayoutPage>
     
@@ -137,39 +141,8 @@ export default function Equips({  globalData }) {
 export async function getServerSideProps() {
   const globalData = getGlobalData();
   const client = await clientPromise;
-  /*
-  var backpack= {
-  "name": "Equipement d'hiver Isaac",
-  "backpack": [{
-    "brand": "Deuter",
-    "model": "Aircontact Pro",
-    "volume": "70+15L", 
-    "weight": "2.8",
-    "color": "lava"
-  }],
-  "sleepingpad": {
-    "brand": "Therm-a-rest",
-    "model": "Matelas NeoAir XT MAX",
-    "volume": "28 cm x 11 cm",  
-    "weight": "0.71",
-    "r-value": "6.9",
-    "color": "vapor"
-  },
-  "sleepingbag": {
-    "brand": "Therm-a-rest",
-    "model": "Sac de couchage Questar 0F/-18C",
-    "volume": "20 x 25 cm", 
-    "weight": "1.38",
-    "color": "Balsam"
-  },
-  "stove": {
-    "model": "MSR",
-    "volume": "0.5L", 
-    "weight": "0.5",
-  }
-};
-
-  const backpackCollection = await client.db("ZakIGatsbyProject").collection("Backpacks");
+  
+  /*const backpackCollection = await client.db("ZakIGatsbyProject").collection("Backpacks");
   const result = await backpackCollection.insertOne(backpack);*/
 
   return {
