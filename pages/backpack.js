@@ -14,12 +14,11 @@ export default function Equips({  globalData }) {
   const onItemTypeSelection = async (event) => {
 
     const data = event.target.value; 
-    const JSONdata = JSON.stringify(data)
     
-    if(data=="pad") {
-      alert(`You have chosen type: ${data}`);
+    if(data=="pad" || data =="bag") {
+      console.log(`You have chosen type: ${data}`);
 
-      const response = await fetch('/api/onesleepingpad', {
+      const response = await fetch('/api/oneitem?type='+data, {
         headers: {
           'Content-Type': 'application/json'
         },
@@ -27,7 +26,18 @@ export default function Equips({  globalData }) {
       })
 
       const result = await response.json()
-      alert(`I have retrieved this: ${result.Model}`)
+      const model = result.Model;
+
+      console.log(`I have retrieved this: `+model)
+
+      var select =event.target.parentElement.querySelector("li select[name='items']");
+      var option = document.createElement("option");
+      option.text = model
+      option.value = model
+      select.appendChild(option);
+      console.log(select);
+
+
     }
 
   }
