@@ -33,25 +33,23 @@ async function getBackpack(req, res) {
 
 async function addBackpack(req, res) {
   try {
-    let bp = JSON.parse(req.body);
-    console.log(bp);
-/*
-    let{ name, age, description} =bp;
-
-    if(!name || !age || !description){
-      throw new Error("Invalid Request");
-    }*/
+    //let bp = JSON.parse(req.body);
+    let bp = req.body;
     
+
     //connect to database
-    const client = await   clientPromise;
+    const client = await clientPromise;
     const db = client.db("ZakIGatsbyProject");
 
     //POST request
-    //const response = await db.collection('Backpacks').updateOne({}, { $push: bp });
-    const response = await db.collection('Backpacks').insertOne(bp);
+    const query = { name: bp.name };
+    const replacement = bp
+    const options = { upsert: true };
+    const response = await db.collection('Backpacks').replaceOne(query, replacement, options);
+
+    //const response = await db.collection('Backpacks').insertOne(bp);
     console.log(response);
   
-
     return res.json({
         message: 'Details updated successfully',
         success: response

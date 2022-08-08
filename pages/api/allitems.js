@@ -25,8 +25,8 @@ export default async (req, res) => {
     .db("ZakIGatsbyProject")
     .collection(String(collection))
     .find({"Model":{$exists:true}})
-    .project({Model: 1, "Weight (Metric)": 1, Color: 1 })
-    .sort({ SKU: -1 })
+    .project({Model: 1, "Weight (Metric)": 1, Size:1, Color: 1 })
+    .sort({ Model: 1, Size: 1 })
     .limit(20)
     .toArray();
   

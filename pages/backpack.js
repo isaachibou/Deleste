@@ -32,7 +32,7 @@ export default function Equips({  globalData }) {
       for(let item in items) {
         console.debug(items[item])
         option = document.createElement("option");
-        option.text = items[item].Model
+        option.text = items[item].Model + " - " + items[item].Size
         option.value = items[item]
         select.appendChild(option);
       }
@@ -73,8 +73,21 @@ export default function Equips({  globalData }) {
   }
 
   const handleSubmit = async (event) => {
-    const data = event.target.backpack.value; 
-    const JSONdata = JSON.stringify(data)
+    var nameselector = document.querySelector("input[name='EquipmentName']");
+    var ItemsFetched = document.querySelector("li select[name='items']");
+    let equipName= nameselector.value
+    let items = ItemsFetched.options[ItemsFetched.selectedIndex].text
+    console.log(ItemsFetched)
+
+    let backpackObject = {name: equipName};
+    let sleepingPad = {
+      model: items
+    }
+    console.log(sleepingPad)
+    backpackObject.sleepingPad= sleepingPad
+
+    const JSONdata = JSON.stringify(backpackObject)
+    console.log(JSONdata)
 
     const response = await fetch('/api/backpacks', {
       body: JSONdata,
@@ -85,7 +98,7 @@ export default function Equips({  globalData }) {
     })
 
     const result = await response.json()
-    alert(`Is this your full name: ${result.data}`)
+    alert(`You have updated ${equipName}`)
   }
 
   return (
@@ -100,6 +113,8 @@ export default function Equips({  globalData }) {
               <textarea id ="backpack"  cols="40" rows="4" className="bg-cyan-100  border-2 border-black"></textarea>
               <button className="my-2 mx-auto rounded-full bg-cyan-100 w-1/5 border-2 border-black" type="submit">Envoyer le JSON</button>
           </div>*/}
+
+          <input name="EquipmentName" className="w-52 text-left text-xl bg-inherit  "  type="text" placeholder="My Equipment1"/>
           <ul className="space-y-1">
             <li className="flex flex-row flex-end divide-x-1 divide-y-1">
              <span className="basis-1/6 ">Type</span>
@@ -131,17 +146,13 @@ export default function Equips({  globalData }) {
                 <option value="bag">Bag</option>
                 <option value="stove">Stove</option>
               </select>
-              <select name="items" id="itemsFetched" className="basis-3/6 bg-inherit" onChange={onItemSelection}>
-                {/*{items.map((items) => (
-                  <option value="backpack">Backpack</option>
-                ))}*/}
-              </select>
+              <select name="items" id="itemsFetched" className="basis-3/6 bg-inherit" onChange={onItemSelection}/>
               <input className="min-w-0 basis-1/6 bg-inherit text-right"  type="text" placeholder="1" />
               <input name="weight" className="min-w-0 basis-1/6 bg-inherit text-right"  type="text" placeholder="1"/> 
               <input name="color" className="min-w-0 basis-1/6 bg-inherit text-right"  type="text" placeholder="Black"/>
             </li>
           </ul>
-          <button className="my-5 mx-auto rounded-full bg-cyan-100 w-1/5 border-2 border-black" type="submit">Submit</button>
+          <button className="my-5 mx-auto rounded-full bg-cyan-100 w-1/5 border-2 border-black" type="submit" onClick={handleSubmit}>Submit</button>
 
         </main>
         <GradientBackground
@@ -161,9 +172,7 @@ export async function getServerSideProps() {
   const globalData = getGlobalData();
   const client = await clientPromise;
   
-  /*const backpackCollection = await client.db("ZakIGatsbyProject").collection("Backpacks");
-  const result = await backpackCollection.insertOne(backpack);*/
-
+  
   return {
     props: {
       globalData
