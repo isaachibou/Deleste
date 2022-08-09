@@ -73,22 +73,43 @@ export default function Equips({  globalData }) {
   }
 
   const handleSubmit = async (event) => {
+    var rows = document.querySelectorAll("li")
     var nameselector = document.querySelector("input[name='EquipmentName']");
-    var ItemsFetched = document.querySelector("li select[name='items']");
-    var weightItem =  document.querySelector("li select[name='weight']")
+    let equipName = nameselector.value; 
+    console.log(equipName)
+    
+     let backpackObject = {name: equipName}; 
 
-    let equipName = nameselector.value
-    let equipWeight = weightItem.value
-    let items = ItemsFetched.options[ItemsFetched.selectedIndex].text
-    console.log(ItemsFetched)
-
-    let backpackObject = {name: equipName};
-    let sleepingPad = {
-      model: items,
-      weight: equipWeight
-    };
-    console.log(sleepingPad)
-    backpackObject.sleepingPad= sleepingPad
+    for(let row of rows) {
+      if(row.children[name="types"]) {
+        var indexType = row.children[name="types"].selectedIndex
+        var type = row.children[name="types"].options[indexType].value
+        var indexItem = row.children[name="items"].selectedIndex
+        var item = row.children[name="items"].options[indexItem].text
+        var weight = row.children[name="weight"].value
+        var color = row.children[name="color"].value
+        console.log(item)
+       
+        let itemObject = {
+          brand:"",
+          model: String(item).split(" - ")[0],
+          volume:"",
+          weight: weight,
+          color: color
+        };
+        switch(type) {
+          case "pad":
+            backpackObject["spleepingPad"] = itemObject;
+            break;
+          case "bag":
+            backpackObject.spleepingBad = itemObject;
+            break;
+          default:
+            break;
+        }
+      } 
+    }
+      console.log(backpackObject)
 
     const JSONdata = JSON.stringify(backpackObject)
     console.log(JSONdata)
@@ -107,17 +128,41 @@ export default function Equips({  globalData }) {
 
   
   const debug = () => {
-    console.log("kikou mdr ");
     var rows = document.querySelectorAll("li")
-   // console.log(rows)
+    var nameselector = document.querySelector("input[name='EquipmentName']");
+    let equipName = nameselector.value; 
+    console.log(equipName)
+    
+     let backpackObject = {name: equipName}; 
+
     for(let row of rows) {
-      if(row != 0) {
-       //console.log(row)
-        var ItemsFetched = document.querySelector("li select[name='items']");
-        let items = ItemsFetched.options[ItemsFetched.selectedIndex].text;
-        console.log(ItemsFetched);
-      }
+      if(row.children[name="types"]) {
+        var indexType = row.children[name="types"].selectedIndex
+        var type = row.children[name="types"].options[indexType].value
+        var indexItem = row.children[name="items"].selectedIndex
+        var item = row.children[name="items"].options[indexItem].text
+        var weight = row.children[name="weight"].value
+        var color = row.children[name="color"].value
+        console.log(item)
+       
+        let itemObject = {
+          model: String(item).split(" - ")[0],
+          weight: weight,
+          color: color
+        };
+        switch(type) {
+          case "pad":
+            backpackObject["spleepingPad"] = itemObject;
+            break;
+          case "bag":
+            backpackObject.spleepingBad = itemObject;
+            break;
+          default:
+            break;
+        }
+      } 
     }
+      console.log(backpackObject)
   }
 
   return (
