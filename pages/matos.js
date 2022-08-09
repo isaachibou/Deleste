@@ -1,11 +1,12 @@
 import clientPromise from "../utils/mongodb";
+import { getData } from './api/matos_2'
 
 import Link from 'next/link';
 import Image from 'next/image'
 
 import Footer from '../components/Footer';
-import Header from '../components/Header';
-import Layout, { GradientBackground } from '../components/Layout';
+import Header from '../components/Header2';
+import Layout, { GradientBackground } from '../components/Layout-page';
 import { getGlobalData } from '../utils/global-data';
 import SEO from '../components/SEO';
 
@@ -13,15 +14,19 @@ export default function Equips({ equips, globalData }) {
   return (
     <Layout>
       <SEO title={globalData.name} description={globalData.blogTitle} />
-      <Header name={globalData.name} />
-      <main className="w-max">
+      <Header name={globalData.name} title={globalData.blogTitle}/>
+      <main className="flex flex-col items-center max-w-4xl w-full mx-auto">
         <h1 className="text-3xl lg:text-5xl text-center ">Everything Therm-a-rest</h1>
         <p className="text-2xl text-center md:text-3xl mb-10">
           <small>(Scrapped straight from the source)</small>
         </p>
-         <ul className="w-full text-center justify-items-start grid grid-cols-2 gap-2 grid-auto-columns: 1fr; ">
+        <select name="types" id="itemTypes" className="basis-1/6 bg-inherit" /*onChange={}*/>
+          <option value="pad">Pad</option>
+          <option value="bag">Bag</option>
+        </select>
+         <ul className="grid grid-cols-3 whitespace-nowrap ">
           {equips.map((equip) => (
-            <li className="min-w-max md:first:rounded-t-lg md:last:rounded-b-lg backdrop-blur-lg bg-white dark:bg-black dark:bg-opacity-30 bg-opacity-10 hover:bg-opacity-20 dark:hover:bg-opacity-50 transition border border-gray-800 dark:border-white border-opacity-10 dark:border-opacity-10 border-b-0 last:border-b hover:border-b hovered-sibling:border-t-0">
+            <li className="min-w-full d:first:rounded-t-lg md:last:rounded-b-lg backdrop-blur-lg bg-white dark:bg-black dark:bg-opacity-30 bg-opacity-10 hover:bg-opacity-20 dark:hover:bg-opacity-50 transition border border-gray-800 dark:border-white border-opacity-10 dark:border-opacity-10 border-b-0 last:border-b hover:border-b hovered-sibling:border-t-0">
              <a className="py-6 lg:py-10 px-6 lg:px-4 block focus:outline-none focus:ring-4">
                <Image className="rounded-lg"
                   src={equip.Image}
@@ -29,8 +34,8 @@ export default function Equips({ equips, globalData }) {
                   width={200}
                   height={200}
                 />
-                <h2 className="text-xl ">{equip.Model}</h2>
-                <h3>Size : {equip.size}</h3>
+                <h2 className="">{String(equip.Model).replace("Matelas","")}</h2>
+                <h3>{equip.Size}</h3>
                 <h3>R-value : {equip["R-Value"]}</h3>
                 <h3>Color : {equip.Color}</h3>
               </a>
@@ -52,46 +57,15 @@ export default function Equips({ equips, globalData }) {
   );
 }
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context) {
   const globalData = getGlobalData();
    const client = await clientPromise;
-   const equips = await client
-    .db("ZakIGatsbyProject")
-    .collection("SleepingPads")
-    .find({Image: {$ne: null}})
-    
-    .sort({ SKU: -1 })
-    .limit(20)
-    .toArray();
+   const equips = await getData("pad")
 
-   // ne marche plus depuis que j'ai delete la new collection 
-   /*
-  const uniques = await client
-  .db("ZakIGatsbyProject")
-  .collection("SleepingPads")
-  .aggregate([
-    {
-      $group: {
-          _id: '$Model',
-         : { $first: '$$ROOT' }
-        },
-    },
-    { "$out": "newcollection" }
-  ]);
-
-  const equips = await client
-  .db("ZakIGatsbyProject")
-  .collection("newcollection")
-  .find({
-         _id: {$ne: null}
-  })
-  .sort({ SKU: -1 })
-  .toArray();
-*/
   return {
     props: {
-      equips: JSON.parse(JSON.stringify(equips)),
-      globalData
+      globalData,
+      equips: JSON.parse(JSON.stringify(equips))
     },
   };
 }

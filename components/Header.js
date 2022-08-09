@@ -4,7 +4,7 @@ import Image from 'next/image';
 export default function Header({ name }) {
   return (
     <header className="pt-20 pb-12 flex-row">
-      <div className="w-24 h-24 relative block rounded-full mx-auto border-2 border-cyan-100">
+      <div className="w-24 h-24 relative block rounded-full mx-auto border-2 border-cyan-800">
       <Link href="/">
         <a>
           <Image
@@ -18,12 +18,12 @@ export default function Header({ name }) {
       </Link>
         
       </div>
-      <p className="text-2xl dark:text-white text-center">
+      <p className="text-2xl dark:text-white text-center text-cyan-800">
         <Link href="/">
           <a>{name}</a>
         </Link>
       </p>
-      <ul>
+      <ul className="text-cyan-800">
         <Link href="/">
           <a className="mr-4">Home</a>
         </Link>

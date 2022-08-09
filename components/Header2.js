@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 export default function Header2({ name, title }) {
   return (
-    <header className="flex flex-col min-w-min ">
+    <header className="flex flex-col max-w-fit">
      	<div className="p-3">
 	      	<Link href="/">
 	      		<a className="flex flex-row">
@@ -34,7 +34,7 @@ export default function Header2({ name, title }) {
 	          <a className="mr-5">Backpack</a>
 	        </Link>
 	        <Link href="/backpack">
-	          <a className="mr-5">Matos</a>
+	          <a className="mr-5">BP2</a>
 	        </Link>
       </ul>
     </header>
