@@ -48,7 +48,7 @@ export default function Equips({  globalData }) {
 
   const onItemSelection = async (event) => {
     const target = event.target;
-    const model = target.options[target.selectedIndex].text
+    const model = target.options[target.selectedIndex].text.split(" - ")[0]
     console.log(model)
     
 
@@ -62,10 +62,10 @@ export default function Equips({  globalData }) {
     });
 
     const item = await response.json()
-    console.log(item)
+    console.log("item " + item)
     
     var weight = event.target.parentElement.querySelector("li input[name='weight']");
-      console.log(weight)
+    console.log("weight " +weight)
     weight.value= item["Weight (Metric)"];
 
     var color = event.target.parentElement.querySelector("li input[name='color']");
@@ -75,14 +75,18 @@ export default function Equips({  globalData }) {
   const handleSubmit = async (event) => {
     var nameselector = document.querySelector("input[name='EquipmentName']");
     var ItemsFetched = document.querySelector("li select[name='items']");
-    let equipName= nameselector.value
+    var weightItem =  document.querySelector("li select[name='weight']")
+
+    let equipName = nameselector.value
+    let equipWeight = weightItem.value
     let items = ItemsFetched.options[ItemsFetched.selectedIndex].text
     console.log(ItemsFetched)
 
     let backpackObject = {name: equipName};
     let sleepingPad = {
-      model: items
-    }
+      model: items,
+      weight: equipWeight
+    };
     console.log(sleepingPad)
     backpackObject.sleepingPad= sleepingPad
 
@@ -99,6 +103,21 @@ export default function Equips({  globalData }) {
 
     const result = await response.json()
     alert(`You have updated ${equipName}`)
+  }
+
+  
+  const debug = () => {
+    console.log("kikou mdr ");
+    var rows = document.querySelectorAll("li")
+   // console.log(rows)
+    for(let row of rows) {
+      if(row != 0) {
+       //console.log(row)
+        var ItemsFetched = document.querySelector("li select[name='items']");
+        let items = ItemsFetched.options[ItemsFetched.selectedIndex].text;
+        console.log(ItemsFetched);
+      }
+    }
   }
 
   return (
@@ -151,6 +170,8 @@ export default function Equips({  globalData }) {
               <input name="weight" className="min-w-0 basis-1/6 bg-inherit text-right"  type="text" placeholder="1"/> 
               <input name="color" className="min-w-0 basis-1/6 bg-inherit text-right"  type="text" placeholder="Black"/>
             </li>
+                      <button className="my-5 mx-auto rounded-full bg-cyan-100 w-1/5 border-2 border-black" type="submit" onClick={debug}>Debug</button>
+
           </ul>
           <button className="my-5 mx-auto rounded-full bg-cyan-100 w-1/5 border-2 border-black" type="submit" onClick={handleSubmit}>Submit</button>
 
