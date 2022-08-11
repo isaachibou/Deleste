@@ -1,5 +1,8 @@
 import clientPromise from "../utils/mongodb";
+
 import { getData } from './api/matos_2'
+
+import { useState, useEffect, useRef } from 'react'
 
 import Link from 'next/link';
 import Image from 'next/image'
@@ -11,6 +14,39 @@ import { getGlobalData } from '../utils/global-data';
 import SEO from '../components/SEO';
 
 export default function Equips({ equips, globalData }) {
+
+  const isInitialMount = useRef(true);
+  var matos, setEquips="";
+  if (!isInitialMount.current) {
+    isInitialMount.current = false;
+    console.log("not InitialMount")
+    [equips, setEquips] = useState({ equips});    
+
+    useEffect(async () => {    
+   /*   if (isInitialMount.current) {
+       isInitialMount.current = false;
+      } else {*/
+          fetchMatos()
+      //}
+    })
+  } else {
+    console.log("InitialMount")
+  }
+
+  const fetchMatos = async () => {  
+    console.log("This is client side fetching")
+    const type = document.querySelector("#itemTypes").value
+    const response = await fetch('/api/matos_2?type='+type, {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: 'GET'
+    })
+    const items = await response.json()
+    console.log(items)
+    setEquips(items)
+  }
+ 
   return (
     <Layout>
       <SEO title={globalData.name} description={globalData.blogTitle} />
@@ -20,10 +56,14 @@ export default function Equips({ equips, globalData }) {
         <p className="text-2xl text-center md:text-3xl mb-10">
           <small>(Scrapped straight from the source)</small>
         </p>
-        <select name="types" id="itemTypes" className="basis-1/6 bg-inherit" /*onChange={}*/>
-          <option value="pad">Pad</option>
-          <option value="bag">Bag</option>
-        </select>
+        <div>
+          <select name="types" id="itemTypes" className="basis-1/6 bg-inherit" onChange={fetchMatos}>
+            <option value="pad">Pad</option>
+            <option value="bag">Bag</option>
+          </select>
+          
+        </div>
+        
          <ul className="grid grid-cols-3 whitespace-nowrap ">
           {equips.map((equip) => (
             <li className="min-w-full d:first:rounded-t-lg md:last:rounded-b-lg backdrop-blur-lg bg-white dark:bg-black dark:bg-opacity-30 bg-opacity-10 hover:bg-opacity-20 dark:hover:bg-opacity-50 transition border border-gray-800 dark:border-white border-opacity-10 dark:border-opacity-10 border-b-0 last:border-b hover:border-b hovered-sibling:border-t-0">
