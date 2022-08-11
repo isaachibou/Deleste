@@ -16,23 +16,11 @@ import SEO from '../components/SEO';
 export default function Equips({ equips, globalData }) {
 
   const isInitialMount = useRef(true);
-  var matos, setEquips="";
-  if (!isInitialMount.current) {
-    isInitialMount.current = false;
-    console.log("not InitialMount")
-    [equips, setEquips] = useState({ equips});    
+  let setEquips="";
+   
+  [equips, setEquips] = useState(equips);
 
-    useEffect(async () => {    
-   /*   if (isInitialMount.current) {
-       isInitialMount.current = false;
-      } else {*/
-          fetchMatos()
-      //}
-    })
-  } else {
-    console.log("InitialMount")
-  }
-
+  // API fetch function
   const fetchMatos = async () => {  
     console.log("This is client side fetching")
     const type = document.querySelector("#itemTypes").value
@@ -45,7 +33,21 @@ export default function Equips({ equips, globalData }) {
     const items = await response.json()
     console.log(items)
     setEquips(items)
+  }   
+
+  // Do not instantiate with client fetch, but with ServerSideProps
+   if (!isInitialMount.current) {
+    isInitialMount.current = false;
+    console.log("not InitialMount")
+     
+    useEffect(async () => {    
+          fetchMatos()
+    })
+  } else {
+    console.log("InitialMount")
   }
+
+  
  
   return (
     <Layout>
