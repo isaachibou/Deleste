@@ -9,7 +9,7 @@ import Image from 'next/image'
 
 import Footer from '../components/Footer';
 import Header from '../components/Header2';
-import Layout, { GradientBackground } from '../components/Layout-page';
+import Layout, { GradientBackground } from '../components/Layout';
 import { getGlobalData } from '../utils/global-data';
 import SEO from '../components/SEO';
 
@@ -47,8 +47,6 @@ export default function Equips({ equips, globalData }) {
     console.log("InitialMount")
   }
 
-  
- 
   return (
     <Layout>
       <SEO title={globalData.name} description={globalData.blogTitle} />

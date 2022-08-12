@@ -18,7 +18,7 @@ export default function Header2({ name, title }) {
 	       			</div>
 			        <div className="my-auto">
 			        	<h1 className="text-4xl text-cyan-800 font-bold lg:text-4xl">{name}</h1>
-			            <h2 className="text-base text-cyan-900 underline underline-offset-2" >{title}</h2>
+			          <h2 className="text-base text-cyan-900 underline underline-offset-2" >{title}</h2>
 			        </div>
 	        	</a>
 	      	</Link>
@@ -33,8 +33,8 @@ export default function Header2({ name, title }) {
 	        <Link href="/backpack">
 	          <a className="mr-5">Backpack</a>
 	        </Link>
-	        <Link href="/backpack">
-	          <a className="mr-5">BP2</a>
+	        <Link href="/data">
+	          <a className="mr-5">Data</a>
 	        </Link>
       </ul>
     </header>

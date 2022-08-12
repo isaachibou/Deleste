@@ -5,7 +5,7 @@ import Image from 'next/image'
 
 import Footer from '../components/Footer';
 import Header2 from '../components/Header2';
-import LayoutPage, { GradientBackground } from '../components/Layout-page';
+import LayoutPage, { GradientBackground } from '../components/Layout';
 import { getGlobalData } from '../utils/global-data';
 import SEO from '../components/SEO';
 
@@ -167,17 +167,11 @@ export default function Equips({  globalData }) {
 
   return (
     <LayoutPage>
-      <div>
         <SEO title={globalData.name} description={globalData.blogTitle} />
         <Header2 name={globalData.name} title={globalData.blogTitle} />
         <main  className="flex flex-col max-w-4xl w-full mx-auto ">
           <h1 className="text-3xl lg:text-5xl text-center mb-12"> Build your backpack  </h1>
-          {/*<div className="flex flex-col mb-5">
-              <label htmlFor="Backpack JSON">Backpack:</label>
-              <textarea id ="backpack"  cols="40" rows="4" className="bg-cyan-100  border-2 border-black"></textarea>
-              <button className="my-2 mx-auto rounded-full bg-cyan-100 w-1/5 border-2 border-black" type="submit">Envoyer le JSON</button>
-          </div>*/}
-
+  
           <input name="EquipmentName" className="w-52 text-left text-xl bg-inherit  "  type="text" placeholder="My Equipment1"/>
           <ul className="space-y-1">
             <li className="flex flex-row flex-end divide-x-1 divide-y-1">
@@ -215,7 +209,8 @@ export default function Equips({  globalData }) {
               <input name="weight" className="min-w-0 basis-1/6 bg-inherit text-right"  type="text" placeholder="1"/> 
               <input name="color" className="min-w-0 basis-1/6 bg-inherit text-right"  type="text" placeholder="Black"/>
             </li>
-                      <button className="my-5 mx-auto rounded-full bg-cyan-100 w-1/5 border-2 border-black" type="submit" onClick={debug}>Debug</button>
+            <br/><br/>
+            <button className="my-5 mx-auto rounded-full bg-cyan-100 w-1/5 border-2 border-black" type="submit" onClick={debug}>Debug</button>
 
           </ul>
           <button className="my-5 mx-auto rounded-full bg-cyan-100 w-1/5 border-2 border-black" type="submit" onClick={handleSubmit}>Submit</button>
@@ -225,7 +220,6 @@ export default function Equips({  globalData }) {
           variant="large"
           className="fixed top-20 opacity-40 dark:opacity-60"
         />
-      </div>
     </LayoutPage>
     
 
