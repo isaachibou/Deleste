@@ -67,18 +67,25 @@ export default function Equips({ equips, globalData }) {
          <ul className="grid grid-cols-3 whitespace-nowrap ">
           {equips.map((equip) => (
             <li key={equip._id} className="min-w-full d:first:rounded-t-lg md:last:rounded-b-lg backdrop-blur-lg bg-white dark:bg-black dark:bg-opacity-30 bg-opacity-10 hover:bg-opacity-20 dark:hover:bg-opacity-50 transition border border-gray-800 dark:border-white border-opacity-10 dark:border-opacity-10 border-b-0 last:border-b hover:border-b hovered-sibling:border-t-0">
-             <a className="py-6 lg:py-10 px-6 lg:px-4 block focus:outline-none focus:ring-4">
-               <Image className="rounded-lg"
-                  src={equip.Image}
-                  alt="Picture of the matos"
-                  width={200}
-                  height={200}
-                />
-                <h2 className="">{String(equip.Model).replace("Matelas","")}</h2>
-                <h3>{equip.Size}</h3>
-                <h3>R-value : {equip["R-Value"]}</h3>
-                <h3>Color : {equip.Color}</h3>
-              </a>
+              <Link
+                as={`/api/sleepingpads/${equip._id}`}
+                href={`/api/sleepingpads/[id]`}
+              > 
+               <a className=" text-center py-6 lg:py-10 px-6 lg:px-4 block focus:outline-none focus:ring-4">
+                 <Image className="mx-auto rounded-lg"
+                    src={equip.Image}
+                    alt="Picture of the matos"
+                    width={200}
+                    height={200}
+                  />
+                  <h2 className="text-center">{String(equip.Model).replace("Matelas","")}</h2>
+                  <div className="text-left pl-5 pt-5 ">
+                    <h3><span className="font-bold">Size: </span>{equip.Size}</h3>
+                    <h3><span className="font-bold">R-value : </span>{equip["R-Value"]}</h3>
+                    <h3><span className="font-bold">Color :</span> {equip.Color}</h3>
+                  </div>
+                </a>
+              </Link>
             </li>
           ))}
         </ul>
