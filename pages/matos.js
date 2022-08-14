@@ -68,8 +68,8 @@ export default function Equips({ equips, globalData }) {
           {equips.map((equip) => (
             <li key={equip._id} className="min-w-full d:first:rounded-t-lg md:last:rounded-b-lg backdrop-blur-lg bg-white dark:bg-black dark:bg-opacity-30 bg-opacity-10 hover:bg-opacity-20 dark:hover:bg-opacity-50 transition border border-gray-800 dark:border-white border-opacity-10 dark:border-opacity-10 border-b-0 last:border-b hover:border-b hovered-sibling:border-t-0">
               <Link
-                as={`/api/sleepingpads/${equip._id}`}
-                href={`/api/sleepingpads/[id]`}
+                as={`/matos/${equip._id}`}
+                href={`/matos/[matos]`}
               > 
                <a className=" text-center py-6 lg:py-10 px-6 lg:px-4 block focus:outline-none focus:ring-4">
                  <Image className="mx-auto rounded-lg"

@@ -1,6 +1,7 @@
 /* This pages serves the purpose of showing every item in the collection */
 
 import clientPromise from "../../utils/mongodb";
+import { ObjectId } from 'mongodb'
 
 export default async (req, res) => {
  
@@ -35,4 +36,26 @@ export async function getData(type) {
     .toArray();
 
     return equips
+}
+
+export async function getMatosByID(id, type) {
+
+	const client = await clientPromise;
+	console.log("id queried " + id)
+
+	let equips = await client
+    .db("ZakIGatsbyProject")
+    .collection("SleepingPads")
+    .findOne({"_id": ObjectId(id)});
+ 
+  if (equips == null) {
+  	equips = await client
+    .db("ZakIGatsbyProject")
+    .collection("SleepingBags")
+    .findOne({"_id": ObjectId(id)});
+  }
+	console.log(equips)
+	 
+    return equips
+
 }
