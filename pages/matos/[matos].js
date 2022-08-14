@@ -32,29 +32,41 @@ export default function PostPage({
           </h1>
         </header>
         <main>
-          <article className="prose dark:prose-dark">
-         {Object.entries(equips).map((entry,index) => (
-            /*switch({entry[0]}) {
-              case "Image":
-                <Image className="mx-auto rounded-lg"
-                    src={equip.Image}
+          {/*<article className="prose dark:prose-dark">
+            
+            {Object.entries(equips).slice(0,-1).map((entry,index) => (
+              <span key={index}>{entry[0]} : {entry[1]}</span>
+            ))}
+          </article>*/}
+          <Image className="rounded-lg  mx-auto block"
+                    src={equips.Image}
                     alt="Picture of the matos"
-                    width={200}
-                    height={200}
-                  />;
-                  break;
-              case "_id":
-                 null;
-                break;
-              default:
-                 <p>{entry[0]} : {entry[1]}</p>;
-            }      
-                      */    
-            <p>{entry[0]} : {entry[1]}</p>
-         ))}
-
-      
-          </article>
+                    width={300}
+                    height={300}
+             /> 
+          <table>
+            {/*<thead>
+              <tr>
+                {Object.entries(equips).slice(0,-1).map((entry,index) => (
+                  <th key={index}>{entry[0]}</th>
+                ))}
+              </tr>
+            </thead> 
+            <tbody>
+              {Object.entries(equips).slice(0,-1).map((entry,index) => (
+                  <td key={entry[0]}>{entry[1]}</td>
+                ))}
+            </tbody>*/}
+            
+              {Object.entries(equips).slice(0,-1).map((entry,index) => (
+                <tbody>
+                  <th className="text-left" key={index}>{entry[0]}</th>
+                  <td  className="text-left pl-5" key={entry[0]}>{entry[1]}</td>
+                    </tbody>
+                ))}
+          
+          </table>
+           
         </main>
       </article>
       <Footer copyrightText={globalData.footerText} />

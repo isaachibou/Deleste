@@ -38,7 +38,7 @@ export async function getData(type) {
     return equips
 }
 
-export async function getMatosByID(id) {
+export async function getMatosByID(id,) {
 
 	const client = await clientPromise;
 	console.log("id queried " + id)
@@ -46,14 +46,29 @@ export async function getMatosByID(id) {
 	let equips = await client
     .db("ZakIGatsbyProject")
     .collection("SleepingPads")
-    .findOne({"_id": ObjectId(id)});
+    .findOne(
+    	{ "_id": ObjectId(id) },
+    	{ projection: { 
+    		_id: 0, 
+    		"Weight (Standard)": 0, 
+    		"Width (Standard)": 0, 
+    		"Length (Standard)": 0,
+    		"Height (Standard)": 0,
+    		"Thickness (Standard)": 0,
+    		"Packed dimension (Standard) ": 0,
+    	} 
+    });
  
   if (equips == null) {
   	equips = await client
     .db("ZakIGatsbyProject")
     .collection("SleepingBags")
-    .findOne({"_id": ObjectId(id)});
+    .findOne(
+    	{ "_id": ObjectId(id) },
+    	{ projection: { _id: 0, "Weight (Standard)": 0, "Width (Standard)": 0, SKU: 0 } }
+    );
   }
+
 	console.log(equips)
 	 
     return equips
