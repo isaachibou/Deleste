@@ -38,7 +38,7 @@ export async function getData(type) {
     return equips
 }
 
-export async function getMatosByID(id, type) {
+export async function getMatosByID(id) {
 
 	const client = await clientPromise;
 	console.log("id queried " + id)

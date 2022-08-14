@@ -5,6 +5,8 @@ import { getMatosByID } from '../api/matos_2'
 
 import Head from 'next/head';
 import Link from 'next/link';
+import Image from 'next/image'
+
 import Footer from '../../components/Footer';
 import Header from '../../components/Header';
 import Layout, { GradientBackground } from '../../components/Layout';
@@ -14,6 +16,7 @@ import SEO from '../../components/SEO';
 export default function PostPage({
   equips,
   globalData,
+
 }) {
   return (
     <Layout>
@@ -30,7 +33,27 @@ export default function PostPage({
         </header>
         <main>
           <article className="prose dark:prose-dark">
-            
+         {Object.entries(equips).map((entry,index) => (
+            /*switch({entry[0]}) {
+              case "Image":
+                <Image className="mx-auto rounded-lg"
+                    src={equip.Image}
+                    alt="Picture of the matos"
+                    width={200}
+                    height={200}
+                  />;
+                  break;
+              case "_id":
+                 null;
+                break;
+              default:
+                 <p>{entry[0]} : {entry[1]}</p>;
+            }      
+                      */    
+            <p>{entry[0]} : {entry[1]}</p>
+         ))}
+
+      
           </article>
         </main>
       </article>

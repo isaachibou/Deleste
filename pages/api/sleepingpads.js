@@ -14,28 +14,5 @@ export default async (req, res) => {
     .limit(20)
     .toArray();
 
-
- /* const uniques = await client
-  .db("ZakIGatsbyProject")
-  .collection("SleepingPads")
-  .aggregate([
-    {
-      $group: {
-          _id: '$Model',
-          detail: { $first: '$$ROOT' }
-        },
-    },
-    { "$out": "newcollection1" }
-  ]);
-
-  const equips = await client
-  .db("ZakIGatsbyProject")
-  .collection("newcollection1")
-  .find({
-     _id: {$ne: null}
-  })
-  .sort({ _id: -1 })
-  .toArray();*/
-
  res.end(JSON.stringify(equips, undefined, 2));
 };
