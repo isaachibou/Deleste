@@ -50,12 +50,14 @@ export async function getMatosByID(id,) {
     	{ "_id": ObjectId(id) },
     	{ projection: { 
     		_id: 0, 
+    		"SKU": 0,
     		"Weight (Standard)": 0, 
     		"Width (Standard)": 0, 
     		"Length (Standard)": 0,
     		"Height (Standard)": 0,
     		"Thickness (Standard)": 0,
-    		"Packed dimension (Standard) ": 0,
+    		"Packed dimension (Standard)": 0,
+    		"Country of Origin": 0
     	} 
     });
  
