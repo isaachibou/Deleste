@@ -5,7 +5,7 @@ import { getMatosByID } from '../api/matos_2'
 
 import Head from 'next/head';
 import Link from 'next/link';
-import Image from 'next/image'
+import Image from 'next/image' 
 
 import Footer from '../../components/Footer';
 import Header from '../../components/Header';
@@ -32,40 +32,49 @@ export default function PostPage({
           </h1>
         </header>
         <main>
+          <div className="grid grid-cols-2 gap-12">
+            <div className="min-h-max relative ">
+              <Image className="rounded-lg "
+                src={equips.Image}
+                alt="Picture of the matos"
+                width={700}
+                height={700}
+                layout="fill"
+              /> 
+            </div>
+            <div>
+              <table className="">
+                {Object.entries(equips).slice(0,-1).map((entry,index) => (
+                  <tbody>
+                    <th className="text-left" key={index}>{entry[0]}</th>
+                    <td  className="text-left pl-5" key={entry[0]}>{entry[1]}</td>
+                  </tbody>
+                ))}
+              </table>
+            </div>
+          </div>
           {/*<article className="prose dark:prose-dark">
             
             {Object.entries(equips).slice(0,-1).map((entry,index) => (
               <span key={index}>{entry[0]} : {entry[1]}</span>
             ))}
           </article>*/}
-          <Image className="rounded-lg  mx-auto block"
+          {/*<div className="max-w-fit max-h-fit ml-32 mb-3 ">
+            <Image className="rounded-lg  "
                     src={equips.Image}
                     alt="Picture of the matos"
-                    width={300}
-                    height={300}
+                    width={600}
+                    height={600}
              /> 
-          <table>
-            {/*<thead>
-              <tr>
-                {Object.entries(equips).slice(0,-1).map((entry,index) => (
-                  <th key={index}>{entry[0]}</th>
-                ))}
-              </tr>
-            </thead> 
-            <tbody>
-              {Object.entries(equips).slice(0,-1).map((entry,index) => (
-                  <td key={entry[0]}>{entry[1]}</td>
-                ))}
-            </tbody>*/}
-            
+          </div>
+          <table className="ml-32">
               {Object.entries(equips).slice(0,-1).map((entry,index) => (
                 <tbody>
                   <th className="text-left" key={index}>{entry[0]}</th>
                   <td  className="text-left pl-5" key={entry[0]}>{entry[1]}</td>
-                    </tbody>
-                ))}
-          
-          </table>
+                </tbody>
+              ))}
+          </table>*/}
            
         </main>
       </article>
