@@ -1,0 +1,51 @@
+import { hashPassword } from '../../../utils/auth';
+import { connectToDatabase } from '../../../utils/db';
+import clientPromise from "../../../utils/mongodb";
+
+async function handler(req, res) {
+	console.log("COUCOU C'EST SIGNUP -----------------------")
+  if (req.method !== 'POST') {
+    return;
+  }
+
+  const data = req.body;
+  const { email, password } = data;
+
+  if (
+    !email ||
+    !email.includes('@') ||
+    !password ||
+    password.trim().length < 7
+  ) {
+    res.status(422).json({
+      message:
+        'Invalid input - password should also be at least 7 characters long.',
+    });
+    return;
+  }
+
+  const client = await clientPromise;
+  
+  const db = client.db("ZakIGatsbyProject");	
+
+  const existingUser = await db.collection('users').findOne({ email: email });
+  console.log(existingUser)
+
+  if (existingUser) {
+    res.status(422).json({ message: 'User exists already!' });
+    client.close();
+    return;
+  }
+
+  const hashedPassword = await hashPassword(password);
+
+  const result = await db.collection('users').insertOne({
+    email: email,
+    password: hashedPassword,
+  });
+
+  res.status(201).json({ message: 'Created user!' });
+  client.close();
+}
+
+export default handler;

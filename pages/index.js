@@ -1,8 +1,10 @@
 import Link from 'next/link';
 import { getPosts } from '../utils/mdx-utils';
 
+
 import Footer from '../components/Footer';
 import Header from '../components/Header2';
+import StartingPageContent from '../components/starting-page/starting-page';
 import Layout, { GradientBackground } from '../components/Layout';
 import ArrowIcon from '../components/ArrowIcon';
 import { getGlobalData } from '../utils/global-data';
@@ -17,6 +19,7 @@ export default function Index({ posts, globalData }) {
         <h1 className="text-3xl lg:text-5xl text-center mb-12">
           {globalData.blogTitle}
         </h1>
+        <StartingPageContent />
       </main>
       <Footer copyrightText={globalData.footerText} />
       <GradientBackground
