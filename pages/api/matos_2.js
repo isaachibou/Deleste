@@ -31,17 +31,16 @@ export async function getData(type) {
     .db("ZakIGatsbyProject")
     .collection(String(collection))
     .find({"Model":{$exists:true}})
-    .sort({ Model: 1, Size: 1 })
+    .sort({ Model: 1, SKU: 1 })
     .limit(20)
     .toArray();
 
     return equips
 }
 
-export async function getMatosByID(id,) {
+export async function getMatosByID(id) {
 
 	const client = await clientPromise;
-	console.log("id queried " + id)
 
 	let equips = await client
     .db("ZakIGatsbyProject")
@@ -71,8 +70,37 @@ export async function getMatosByID(id,) {
     );
   }
 
-	console.log(equips)
-	 
-    return equips
+  return equips
+}
 
+export async function getPrevMatos(id) {
+
+	const client = await clientPromise;
+
+	const prevMatos = await client
+    .db("ZakIGatsbyProject")
+    .collection("SleepingPads")
+    .find({"_id": {$gt: ObjectId(id)}, "Model": {$exists:true}})
+    .project({_id: 1, Model: 1, Size: 1, Image: 1})
+    .sort({ _id: 1, Model: 1, Size: 1 })
+    .limit(1)
+    .toArray();
+
+	return prevMatos
+}
+
+export async function getNextMatos(id) {
+
+	const client = await clientPromise;
+ 
+	 const nextMatos = await client
+    .db("ZakIGatsbyProject")
+    .collection("SleepingPads")
+    .find({"_id": {$lt: ObjectId(id)}, "Model": {$exists:true}})
+    .project({_id: 1, Model: 1, Size: 1, Image: 1})
+    .sort({ _id: -1, Model: -1, Size: -1 })
+    .limit(1)
+    .toArray();
+
+	return nextMatos
 }
