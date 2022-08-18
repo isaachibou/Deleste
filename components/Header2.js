@@ -27,6 +27,9 @@ export default function Header2({ name, title }) {
     	 		<Link href="/">
 	          <a className="mr-5">Home</a>
 	        </Link>
+	         <Link href="/blog">
+	          <a className="mr-5">Blog</a>
+	        </Link>
 	        <Link href="/matos">
 	          <a className="mr-5">Matos</a>
 	        </Link>
