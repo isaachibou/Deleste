@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 export default function Header2({ name, title }) {
   return (
-    <header className="flex flex-col max-w-fit">
+    <header className="flex flex-col max-w-fit ">
      	<div className="p-3">
 	      	<Link href="/">
 	      		<a className="flex flex-row">
@@ -16,14 +16,14 @@ export default function Header2({ name, title }) {
 			            	className="rounded-full" // just an example
 	          			/>
 	       			</div>
-			        <div className="my-auto">
-			        	<h1 className="text-4xl text-cyan-800 font-bold lg:text-4xl">{name}</h1>
-			          <h2 className="text-base text-cyan-900 underline underline-offset-2" >{title}</h2>
+			        <div className="my-auto ">
+			        	<h1 className="dark:text-white text-center text-cyan-800 text-4xl text-cyan-800 font-bold lg:text-4xl">{name}</h1>
+			          <h2 className="dark:text-white text-center text-cyan-800 text-base text-cyan-900 underline underline-offset-2" >{title}</h2>
 			        </div>
 	        	</a>
 	      	</Link>
     	</div>
-    	<ul className="mx-10 flex flex-row pb-4 text-cyan-900 ">
+    	<ul className="mx-10 flex flex-row pb-4 text-cyan-900 dark:text-white text-center text-cyan-800">
     	 		<Link href="/">
 	          <a className="mr-5">Home</a>
 	        </Link>
