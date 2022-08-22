@@ -1,6 +1,9 @@
 import Link from 'next/link';
 import Image from 'next/image';
 
+import { signOut } from 'next-auth/react';
+
+
 export default function Header2({ name, title }) {
   return (
     <header className="flex flex-col max-w-fit ">
@@ -39,6 +42,7 @@ export default function Header2({ name, title }) {
 	        <Link href="/data">
 	          <a className="mr-5">Data</a>
 	        </Link>
+	        <a><button onClick={signOut}>Log out</button></a>
       </ul>
     </header>
   );

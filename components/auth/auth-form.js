@@ -35,29 +35,32 @@ function AuthForm() {
 
   async function submitHandler(event) {
     event.preventDefault();
-
+    console.log("Submitting Handler")
     const enteredEmail = emailInputRef.current.value;
     const enteredPassword = passwordInputRef.current.value;
 
     // optional: Add validation
-
-    if (isLogin) {
+    
+    if (isLogin) { 
+      console.log("Is login.")
       const result = await signIn('credentials', {
         redirect: false,
         email: enteredEmail,
         password: enteredPassword,
       });
+      
 
       if (!result.error) {
         // set some auth state
-       // router.replace('/');
+        router.replace('/');
       }
-    } else {
+    } else { // Create a nex user !
       try {
         const result = await createUser(enteredEmail, enteredPassword);
-        console.log(result);
+        alert("Account created !")
+        //switchAuthModeHandler()
+        
       } catch (error) {
-        console.log(error);
       }
     }
   }
