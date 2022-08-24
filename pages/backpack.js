@@ -8,6 +8,7 @@ import Header2 from '../components/Header2';
 import LayoutPage, { GradientBackground } from '../components/Layout';
 import { getGlobalData } from '../utils/global-data';
 import SEO from '../components/SEO';
+import Table1 from "../components/table/table";
 
 export default function Equips({  globalData }) {
 
@@ -215,6 +216,8 @@ export default function Equips({  globalData }) {
           </ul>
           <button className="my-5 mx-auto rounded-full bg-cyan-100 w-1/5 border-2 border-black" type="submit" onClick={handleSubmit}>Submit</button>
 
+
+          <Table1/> 
         </main>
         <GradientBackground
           variant="large"
