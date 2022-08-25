@@ -6,7 +6,7 @@ import { signOut } from 'next-auth/react';
 
 export default function Header({ name, title }) {
   return (
-    <header className="flex flex-col min-w-fit items-center mb-10">
+    <header className="flex flex-col min-w-fit items-center mb-8">
       <div className="p-3 justify-center">
         <Link href="/">
           <a className="flex flex-row">

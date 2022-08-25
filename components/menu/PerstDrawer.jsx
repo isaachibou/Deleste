@@ -24,6 +24,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import BackpackIcon from '@mui/icons-material/Backpack';
 import HikingIcon from '@mui/icons-material/Hiking';
 import CabinIcon from '@mui/icons-material/Cabin';
+import ConstructionOutlinedIcon from '@mui/icons-material/ConstructionOutlined';
 import { signOut } from 'next-auth/react';
 
 const drawerWidth = 240;
@@ -86,67 +87,43 @@ export default function PersistentDrawerLeft() {
   };
 
   return (
-    <Box sx={{ display: 'flex' }} >
+    <Box sx={{ position: 'absolute', left: "1%", top: "2rem", "z-index":"30" }} >
       <CssBaseline />
-        
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            sx={{ mr: 2, ...(open && { display: 'none' }) }}
-          >
-            
-          {/*<div className="w-20 h-20 relative rounded-full mx-4 border-2 border-cyan-800" onClick={handleDrawerOpen}>     
-            <Image
-              src="/images/profile.jpg"
-              alt="ma tête à yellowstone" 
-              layout="fill" // required
-              objectFit="cover" // change to suit your needs
-              className="rounded-full" // just an example
-            />
-          </div>*/}
-            <MenuIcon className="hover:"/>
-          </IconButton>
-        
-          
-         
-      <Drawer
-        sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-          '& .MuiDrawer-paper': {
+        <IconButton
+          color="inherit"
+          aria-label="open drawer"
+          onClick={handleDrawerOpen}
+          edge="start"
+          sx={{ mr: 2, ...(open && { display: 'none' }) }}
+        >
+          <MenuIcon className=""/>
+        </IconButton>
+        <Drawer className="bg-transparent"
+          sx={{
             width: drawerWidth,
-            boxSizing: 'border-box',
-          },
-        }}
-        variant="persistent"
-        anchor="left"
-        open={open}
-      >
+            flexShrink: 0,
+            '& .MuiDrawer-paper': {
+              'background-color': 'transparent',
+              width: drawerWidth,
+              boxSizing: 'border-box',
+            },
+          }}
+          variant="persistent"
+          anchor="left"
+          open={open}
+        >
         <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
-            <div className="w-20 h-20 relative rounded-full mx-4 border-2 border-cyan-800" onClick={handleDrawerClose}>     
-        <Image
-          src="/images/profile.jpg"
-          alt="ma tête à yellowstone" 
-          layout="fill" // required
-          objectFit="cover" // change to suit your needs
-          className="rounded-full" // just an example
-        />
-      </div>
+          <IconButton onClick={handleDrawerClose} className="mt-8">
+             <MenuIcon className="hover:"/>
           </IconButton>
-
         </DrawerHeader>
-       {/* <Divider />*/}
-         
-         
         <List>
           {
             [
               { "key":"home", "text": "Home", "icon": <CabinIcon />, "href":"/", "onClick":"" },
               { "key":"matos", "text": "Matos", "icon": <HikingIcon />, "href":"/matos", "onClick":"" },
               { "key":"backpack", "text": "Backpack", "icon": <BackpackIcon />, "href":"/backpack", "onClick":"" },
+              { "key":"sandbag", "text": "Sandbag", "icon": <ConstructionOutlinedIcon />, "href":"/sandbag", "onClick":"" },
               { "key":"logout", "text": "Log Out", "icon": <LogoutIcon />, "href":"", "onClick":signOut}
             ].map((entry) => (
             <ListItem key={entry.key} disablePadding>
@@ -161,7 +138,7 @@ export default function PersistentDrawerLeft() {
             </ListItem>
           ))}
         </List>
-        <Divider />
+        {/*<Divider />*/}
       </Drawer>
       <Main open={open}>
         <DrawerHeader />

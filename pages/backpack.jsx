@@ -4,8 +4,9 @@ import Link from 'next/link';
 import Image from 'next/image'
 
 import Footer from '../components/Footer';
-import Header2 from '../components/Header2';
-import LayoutPage, { GradientBackground } from '../components/Layout';
+import Header from '../components/Header';
+import Landscape from '../components/landscape/landscape'
+
 import { getGlobalData } from '../utils/global-data';
 import SEO from '../components/SEO';
 import Table1 from "../components/table/table";
@@ -167,13 +168,13 @@ export default function Equips({  globalData }) {
   }
 
   return (
-    <LayoutPage>
+    <Landscape>
         <SEO title={globalData.name} description={globalData.blogTitle} />
-        <Header2 name={globalData.name} title={globalData.blogTitle} />
+        <Header name={globalData.blogTitle} title={globalData.blogSubtitle}/>
         <main  className="flex flex-col max-w-4xl w-full mx-auto ">
           <h1 className="text-3xl lg:text-5xl text-center mb-12"> Build your backpack  </h1>
   
-          <input name="EquipmentName" className="w-52 text-left text-xl bg-inherit  "  type="text" placeholder="My Equipment1"/>
+          <input name="EquipmentName" className="w-52 text-left text-xl bg-transparent placeholder:text-pata-400 "  type="text" placeholder="My Equipment1"/>
           <ul className="space-y-1">
             <li className="flex flex-row flex-end divide-x-1 divide-y-1">
              <span className="basis-1/6 ">Type</span>
@@ -183,32 +184,32 @@ export default function Equips({  globalData }) {
              <span className="basis-1/6">Couleur</span>
             </li>
             <li className="flex flex-row flex-end text-right space-x-1">
-              <select name="types" id="itemTypes" className="basis-1/6 bg-inherit" onChange={onItemTypeSelection}>
+              <select name="types" id="itemTypes" className="basis-1/6 bg-transparent" onChange={onItemTypeSelection}>
                 <option value="backpack"  >Backpack</option>
                 <option value="pad">Pad</option>
                 <option value="bag">Bag</option>
                 <option value="stove">Stove</option>
               </select>
-              <select name="items" id="itemsFetched" className="basis-3/6 bg-inherit" onChange={onItemSelection}>
+              <select name="items" id="itemsFetched" className="basis-3/6 bg-transparent" onChange={onItemSelection}>
                 {/*{items.map((items) => (
                   <option value="backpack">Backpack</option>
                 ))}*/}
               </select>
-              <input className="min-w-0 basis-1/6 bg-inherit text-right"  type="text" placeholder="1" />
-              <input name="weight" className="min-w-0 basis-1/6 bg-inherit text-right"  type="text" placeholder="1"/> 
-              <input name="color" className="min-w-0 basis-1/6 bg-inherit text-right"  type="text" placeholder="Black"/>
+              <input className="min-w-0 basis-1/6 bg-transparent text-right placeholder:text-pata-400"  type="text" placeholder="1" />
+              <input name="weight" className="min-w-0 basis-1/6 bg-transparent text-right placeholder:text-pata-400"  type="text" placeholder="1"/> 
+              <input name="color" className="min-w-0 basis-1/6 bg-transparent text-right placeholder:text-pata-400"  type="text" placeholder="Black"/>
             </li>
             <li className="flex flex-row flex-end text-right space-x-1">
-              <select name="types" id="itemTypes" className="basis-1/6 bg-inherit" onChange={onItemTypeSelection}>
+              <select name="types" id="itemTypes" className="basis-1/6 bg-transparent" onChange={onItemTypeSelection}>
                 <option value="backpack"  >Backpack</option>
                 <option value="pad">Pad</option>
                 <option value="bag">Bag</option>
                 <option value="stove">Stove</option>
               </select>
-              <select name="items" id="itemsFetched" className="basis-3/6 bg-inherit" onChange={onItemSelection}/>
-              <input className="min-w-0 basis-1/6 bg-inherit text-right"  type="text" placeholder="1" />
-              <input name="weight" className="min-w-0 basis-1/6 bg-inherit text-right"  type="text" placeholder="1"/> 
-              <input name="color" className="min-w-0 basis-1/6 bg-inherit text-right"  type="text" placeholder="Black"/>
+              <select name="items" id="itemsFetched" className="basis-3/6 bg-transparent" onChange={onItemSelection}/>
+              <input className="min-w-0 basis-1/6 bg-transparent text-right placeholder:text-pata-400"  type="text" placeholder="1" />
+              <input name="weight" className="min-w-0 basis-1/6 bg-transparent text-right placeholder:text-pata-400"  type="text" placeholder="1"/> 
+              <input name="color" className="min-w-0 basis-1/6 bg-transparent text-right placeholder:text-pata-400"  type="text" placeholder="Black"/>
             </li>
             <br/><br/>
             <button className="my-5 mx-auto rounded-full bg-cyan-100 w-1/5 border-2 border-black" type="submit" onClick={debug}>Debug</button>
@@ -217,13 +218,9 @@ export default function Equips({  globalData }) {
           <button className="my-5 mx-auto rounded-full bg-cyan-100 w-1/5 border-2 border-black" type="submit" onClick={handleSubmit}>Submit</button>
 
 
-          <Table1/> 
+          {/*<Table1/> */}
         </main>
-        <GradientBackground
-          variant="large"
-          className="fixed top-20 opacity-40 dark:opacity-60"
-        />
-    </LayoutPage>
+    </Landscape>
     
 
     
