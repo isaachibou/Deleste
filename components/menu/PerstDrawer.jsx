@@ -88,8 +88,7 @@ export default function PersistentDrawerLeft() {
   return (
     <Box sx={{ display: 'flex' }} >
       <CssBaseline />
-      <AppBar position="fixed" open={open} className="bg-transparent">
-        <Toolbar>
+        
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -98,19 +97,20 @@ export default function PersistentDrawerLeft() {
             sx={{ mr: 2, ...(open && { display: 'none' }) }}
           >
             
-             <div className="w-20 h-20 relative rounded-full mx-4 border-2 border-cyan-800" onClick={handleDrawerOpen}>     
-        <Image
-          src="/images/profile.jpg"
-          alt="ma tête à yellowstone" 
-          layout="fill" // required
-          objectFit="cover" // change to suit your needs
-          className="rounded-full" // just an example
-        />
-      </div>
+          {/*<div className="w-20 h-20 relative rounded-full mx-4 border-2 border-cyan-800" onClick={handleDrawerOpen}>     
+            <Image
+              src="/images/profile.jpg"
+              alt="ma tête à yellowstone" 
+              layout="fill" // required
+              objectFit="cover" // change to suit your needs
+              className="rounded-full" // just an example
+            />
+          </div>*/}
+            <MenuIcon className="hover:"/>
           </IconButton>
+        
           
-        </Toolbar>
-      </AppBar>
+         
       <Drawer
         sx={{
           width: drawerWidth,
@@ -150,8 +150,8 @@ export default function PersistentDrawerLeft() {
               { "key":"logout", "text": "Log Out", "icon": <LogoutIcon />, "href":"", "onClick":signOut}
             ].map((entry) => (
             <ListItem key={entry.key} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
+              <ListItemButton disablePadding>
+                <ListItemIcon disablePadding>
                   {entry.icon}
                 </ListItemIcon>
                 <Link href={entry.href}>
