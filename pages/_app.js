@@ -15,7 +15,7 @@ function MyApp({ Component, pageProps }) {
   return (
     <>
       <SessionProvider session={pageProps.session}>
-        <span className="theme-bejamas" />
+       {/* <span className="theme-bejamas" />*/}
         <Component {...pageProps} />
       </SessionProvider>
     </>

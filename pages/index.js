@@ -4,22 +4,31 @@ import { getPosts } from '../utils/mdx-utils';
 
 import Footer from '../components/Footer';
 import Header from '../components/Header2';
+
 import TemporaryDrawer from "../components/menu/TempDrawer"
 import PersistantDrawer from "../components/menu/PerstDrawer"
+import MUIPersistentDrawer from "../components/menu/MUIPersistentDrawer"
+import DrawerLeftMenu from "../components/menu/myOwnDrawer"
+import { createMuiTheme } from "@material-ui/core/styles";
+import { StylesProvider } from "@material-ui/styles";
+import { ThemeProvider } from "styled-components";
+
 import StartingPageContent from '../components/starting-page/starting-page';
 import Layout, { GradientBackground } from '../components/Layout';
 import ArrowIcon from '../components/ArrowIcon';
 import { getGlobalData } from '../utils/global-data';
 import SEO from '../components/SEO';
 
+
+const theme = createMuiTheme();
+
 export default function Index({ posts, globalData }) {
   return (
     <Layout>
       <SEO title={globalData.name} description={globalData.blogTitle} />
-      {/*<Header className="" name={globalData.name} title={globalData.blogTitle}/>*/}
+      {<Header className="" name={globalData.name} title={globalData.blogTitle}/>}
       <main className="w-full">
-        <PersistantDrawer/>
-      {/*<TemporaryDrawer/>*/}
+        <TemporaryDrawer/>     
         <h1 className="text-3xl lg:text-5xl text-center mb-12">
           {globalData.blogTitle}
         </h1>
