@@ -42,6 +42,9 @@ export default function Header2({ name, title }) {
 	        <Link href="/data">
 	          <a className="mr-5">Data</a>
 	        </Link>
+	        <Link href="/design">
+	          <a className="mr-5">design</a>
+	        </Link>
 	        <a><button onClick={signOut}>Log out</button></a>
       </ul>
     </header>
