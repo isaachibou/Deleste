@@ -14,8 +14,9 @@ export default function Index({ posts, globalData }) {
   return (
     <Landscape>
     
-      <SEO title={globalData.name} description={globalData.blogTitle} /> 
+      <SEO title={globalData.name} description={globalData.blogTitle} />
       <Header name={globalData.blogTitle} title={globalData.blogSubtitle}/>
+
 
        <main className="">
          
@@ -28,6 +29,5 @@ export default function Index({ posts, globalData }) {
 export function getStaticProps() {
   const posts = getPosts();
   const globalData = getGlobalData();
-  console.log(globalData)
   return { props: { posts, globalData } };
 }

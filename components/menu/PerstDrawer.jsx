@@ -22,6 +22,7 @@ import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import LogoutIcon from '@mui/icons-material/Logout';
 import BackpackIcon from '@mui/icons-material/Backpack';
+import Person2OutlinedIcon from '@mui/icons-material/Person2Outlined';
 import HikingIcon from '@mui/icons-material/Hiking';
 import CabinIcon from '@mui/icons-material/Cabin';
 import ConstructionOutlinedIcon from '@mui/icons-material/ConstructionOutlined';
@@ -121,6 +122,7 @@ export default function PersistentDrawerLeft() {
           {
             [
               { "key":"home", "text": "Home", "icon": <CabinIcon />, "href":"/", "onClick":"" },
+              { "key":"profile", "text": "Profile", "icon": <Person2OutlinedIcon />, "href":"/profile", "onClick":"" },
               { "key":"matos", "text": "Matos", "icon": <HikingIcon />, "href":"/matos", "onClick":"" },
               { "key":"backpack", "text": "Backpack", "icon": <BackpackIcon />, "href":"/backpack", "onClick":"" },
               { "key":"sandbag", "text": "Sandbag", "icon": <ConstructionOutlinedIcon />, "href":"/sandbag", "onClick":"" },

@@ -34,8 +34,8 @@ function AuthPage({globalData}) {
 	      <SEO title={globalData.name} description={globalData.blogTitle} />
 	      <Header name={globalData.blogTitle} title={globalData.blogSubtitle}/>
 	      <main className="w-full">
-	        <h1 className="text-3xl lg:text-5xl text-center mb-12">
-	          {globalData.blogTitle}
+	        <h1 className="text-3xl lg:text-5xl text-center mb-12 text-pata-400">
+	          Sign In
 	        </h1>
 	        <AuthForm />
 	      </main>

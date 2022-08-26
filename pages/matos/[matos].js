@@ -12,9 +12,8 @@ import Image from 'next/image'
 
 import ArrowIcon from '../../components/ArrowIcon';
 
-import Footer from '../../components/Footer';
-import Header from '../../components/Header2';
-import Layout, { GradientBackground } from '../../components/Layout';
+import Header from '../../components/Header';
+import Landscape from '../../components/landscape/landscape';
 import SEO from '../../components/SEO';
 
 
@@ -25,12 +24,12 @@ export default function PostPage({
   nextMatos
 }) {
   return (
-    <Layout>
+    <Landscape>
       <SEO
         title={`${equips.Model} - ${globalData.name}`}
         description={equips.Size}
       />
-      <Header name={globalData.name}  title={globalData.blogTitle}/>
+      <Header name={globalData.blogTitle} title={globalData.blogSubtitle}/>
       <article className="px-6 md:px-0">
         <header>
           <div className="grid md:grid-cols-2 gap-0 lg:-mx-24 mt-6 my-12">
@@ -120,16 +119,7 @@ export default function PostPage({
           </div>
         </main>
       </article>
-      <Footer copyrightText={globalData.footerText} />
-      <GradientBackground
-        variant="large"
-        className="absolute -top-32 opacity-30 dark:opacity-50"
-      />
-      <GradientBackground
-        variant="small"
-        className="absolute bottom-0 opacity-20 dark:opacity-10"
-      />
-    </Layout>
+    </Landscape>
   );
 }
 
