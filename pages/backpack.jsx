@@ -1,7 +1,4 @@
 import clientPromise from "../utils/mongodb";
-import { getSession } from 'next-auth/react';
-import { getCsrfToken } from "next-auth/react"
-
 
 import Link from 'next/link';
 import Image from 'next/image'
@@ -83,10 +80,7 @@ export default function Equips({  globalData }) {
     let equipName = nameselector.value; 
     console.log(equipName)
     
-     let backpackObject = {
-      owner: await getUserId(),
-      name: equipName
-    }; 
+     let backpackObject = {name: equipName}; 
 
     for(let row of rows) {
       if(row.children[name="types"]) {
@@ -99,7 +93,7 @@ export default function Equips({  globalData }) {
         console.log(item)
        
         let itemObject = {
-          brand: "",
+          brand:"",
           model: String(item).split(" - ")[0],
           volume:"",
           weight: weight,
@@ -134,12 +128,6 @@ export default function Equips({  globalData }) {
     alert(`You have updated ${equipName}`)
   }
 
-  const getUserId = async (req) => {
-    const csrfToken = await getCsrfToken()
-    const session = await getSession({ req });
-    console.log("session: "+ session.user.email)
-    return session.user.email;
-  }
   
   const debug = () => {
     var rows = document.querySelectorAll("li")
@@ -182,18 +170,11 @@ export default function Equips({  globalData }) {
   return (
     <Landscape>
         <SEO title={globalData.name} description={globalData.blogTitle} />
-             <Header name={globalData.blogTitle} title={globalData.blogSubtitle}/>
-
+        <Header name={globalData.blogTitle} title={globalData.blogSubtitle}/>
         <main  className="flex flex-col max-w-4xl w-full mx-auto ">
-           <h1 className="text-center text-pata-400 text-xl lg:text-4xl">
-                <svg xmlns="http://www.w3.org/2000/svg" className="scale-x-[-1] inline-flex align-baseline feather feather-feather" width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#28384f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"  ><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path><line x1="16" y1="8" x2="2" y2="22"></line><line x1="17.5" y1="15" x2="9" y2="15"></line></svg>
-
-               Build your backpack
-              </h1>
-          <div class="flex flex-row mt-10">
-            <svg xmlns="http://www.w3.org/2000/svg" className="scale-x-[-1] inline-flex align-baseline feather feather-feather" width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#28384f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"  ><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path><line x1="16" y1="8" x2="2" y2="22"></line><line x1="17.5" y1="15" x2="9" y2="15"></line></svg>
-            <input name="EquipmentName" className="min-w-max ml-1 whitespace-nowrap w-52 text-left text-pata-400 text-xl bg-transparent placeholder:text-pata-400 "  type="text" placeholder="My Equipment1"/>
-          </div>
+          <h1 className="text-3xl lg:text-5xl text-center mb-12"> Build your backpack  </h1>
+  
+          <input name="EquipmentName" className="w-52 text-left text-xl bg-transparent placeholder:text-pata-400 "  type="text" placeholder="My Equipment1"/>
           <ul className="space-y-1">
             <li className="flex flex-row flex-end divide-x-1 divide-y-1">
              <span className="basis-1/6 ">Type</span>
