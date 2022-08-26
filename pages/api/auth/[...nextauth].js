@@ -44,8 +44,22 @@ export default NextAuth({
     }),
   ],
   //adapter: MongoDBAdapter(clientPromise),
+  callbacks: {
+    session: async ({ session, token }) => {
+      if (session?.user) {
+        session.user.id = token.uid;
+      }
+      return session;
+    },
+    jwt: async ({ user, token }) => {
+      if (user) {
+        token.uid = user.id;
+      }
+      return token;
+    },
+  },
   session: {
-    jwt: true,
+    strategy: 'jwt',
   },
 /*pages: {
   

@@ -1,7 +1,7 @@
 import { SessionProvider } from 'next-auth/react';
 import React from 'react';
 import '../styles/globals.css';
-import 'prismjs/themes/prism-tomorrow.css';
+import 'normalize.css/normalize.css';
 
 function MyApp({ Component, pageProps }) {
   React.useEffect(() => {
