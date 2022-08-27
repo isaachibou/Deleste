@@ -54,7 +54,7 @@ export default function Equips({  globalData }) {
   const onItemSelection = async (event) => {
     const target = event.target;
     const model = target.options[target.selectedIndex].text.split(" - ")[0]
-    console.log(model)
+    console.debug(model)
     
 
     var type = event.target.parentElement.querySelector("li select[name='types']").value;
@@ -67,10 +67,10 @@ export default function Equips({  globalData }) {
     });
 
     const item = await response.json()
-    console.log("item " + item)
+    console.debug("item " + item)
     
     var weight = event.target.parentElement.querySelector("li input[name='weight']");
-    console.log("weight " +weight)
+    console.debug("weight " +weight)
     weight.value= item["Weight (Metric)"];
 
     var color = event.target.parentElement.querySelector("li input[name='color']");
@@ -81,7 +81,7 @@ export default function Equips({  globalData }) {
     var rows = document.querySelectorAll("li")
     var nameselector = document.querySelector("input[name='EquipmentName']");
     let equipName = nameselector.value; 
-    console.log(equipName)
+    console.debug(equipName)
     
      let backpackObject = {
       owner: await getUserId(),
@@ -96,7 +96,7 @@ export default function Equips({  globalData }) {
         var item = row.children[name="items"].options[indexItem].text
         var weight = row.children[name="weight"].value
         var color = row.children[name="color"].value
-        console.log(item)
+        console.debug(item)
        
         let itemObject = {
           brand: "",
@@ -117,7 +117,7 @@ export default function Equips({  globalData }) {
         }
       } 
     }
-      console.log(backpackObject)
+      console.debug(backpackObject)
 
     const JSONdata = JSON.stringify(backpackObject)
     console.log(JSONdata)
@@ -135,17 +135,26 @@ export default function Equips({  globalData }) {
   }
 
   const getUserId = async (req) => {
-    const csrfToken = await getCsrfToken()
     const session = await getSession({ req });
-    console.log("session: "+ session.user.email)
-    return session.user.email;
+    const userEmail = session.user.email;
+
+    const response = await fetch('/api/auth/users?email='+userEmail, {
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        method: 'GET'
+    });
+   
+    const result = await response.json()
+      
+    return result._id;
   }
   
   const debug = () => {
     var rows = document.querySelectorAll("li")
     var nameselector = document.querySelector("input[name='EquipmentName']");
     let equipName = nameselector.value; 
-    console.log(equipName)
+    console.debug(equipName)
     
      let backpackObject = {name: equipName}; 
 
@@ -157,7 +166,7 @@ export default function Equips({  globalData }) {
         var item = row.children[name="items"].options[indexItem].text
         var weight = row.children[name="weight"].value
         var color = row.children[name="color"].value
-        console.log(item)
+        console.debug(item)
        
         let itemObject = {
           model: String(item).split(" - ")[0],
@@ -176,23 +185,22 @@ export default function Equips({  globalData }) {
         }
       } 
     }
-      console.log(backpackObject)
+      console.debug(backpackObject)
   }
 
   return (
     <Landscape>
         <SEO title={globalData.name} description={globalData.blogTitle} />
-             <Header name={globalData.blogTitle} title={globalData.blogSubtitle}/>
-
+{/*             <Header name={globalData.blogTitle} title={globalData.blogSubtitle}/>
+*/}
         <main  className="flex flex-col max-w-4xl w-full mx-auto ">
            <h1 className="text-center text-pata-400 text-xl lg:text-4xl">
-                <svg xmlns="http://www.w3.org/2000/svg" className="scale-x-[-1] inline-flex align-baseline feather feather-feather" width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#28384f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"  ><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path><line x1="16" y1="8" x2="2" y2="22"></line><line x1="17.5" y1="15" x2="9" y2="15"></line></svg>
-
-               Build your backpack
+                <svg xmlns="http://www.w3.org/2000/svg" className="mr-1 scale-x-[-1] inline-flex align-baseline feather feather-feather" width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#28384f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"  ><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path><line x1="16" y1="8" x2="2" y2="22"></line><line x1="17.5" y1="15" x2="9" y2="15"></line></svg>
+                  Build your backpack
               </h1>
-          <div class="flex flex-row mt-10">
+          <div className="flex flex-row mt-10">
             <svg xmlns="http://www.w3.org/2000/svg" className="scale-x-[-1] inline-flex align-baseline feather feather-feather" width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#28384f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"  ><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path><line x1="16" y1="8" x2="2" y2="22"></line><line x1="17.5" y1="15" x2="9" y2="15"></line></svg>
-            <input name="EquipmentName" className="min-w-max ml-1 whitespace-nowrap w-52 text-left text-pata-400 text-xl bg-transparent placeholder:text-pata-400 "  type="text" placeholder="My Equipment1"/>
+            <input name="EquipmentName" className="min-w-max ml-1 whitespace-nowrap w-52 text-left text-pata-400 text-xl bg-transparent  placeholder:text-pata-400 "  type="text" placeholder="My Equipment1"/>
           </div>
           <ul className="space-y-1">
             <li className="flex flex-row flex-end divide-x-1 divide-y-1">

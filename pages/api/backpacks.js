@@ -1,4 +1,5 @@
 import clientPromise from "../../utils/mongodb";
+import { ObjectId } from 'mongodb'
 
 export default async function handler(req, res) {
   switch(req.method) {
@@ -35,6 +36,7 @@ async function addBackpack(req, res) {
   try {
     //let bp = JSON.parse(req.body);
     let bp = req.body;
+    bp.owner = ObjectId(bp.owner)
     
 
     //connect to database
