@@ -26,7 +26,7 @@ import Person2OutlinedIcon from '@mui/icons-material/Person2Outlined';
 import HikingIcon from '@mui/icons-material/Hiking';
 import CabinIcon from '@mui/icons-material/Cabin';
 import ConstructionOutlinedIcon from '@mui/icons-material/ConstructionOutlined';
-import { signOut } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 
 const drawerWidth = 240;
 
@@ -76,6 +76,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 }));
 
 export default function PersistentDrawerLeft() {
+  const { data: session, status } = useSession()
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
@@ -140,7 +141,10 @@ export default function PersistentDrawerLeft() {
             </ListItem>
           ))}
         </List>
-        {/*<Divider />*/}
+        <Divider />
+        {session && (
+        <p className="mt-2 text-center text-xs">Signed in as {session.user.email}</p>
+      )}
       </Drawer>
       <Main open={open}>
         <DrawerHeader />
