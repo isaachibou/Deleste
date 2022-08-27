@@ -1,7 +1,4 @@
 import clientPromise from "../utils/mongodb";
-import { getSession } from 'next-auth/react';
-import { getCsrfToken } from "next-auth/react"
-
 
 import Link from 'next/link';
 import Image from 'next/image'
@@ -83,7 +80,7 @@ export default function Equips({  globalData }) {
     let equipName = nameselector.value; 
     console.debug(equipName)
     
-     let backpackObject = {
+    let backpackObject = {
       owner: await getUserId(),
       name: equipName
     }; 
@@ -99,7 +96,7 @@ export default function Equips({  globalData }) {
         console.debug(item)
        
         let itemObject = {
-          brand: "",
+          brand:"",
           model: String(item).split(" - ")[0],
           volume:"",
           weight: weight,
