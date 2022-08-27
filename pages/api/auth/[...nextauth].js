@@ -38,7 +38,7 @@ export default NextAuth({
           throw new Error('Could not log you in!');
         }
 
-        return { email: "toutpremieruser@gmail.com" };
+        return { email: user.email };
        
       },
     }),
