@@ -143,7 +143,7 @@ export default function PersistentDrawerLeft() {
         </List>
         <Divider />
         {session && (
-        <p className="mt-2 text-center text-xs">Signed in as {session.user.email}</p>
+        <p className="mt-2 text-center text-xs">Logged in as {session.user.email}</p>
       )}
       </Drawer>
       <Main open={open}>
