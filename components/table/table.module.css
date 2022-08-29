@@ -1,0 +1,9 @@
+.row {
+	
+}
+
+.row th {
+	text-align: left;
+	font-weight: normal!important;
+	font-color: blue;
+}

@@ -9,10 +9,12 @@ import Landscape from '../components/landscape/landscape'
 
 import { getGlobalData } from '../utils/global-data';
 import SEO from '../components/SEO';
-import Table1 from "../components/table/table";
+import EquipTable from "../components/table/table";
+import Divider from '@mui/material/Divider';
 
-export default function Equips({  globalData }) {
 
+export default function Equips({  globalData, equips }) {
+  
   const onItemTypeSelection = async (event) => {
     const data = event.target.value; 
     
@@ -236,13 +238,14 @@ export default function Equips({  globalData }) {
               <input name="color" className="min-w-0 basis-1/6 bg-transparent text-right placeholder:text-pata-400"  type="text" placeholder="Black"/>
             </li>
             <br/><br/>
-            <button className="my-5 mx-auto rounded-full bg-cyan-100 w-1/5 border-2 border-black" type="submit" onClick={debug}>Debug</button>
 
           </ul>
           <button className="my-5 mx-auto rounded-full bg-cyan-100 w-1/5 border-2 border-black" type="submit" onClick={handleSubmit}>Submit</button>
 
-
-          {/*<Table1/> */}
+          <Divider />
+          
+          <EquipTable data={equips}/>
+          <button className="my-5 mx-auto rounded-full bg-cyan-100 w-1/5 border-2 border-black" type="submit" onClick={debug}>Debug</button>          
         </main>
     </Landscape>
     
@@ -255,11 +258,12 @@ export default function Equips({  globalData }) {
 export async function getServerSideProps() {
   const globalData = getGlobalData();
   const client = await clientPromise;
-  
+  const equips = [];
   
   return {
     props: {
-      globalData
+      globalData,
+      equips
     },
   };
 }

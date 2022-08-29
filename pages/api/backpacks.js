@@ -14,7 +14,7 @@ async function getBackpack(req, res) {
   try {
     console.log('hitting API')
     const client = await clientPromise;
-    const db = client.db("ZakIGatsbyProject")
+    const   db = client.db("ZakIGatsbyProject")
     const bp = collection("Backpacks").find()
     const response =await bp.next()
 
