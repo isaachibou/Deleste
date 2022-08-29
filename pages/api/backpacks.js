@@ -28,11 +28,15 @@ export async function getBackpacks(owner) {
 
 async function addBackpack(req, res) {
   try {
-    //let bp = JSON.parse(req.body);
+    /*let bp = JSON.parse(req.body);*/
     let bp = req.body;
     bp.owner = ObjectId(bp.owner)
-    
 
+    for(const item in bp.items) {
+       bp.items[item] = ObjectId(bp.item)
+    }
+
+  
     //connect to database
     const client = await clientPromise;
     const db = client.db("ZakIGatsbyProject");
@@ -42,9 +46,6 @@ async function addBackpack(req, res) {
     const replacement = bp
     const options = { upsert: true };
     const response = await db.collection('Backpacks').replaceOne(query, replacement, options);
-
-    //const response = await db.collection('Backpacks').insertOne(bp);
-    console.log(response);
   
     return res.json({
         message: 'Details updated successfully',

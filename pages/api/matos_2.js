@@ -38,13 +38,13 @@ export async function getData(type) {
     return equips
 }
 
-export async function getMatosByID(id) {
+export async function getMatosByID(id, collection) {
 
 	const client = await clientPromise;
 
 	let equips = await client
     .db("ZakIGatsbyProject")
-    .collection("SleepingPads")
+    .collection(collection)
     .findOne(
     	{ "_id": ObjectId(id) },
     	{ projection: { 

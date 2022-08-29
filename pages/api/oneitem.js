@@ -27,7 +27,7 @@ export default async (req, res) => {
     .collection(String(collection))
     .findOne(
     {"Model": model},
-    { projection: { Model: 1, "Weight (Metric)": 1, Color: 1 } }
+    { projection: { _id: 1, Model: 1, "Weight (Metric)": 1, Color: 1 } }
   );
 
       res.end(JSON.stringify(equips, undefined, 2));

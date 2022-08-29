@@ -6,7 +6,7 @@ import Divider from '@mui/material/Divider';
 
 
 
-function EquipTable({data, state, setState}) {
+function EquipTable({data}) {
 
 	const [typeOption, setTypeOption] = useState("backpack");
 	const [tableData, setTableData] = useState(data);

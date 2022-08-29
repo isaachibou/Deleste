@@ -11,7 +11,7 @@ import Header from '../components/Header';
 import Landscape from '../components/landscape/landscape'
 
 import { getGlobalData } from '../utils/global-data';
-import { getBackpacks } from './api/backpacks'
+import { getBackpacks } from './api/backpacks';
 
 import SEO from '../components/SEO';
 import EquipTable from "../components/backpack/table";
@@ -22,109 +22,65 @@ import Divider from '@mui/material/Divider';
 
 export default function Equips({  globalData, equips, tableData, backpacks }) {
   
+  const [bpSelected, setBpSelected] = useState("");
+  console.log("BpSelected ", bpSelected)
 
-  const onItemTypeSelection = async (event) => {
-    const data = event.target.value; 
-    
-    if(data=="pad" || data =="bag") {
-      console.debug(`You have chosen type: ${data}`);
+  useEffect(async () => {     
+    fetchBackpackMatos()
+  })
 
-      const response = await fetch('/api/allitems?type='+data, {
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        method: 'GET'
-      })
+  const getUserId = async () => {
+    const session = await getSession();
+    return session.additionnalUserInfos._id;
+  }
+  
+  const debug = () => {
+    console.log(Debug)
 
-      const items = await response.json()
-      console.debug(`I have retrieved this: `+JSON.stringify(items));
+  }
 
-      var option, select = event.target.parentElement.querySelector("li select[name='items']");
-      select.options.length = 0;
-      for(let item in items) {
-        console.debug(items[item])
-        option = document.createElement("option");
-        option.text = items[item].Model + " - " + items[item].Size
-        option.value = items[item]
-        select.appendChild(option);
+  const fetchBackpackMatos = async () => {  
+    /*backpacks contains all bp from the logged in user
+    bpSelected is the id of the backpack I clicked on in the list */
+
+    var bptodisplay = backpacks.find(backpack => {return backpack._id === bpSelected})
+    if (bptodisplay) {
+      const tempdata=[]
+      for(const item in bptodisplay.items) {
+        switch(item) {
+          case 'spleepingBag': 
+            tempdata.push()
+            break;
+          case 'spleepingPad':
+          tempdata.push()
+            break;
+        }
       }
-
-      var weight = event.target.parentElement.querySelector("li input[name='weight']");
-
-      weight.value= items[select.selectedIndex]["Weight (Metric)"]
-
-      var color = event.target.parentElement.querySelector("li input[name='color']");
-      color.value=items[select.selectedIndex].Color  
     }
-  }
+  }  
 
-  const onItemSelection = async (event) => {
-    const target = event.target;
-    const model = target.options[target.selectedIndex].text.split(" - ")[0]
-    console.debug(model)
-    
-
-    var type = event.target.parentElement.querySelector("li select[name='types']").value;
-      
-    const response = await fetch('/api/oneitem?type='+type+"&model="+model, {
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        method: 'GET'
-    });
-
-    const item = await response.json()
-    console.debug("item " + item)
-    
-    var weight = event.target.parentElement.querySelector("li input[name='weight']");
-    console.debug("weight " +weight)
-    weight.value= item["Weight (Metric)"];
-
-    var color = event.target.parentElement.querySelector("li input[name='color']");
-    color.value= item.Color;
-  }
-
-  const handleSubmit = async (event) => {
+  const handleSubmit = async () => {
+    // TODO: its hardcoded right now !
+    console.log("submit backpack new way");
     var rows = document.querySelectorAll("li")
     var nameselector = document.querySelector("input[name='EquipmentName']");
     let equipName = nameselector.value; 
     console.debug(equipName)
-    
-    let backpackObject = {
-      owner: "63038e3fb8f2137592d31979"/*await getUserId()*/,
-      name: equipName
-    }; 
 
-    for(let row of rows) {
-      if(row.children[name="types"]) {
-        var indexType = row.children[name="types"].selectedIndex
-        var type = row.children[name="types"].options[indexType].value
-        var indexItem = row.children[name="items"].selectedIndex
-        var item = row.children[name="items"].options[indexItem].text
-        var weight = row.children[name="weight"].value
-        var color = row.children[name="color"].value
-        console.debug(item)
-       
-        let itemObject = {
-          brand:"",
-          model: String(item).split(" - ")[0],
-          volume:"",
-          weight: weight,
-          color: color
-        };
-        switch(type) {
-          case "pad":
-            backpackObject["spleepingPad"] = itemObject;
-            break;
-          case "bag":
-            backpackObject.spleepingBad = itemObject;
-            break;
-          default:
-            break;
-        }
+    var responsepad = await fetch('/api/oneitem?type=pad&model=Matelas NeoAir® XLite™', {headers: {'Content-Type': 'application/json'},method: 'GET'})
+    var responsebag= await fetch('/api/oneitem?type=bag&model=Sac de couchage Parsec™ 20F/-6C', {headers: {'Content-Type': 'application/json'},method: 'GET'})
+    
+    var pad = await responsepad.json()
+    var bag = await responsebag.json()
+    
+    var backpackObject = {
+      owner: await getUserId(),
+      name: "Backpack N°1",
+      items: {
+        spleepingPad: pad._id,  
+        spleepingBad: bag._id
       } 
-    }
-      console.debug(backpackObject)
+    };
 
     const JSONdata = JSON.stringify(backpackObject)
     console.log(JSONdata)
@@ -139,71 +95,9 @@ export default function Equips({  globalData, equips, tableData, backpacks }) {
 
     const result = await response.json()
     alert(`You have updated ${equipName}`)
+    console.log("result ", result)
   }
-
-  const getUserId = async () => {
-    const session = await getSession();
-    return session.additionnalUserInfos._id;
-  }
-  
-  const debug = () => {
-    var rows = document.querySelectorAll("li")
-    var nameselector = document.querySelector("input[name='EquipmentName']");
-    let equipName = nameselector.value; 
-    console.debug(equipName)
     
-     let backpackObject = {name: equipName}; 
-
-    for(let row of rows) {
-      if(row.children[name="types"]) {
-        var indexType = row.children[name="types"].selectedIndex
-        var type = row.children[name="types"].options[indexType].value
-        var indexItem = row.children[name="items"].selectedIndex
-        var item = row.children[name="items"].options[indexItem].text
-        var weight = row.children[name="weight"].value
-        var color = row.children[name="color"].value
-        console.debug(item)
-       
-        let itemObject = {
-          model: String(item).split(" - ")[0],
-          weight: weight,
-          color: color
-        };
-        switch(type) {
-          case "pad":
-            backpackObject["spleepingPad"] = itemObject;
-            break;
-          case "bag":
-            backpackObject.spleepingBad = itemObject;
-            break;
-          default:
-            break;
-        }
-      } 
-    }
-      console.debug(backpackObject)
-  }
-
-/*------------------------------------------------      REWORK -----------------------------------------------*/
-  const [bpSelected, setBpSelected] = useState("");
-  console.log("BpSelected ", bpSelected)
-
-  useEffect(async () => {     
-    fetchBackpackMatos()
-  })
-
-  const fetchBackpackMatos = async () => {  
-    console.log("This is client side fetching")
-    const id =  await getUserId();
-    const response = await fetch("/api/backpacks?owner="+ id  , {
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      method: 'GET'
-    })
-    const bp = await response.json()
-    console.log(bp)  
-  }    
 
   return (
     <Landscape>
@@ -213,48 +107,6 @@ export default function Equips({  globalData, equips, tableData, backpacks }) {
             <svg xmlns="http://www.w3.org/2000/svg" className="mr-1 scale-x-[-1] inline-flex align-baseline feather feather-feather" width="35" height="35" viewBox="0 0 24 24" fill="none" stroke="#28384f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"  ><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path><line x1="16" y1="8" x2="2" y2="22"></line><line x1="17.5" y1="15" x2="9" y2="15"></line></svg>
             Build your backpack
           </h1>
-          {/*<div className="flex flex-row mt-16">
-            <svg xmlns="http://www.w3.org/2000/svg" className="scale-x-[-1] inline-flex align-baseline feather feather-feather" width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#28384f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"  ><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path><line x1="16" y1="8" x2="2" y2="22"></line><line x1="17.5" y1="15" x2="9" y2="15"></line></svg>
-            <input name="EquipmentName" className="min-w-max ml-1 whitespace-nowrap w-52 text-left text-pata-400 text-xl bg-transparent  placeholder:text-pata-400 "  type="text" placeholder="My Equipment1"/>
-          </div>
-          <ul className="space-y-1">
-            <li className="flex flex-row flex-end divide-x-1 divide-y-1">
-             <span className="basis-1/6 ">Type</span>
-             <span className="basis-3/6 ">Item</span>
-             <span className="basis-1/6">Qté</span>
-             <span className="basis-1/6">Poids</span>
-             <span className="basis-1/6">Couleur</span>
-            </li>
-            <li className="flex flex-row flex-end text-right space-x-1">
-              <select name="types" id="itemTypes" className="basis-1/6 bg-transparent" onChange={onItemTypeSelection}>
-                <option value="backpack"  >Backpack</option>
-                <option value="pad">Pad</option>
-                <option value="bag">Bag</option>
-                <option value="stove">Stove</option>
-              </select>
-              <select name="items" id="itemsFetched" className="basis-3/6 bg-transparent" onChange={onItemSelection}>
-              </select>
-              <input className="min-w-0 basis-1/6 bg-transparent text-right placeholder:text-pata-400"  type="text" placeholder="1" />
-              <input name="weight" className="min-w-0 basis-1/6 bg-transparent text-right placeholder:text-pata-400"  type="text" placeholder="1"/> 
-              <input name="color" className="min-w-0 basis-1/6 bg-transparent text-right placeholder:text-pata-400"  type="text" placeholder="Black"/>
-            </li>
-            <li className="flex flex-row flex-end text-right space-x-1">
-              <select name="types" id="itemTypes" className="basis-1/6 bg-transparent" onChange={onItemTypeSelection}>
-                <option value="backpack"  >Backpack</option>
-                <option value="pad">Pad</option>
-                <option value="bag">Bag</option>
-                <option value="stove">Stove</option>
-              </select>
-              <select name="items" id="itemsFetched" className="basis-3/6 bg-transparent" onChange={onItemSelection}/>
-              <input className="min-w-0 basis-1/6 bg-transparent text-right placeholder:text-pata-400"  type="text" placeholder="1" />
-              <input name="weight" className="min-w-0 basis-1/6 bg-transparent text-right placeholder:text-pata-400"  type="text" placeholder="1"/> 
-              <input name="color" className="min-w-0 basis-1/6 bg-transparent text-right placeholder:text-pata-400"  type="text" placeholder="Black"/>
-            </li>
-            <br/><br/>
-
-          </ul>
-
-          <Divider />*/}
           <BackpackList data={backpacks} state={bpSelected} setState={setBpSelected}/>
           <EquipTable data={tableData} state={bpSelected} setState={setBpSelected}/>
           <button className="my-5 mx-auto rounded-full bg-cyan-100 w-1/5 border-2 border-black" type="submit" onClick={handleSubmit}>Submit</button>
@@ -281,6 +133,7 @@ export async function getServerSideProps(context) {
 
   const session = await getSession(context);
   const backpacks = await getBackpacks(session.additionnalUserInfos._id);
+  console.log("SERVER BP", backpacks)
 
   return {
     props: {
