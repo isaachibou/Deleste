@@ -5,16 +5,10 @@ import { useState, useEffect, useRef } from 'react'
 
 
 function EquipTable({data}) {
-
-	const [typeOption, setTypeOption] = useState("backpack");
-	const [tableData, setTableData] = useState([
-		{ type: "backpack" },
-		{ type: "pad"},
-		{ type: "bag"}
-	]);
 	
-	console.log("initial data")
-	console.log(data);  
+	const [typeOption, setTypeOption] = useState("backpack");
+	const [tableData, setTableData] = useState(data);
+	console.log(tableData)
 
 	return(	
 		<ul className="mt-4 space-y-1">
@@ -49,3 +43,4 @@ function EquipTable({data}) {
 }	
 
 export default EquipTable;
+
