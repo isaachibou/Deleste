@@ -193,15 +193,15 @@ export default function Equips({  globalData, equips }) {
 {/*             <Header name={globalData.blogTitle} title={globalData.blogSubtitle}/>
 */}
         <main  className="flex flex-col max-w-4xl w-full mx-auto ">
-           <h1 className="text-center text-pata-400 text-xl lg:text-4xl">
-                <svg xmlns="http://www.w3.org/2000/svg" className="mr-1 scale-x-[-1] inline-flex align-baseline feather feather-feather" width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#28384f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"  ><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path><line x1="16" y1="8" x2="2" y2="22"></line><line x1="17.5" y1="15" x2="9" y2="15"></line></svg>
+           <h1 className="text-center text-pata-400 text-3xl lg:text-5xl">
+                <svg xmlns="http://www.w3.org/2000/svg" className="mr-1 scale-x-[-1] inline-flex align-baseline feather feather-feather" width="35" height="35" viewBox="0 0 24 24" fill="none" stroke="#28384f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"  ><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path><line x1="16" y1="8" x2="2" y2="22"></line><line x1="17.5" y1="15" x2="9" y2="15"></line></svg>
                   Build your backpack
               </h1>
-          <div className="flex flex-row mt-10">
+          <div className="flex flex-row mt-16">
             <svg xmlns="http://www.w3.org/2000/svg" className="scale-x-[-1] inline-flex align-baseline feather feather-feather" width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#28384f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"  ><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path><line x1="16" y1="8" x2="2" y2="22"></line><line x1="17.5" y1="15" x2="9" y2="15"></line></svg>
             <input name="EquipmentName" className="min-w-max ml-1 whitespace-nowrap w-52 text-left text-pata-400 text-xl bg-transparent  placeholder:text-pata-400 "  type="text" placeholder="My Equipment1"/>
           </div>
-          <ul className="space-y-1">
+          {/*<ul className="space-y-1">
             <li className="flex flex-row flex-end divide-x-1 divide-y-1">
              <span className="basis-1/6 ">Type</span>
              <span className="basis-3/6 ">Item</span>
@@ -217,9 +217,6 @@ export default function Equips({  globalData, equips }) {
                 <option value="stove">Stove</option>
               </select>
               <select name="items" id="itemsFetched" className="basis-3/6 bg-transparent" onChange={onItemSelection}>
-                {/*{items.map((items) => (
-                  <option value="backpack">Backpack</option>
-                ))}*/}
               </select>
               <input className="min-w-0 basis-1/6 bg-transparent text-right placeholder:text-pata-400"  type="text" placeholder="1" />
               <input name="weight" className="min-w-0 basis-1/6 bg-transparent text-right placeholder:text-pata-400"  type="text" placeholder="1"/> 
@@ -239,12 +236,12 @@ export default function Equips({  globalData, equips }) {
             </li>
             <br/><br/>
 
-          </ul>
-          <button className="my-5 mx-auto rounded-full bg-cyan-100 w-1/5 border-2 border-black" type="submit" onClick={handleSubmit}>Submit</button>
+          </ul>*/}
 
           <Divider />
           
           <EquipTable data={equips}/>
+          <button className="my-5 mx-auto rounded-full bg-cyan-100 w-1/5 border-2 border-black" type="submit" onClick={handleSubmit}>Submit</button>
           <button className="my-5 mx-auto rounded-full bg-cyan-100 w-1/5 border-2 border-black" type="submit" onClick={debug}>Debug</button>          
         </main>
     </Landscape>

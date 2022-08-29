@@ -1,5 +1,6 @@
 import classes from './table.module.css';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
+import RemoveOutlinedIcon from '@mui/icons-material/RemoveOutlined';
 import { useState, useEffect, useRef } from 'react'
 
 
@@ -17,17 +18,17 @@ function EquipTable({data}) {
 
 	return(	
 		<ul className="mt-4 space-y-1">
-        	<li className="flex flex-row flex-end divide-x-1 divide-y-1">
-				<span className="basis-1/6">Type</span>
-				<span className="basis-3/6">Item</span>
-	        	<span className="basis-1/6">Qté</span>
-	        	<span className="basis-1/6">Poids</span>
-	        	<span className="basis-1/6">Couleur</span>
+        	<li className="flex flex-row flex-end divide-x-1 divide-y-1 ">
+				<span className="basis-1/6 text-left">Type</span>
+				<span className="basis-3/6 text-center">Item</span>
+	        	<span className="basis-1/6 text-right">Qty</span>
+	        	<span className="basis-1/6 text-right">Weight</span>
+	        	<span className="basis-1/6 text-right">Color</span>
         	</li>
           	
           		 
 	           {tableData && (tableData.map((equip) => (
-	          	<li className="flex flex-row flex-end text-right space-x-1">
+	          	<li className="flex flex-row flex-end space-x-1 text-center">
 	              <select name="types" id="itemTypes" className="basis-1/6 bg-transparent" value={equip.type}>
 	                <option value="backpack" >Backpack</option>
 	                <option value="pad">Pad</option>
@@ -41,7 +42,8 @@ function EquipTable({data}) {
 	            </li>
 	          	)))
 	      	  }	
-	      	  <AddOutlinedIcon className="" onClick={() => setTableData([...tableData,{}])	} />
+	      	  <AddOutlinedIcon className="hover:cursor-pointer" onClick={() => setTableData([...tableData,{}])	} />
+	      	  <RemoveOutlinedIcon className="hover:cursor-pointer" onClick={() => setTableData(tableData.slice(0,-1))	} />
        	</ul>
 	)
 }	
