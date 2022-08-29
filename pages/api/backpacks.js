@@ -2,34 +2,28 @@ import clientPromise from "../../utils/mongodb";
 import { ObjectId } from 'mongodb'
 
 export default async function handler(req, res) {
+  const query = req.query;
+  const owner = query.owner;
+
   switch(req.method) {
     case 'POST':
       return addBackpack(req, res);
     case 'GET':
-      return getBackpack(req, res);
+      var bp = await getBackpacks(owner);
+      res.end(JSON.stringify(bp, undefined, 2));
   }
 };
 
-async function getBackpack(req, res) {
-  try {
-    console.log('hitting API')
+export async function getBackpacks(owner) {
+
     const client = await clientPromise;
-    const   db = client.db("ZakIGatsbyProject")
-    const bp = collection("Backpacks").find()
-    const response =await bp.next()
+    const backpacks = await client
+    .db("ZakIGatsbyProject")
+    .collection("Backpacks")
+    .find({"owner": ObjectId(owner)})
+    .toArray();
 
-
-    const bpsArray = response.bpsArray
-    console.log(`this is ${response}`)
-    console.log(response.bpsArray)
-
-    return res.json(bpsArray);
-  }catch(error) {
-    return res.json({
-      message: new Error(error).message,
-      success: false
-    })
-  }
+    return backpacks;
 }
 
 async function addBackpack(req, res) {

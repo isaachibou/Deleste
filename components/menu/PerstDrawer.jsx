@@ -122,20 +122,20 @@ export default function PersistentDrawerLeft() {
         <List>
           {
             [
-              { "key":"home", "text": "Home", "icon": <CabinIcon />, "href":"/", "onClick":"" },
-              { "key":"profile", "text": "Profile", "icon": <Person2OutlinedIcon />, "href":"/profile", "onClick":"" },
-              { "key":"matos", "text": "Matos", "icon": <HikingIcon />, "href":"/matos", "onClick":"" },
-              { "key":"backpack", "text": "Backpack", "icon": <BackpackIcon />, "href":"/backpack", "onClick":"" },
-              { "key":"sandbag", "text": "Sandbag", "icon": <ConstructionOutlinedIcon />, "href":"/sandbag", "onClick":"" },
-              { "key":"logout", "text": "Log Out", "icon": <LogoutIcon />, "href":"", "onClick":signOut}
+              { "key":"home", "text": "Home", "icon": <CabinIcon style={{ color: "#28384f" }}/>, "href":"/", "onClick":"" },
+              { "key":"profile", "text": "Profile", "icon": <Person2OutlinedIcon style={{ color: "#28384f" }}/>, "href":"/profile", "onClick":"" },
+              { "key":"matos", "text": "Matos", "icon": <HikingIcon style={{ color: "#28384f" }} />, "href":"/matos", "onClick":"" },
+              { "key":"backpack", "text": "Backpack", "icon": <BackpackIcon style={{ color: "#28384f" }} />, "href":"/backpack", "onClick":"" },
+              { "key":"sandbag", "text": "Sandbag", "icon": <ConstructionOutlinedIcon style={{ color: "#28384f" }}/>, "href":"/sandbag", "onClick":"" },
+              { "key":"logout", "text": "Log Out", "icon": <LogoutIcon style={{ color: "#28384f" }} />, "href":"", "onClick":signOut}
             ].map((entry) => (
             <ListItem key={entry.key} disablePadding>
               <ListItemButton disablePadding>
                 <ListItemIcon disablePadding>
                   {entry.icon}
                 </ListItemIcon>
-                <Link href={entry.href}>
-                  <ListItemText primary={entry.text}  onClick={entry.onClick}/>
+                <Link href={entry.href} >
+                  <ListItemText className="text-pata-400" primary={entry.text}  onClick={entry.onClick}/>
                 </Link>
               </ListItemButton>
             </ListItem>
@@ -143,7 +143,7 @@ export default function PersistentDrawerLeft() {
         </List>
         <Divider />
         {session && (
-        <p className="mt-2 text-center text-xs">Logged in as {session.user.email}</p>
+        <p className="mt-2 text-center text-xs text-pata-400">Logged in as {session.user.email}</p>
       )}
       </Drawer>
       <Main open={open}>

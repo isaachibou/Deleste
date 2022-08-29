@@ -24,7 +24,7 @@ export default NextAuth({
           email: credentials.email, 
         });
 
-        console.log("user :" + JSON.stringify(user))
+        console.debug("user :" + JSON.stringify(user))
 
         if (!user) {
           throw new Error('No user found!');
