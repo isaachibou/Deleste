@@ -7,9 +7,17 @@ export default async (req, res) => {
  
   const query = req.query;
   const type = query.type;
+  const use = query.usecase;
+  const id = query.id;
+  const collection = query.collection 
 
-  const equips = await getData(type)
-  res.end(JSON.stringify(equips, undefined, 2));
+  if(use == "fillTable") {
+    var matos = await getMatosByID(id, collection)
+    res.end(JSON.stringify(matos, undefined, 2));
+  } else {
+    const equips = await getData(type)
+    res.end(JSON.stringify(equips, undefined, 2));
+  }
 };
 
 export async function getData(type) {

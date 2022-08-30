@@ -32,3 +32,4 @@ export default async (req, res) => {
 
       res.end(JSON.stringify(equips, undefined, 2));
 };
+

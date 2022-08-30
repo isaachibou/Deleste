@@ -4,13 +4,18 @@ import RemoveOutlinedIcon from '@mui/icons-material/RemoveOutlined';
 import { useState, useEffect, useRef } from 'react'
 import Divider from '@mui/material/Divider';
 
-
-
-function EquipTable({data}) {
+function EquipTable({ tableData, setTableData}) {
 
 	const [typeOption, setTypeOption] = useState("backpack");
-	const [tableData, setTableData] = useState(data);
+	
 
+	//const [tableData, setTableData] = useState(data);
+	console.log(tableData)
+	console.log("------------------------------")
+		tableData.map((item) => (
+			console.log("coucou", JSON.parse(item).type)
+		))
+ 
 	return(
 		<div>
 			<div className="flex flex-row mt-16">
@@ -26,20 +31,18 @@ function EquipTable({data}) {
 		        	<span className="basis-1/6 text-right">Weight</span>
 		        	<span className="basis-1/6 text-right">Color</span>
 	        	</li>
-	          	
-	          		 
-		           {tableData && (tableData.map((equip) => (
+	    
+		           {tableData && (tableData.map((item) => (
 		          	<li className="flex flex-row flex-end space-x-1 text-center ">
-		              <select name="types" id="itemTypes" className="basis-1/6 bg-transparent hover:bg-pata-500" value={equip.type}>
-		                <option value="backpack" >Backpack</option>
-		                <option value="pad">Pad</option>
-		                <option value="bag">Bag</option>
-		                <option value="stove">Stove</option>
+		              <select name="types" id="itemTypes" className="basis-1/6 bg-transparent hover:bg-pata-500" value={"teub"}>
+		              	
 		              </select>
-		              <select name="items" id="itemsFetched" className="basis-3/6 bg-transparent hover:bg-pata-500" />
+		              <select name="items" value={JSON.parse(item)["Model"]} id="itemsFetched" className="basis-3/6 bg-transparent hover:bg-pata-500">
+		              	 
+		              </select>
 		              <input className="min-w-0 basis-1/6 bg-transparent text-right placeholder:text-pata-400 hover:bg-pata-500"  type="text" placeholder="1" />
-		              <input name="weight" className="min-w-0 basis-1/6 bg-transparent text-right placeholder:text-pata-400 hover:bg-pata-500"  type="text" placeholder="1"/> 
-		              <input name="color" className="min-w-0 basis-1/6 bg-transparent text-right placeholder:text-pata-400 hover:bg-pata-500"  type="text" placeholder="Black"/>
+		              <input name="weight" value={JSON.parse(item)["Weight (Metric)"]} className="min-w-0 basis-1/6 bg-transparent text-right placeholder:text-pata-400 hover:bg-pata-500"  type="text" placeholder="1"/> 
+		              <input name="color" value={JSON.parse(item)["Color"]} className="min-w-0 basis-1/6 bg-transparent text-right placeholder:text-pata-400 hover:bg-pata-500"  type="text" placeholder="Black"/>
 		            </li>
 		          	)))
 		      	  }	
@@ -53,3 +56,4 @@ function EquipTable({data}) {
 
 export default EquipTable;
 
+ 

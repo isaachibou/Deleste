@@ -33,9 +33,8 @@ async function addBackpack(req, res) {
     bp.owner = ObjectId(bp.owner)
 
     for(const item in bp.items) {
-       bp.items[item] = ObjectId(bp.item)
+       bp.items[item] = ObjectId(bp.items[item])
     }
-
   
     //connect to database
     const client = await clientPromise;

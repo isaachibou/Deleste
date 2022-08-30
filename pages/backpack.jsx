@@ -20,14 +20,17 @@ import BackpackList from "../components/backpack/list";
 import Divider from '@mui/material/Divider';
 
 
-export default function Equips({  globalData, equips, tableData, backpacks }) {
+export default function Equips({  globalData, equips, initTableData, backpacks }) {
   
   const [bpSelected, setBpSelected] = useState("");
+  const [tableData, setTableData] = useState(initTableData);
+
   console.log("BpSelected ", bpSelected)
 
+  /* Only run effect when bpSelected changes otherwise we have a infinite loop */
   useEffect(async () => {     
     fetchBackpackMatos()
-  })
+  },[bpSelected])
 
   const getUserId = async () => {
     const session = await getSession();
@@ -38,24 +41,35 @@ export default function Equips({  globalData, equips, tableData, backpacks }) {
     console.log(Debug)
 
   }
+  const fetchSleepingBag = async(id) => {
 
+  }
+
+  /* backpacks contains all bp from the logged in user
+   * bpSelected is the id of the backpack I clicked 
+   * on in the list */  
   const fetchBackpackMatos = async () => {  
-    /*backpacks contains all bp from the logged in user
-    bpSelected is the id of the backpack I clicked on in the list */
-
+    console.log("fetching here")
     var bptodisplay = backpacks.find(backpack => {return backpack._id === bpSelected})
     if (bptodisplay) {
       const tempdata=[]
-      for(const item in bptodisplay.items) {
-        switch(item) {
-          case 'spleepingBag': 
-            tempdata.push()
-            break;
-          case 'spleepingPad':
-          tempdata.push()
-            break;
+      for (const [key, value] of Object.entries(bptodisplay.items)) {
+        if(key == "spleepingBag") {
+            var responsebag= await fetch('/api/matos_2?usecase=fillTable&collection=SleepingBags&id='+value, {headers: {'Content-Type': 'application/json'},method: 'GET'})
+            var bag = await responsebag.json();
+            bag.type = key;
+            tempdata.push(JSON.stringify(bag));
         }
+
+        if(key == "spleepingPad") {
+          var responsepad = await fetch('/api/matos_2?usecase=fillTable&collection=SleepingPads&id='+value, {headers: {'Content-Type': 'application/json'},method: 'GET'})
+          var pad = await responsepad.json();
+          pad.type = key;
+          tempdata.push(JSON.stringify(pad));
+        }           
       }
+      setTableData(tempdata)
+      console.log("updated ", tableData)
     }
   }  
 
@@ -72,13 +86,15 @@ export default function Equips({  globalData, equips, tableData, backpacks }) {
     
     var pad = await responsepad.json()
     var bag = await responsebag.json()
+
+    console.log("retrieved",bag)
     
     var backpackObject = {
       owner: await getUserId(),
-      name: "Backpack N°1",
+      name: "Backpack N°2",
       items: {
         spleepingPad: pad._id,  
-        spleepingBad: bag._id
+        spleepingBag: bag._id
       } 
     };
 
@@ -108,14 +124,11 @@ export default function Equips({  globalData, equips, tableData, backpacks }) {
             Build your backpack
           </h1>
           <BackpackList data={backpacks} state={bpSelected} setState={setBpSelected}/>
-          <EquipTable data={tableData} state={bpSelected} setState={setBpSelected}/>
+          <EquipTable tableData={tableData} setTableData={setTableData}/>
           <button className="my-5 mx-auto rounded-full bg-cyan-100 w-1/5 border-2 border-black" type="submit" onClick={handleSubmit}>Submit</button>
           <button className="my-5 mx-auto rounded-full bg-cyan-100 w-1/5 border-2 border-black" type="submit" onClick={debug}>Debug</button>          
         </main>
     </Landscape>
-    
-
-    
   );
 }
 
@@ -125,21 +138,21 @@ export async function getServerSideProps(context) {
   const client = await clientPromise;
 
   const equips = [];
-  const tableData=[
-    { type: "backpack"},
-    { type: "pad"},
-    { type: "bag"}
+  const initTableData=[
+  "{\"type\":\"backpack\"}",
+    "{\"type\":\"spleepingPad\"}",
+    "{\"type\":\"spleepingBag\"}"
   ];
 
   const session = await getSession(context);
-  const backpacks = await getBackpacks(session.additionnalUserInfos._id);
+  const backpacks = session ? await getBackpacks(session.additionnalUserInfos._id): []
   console.log("SERVER BP", backpacks)
 
   return {
     props: {
       globalData,
       equips,
-      tableData,
+      initTableData: JSON.parse(JSON.stringify(initTableData)),
       backpacks: JSON.parse(JSON.stringify(backpacks))
     },
   };
