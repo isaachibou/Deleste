@@ -46,6 +46,20 @@ export async function getData(type) {
     return equips
 }
 
+export async function getAllModels(collection) {
+  const client = await clientPromise;
+  const models = await client
+    .db("ZakIGatsbyProject")
+    .collection(String(collection))
+    .find({"Model":{$exists:true}})
+    .project({Model: 1, "Weight (Metric)": 1, Size:1, Color: 1 })
+    .sort({ Model: 1, Size: 1 })
+    .limit(20)
+    .toArray();
+
+  return models;
+}
+
 export async function getMatosByID(id, collection) {
 
 	const client = await clientPromise;

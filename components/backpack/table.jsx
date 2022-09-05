@@ -4,17 +4,27 @@ import RemoveOutlinedIcon from '@mui/icons-material/RemoveOutlined';
 import { useState, useEffect, useRef } from 'react'
 import Divider from '@mui/material/Divider';
 
-function EquipTable({ tableData, setTableData}) {
+function EquipTable({ tableData, setTableData, models}) {
 
 	const [typeOption, setTypeOption] = useState("backpack");
-	
 
-	//const [tableData, setTableData] = useState(data);
-	console.log(tableData)
-	console.log("------------------------------")
-		tableData.map((item) => (
-			console.log("coucou", JSON.parse(item).type)
-		))
+	const options = [
+	  {
+	    label: "Backpack",
+	    value: "backpack",
+	  },
+	  {
+	    label: "Sleeping Bag",
+	    value: "sleepingBag",
+	  },
+	  {
+	    label: "Sleeping Pad",
+	    value: "sleepingPad",
+	  }
+	];
+
+	 															
+	 
  
 	return(
 		<div>
@@ -31,22 +41,24 @@ function EquipTable({ tableData, setTableData}) {
 		        	<span className="basis-1/6 text-right">Weight</span>
 		        	<span className="basis-1/6 text-right">Color</span>
 	        	</li>
-	    
-		           {tableData && (tableData.map((item) => (
-		          	<li className="flex flex-row flex-end space-x-1 text-center ">
-		              <select name="types" id="itemTypes" className="basis-1/6 bg-transparent hover:bg-pata-500" value={"teub"}>
-		              	
-		              </select>
-		              <select name="items" value={JSON.parse(item)["Model"]} id="itemsFetched" className="basis-3/6 bg-transparent hover:bg-pata-500">
-		              	 
-		              </select>
+
+		        {tableData && (tableData.map((item) => (
+		        	<li className="flex flex-row flex-end space-x-1 text-center ">
+		            	<select name="types" id="itemTypes" className="basis-1/6 bg-transparent hover:bg-pata-500" value={item.type}>
+				            {options.map((option) => (
+				              <option value={option.value}>{option.label}</option>
+				            ))}
+          				</select>
+		              <select name="items" id="itemsFetched" className="basis-3/6 bg-transparent hover:bg-pata-500" value={item.Model}>
+				             
+          			  </select>
 		              <input className="min-w-0 basis-1/6 bg-transparent text-right placeholder:text-pata-400 hover:bg-pata-500"  type="text" placeholder="1" />
-		              <input name="weight" value={JSON.parse(item)["Weight (Metric)"]} className="min-w-0 basis-1/6 bg-transparent text-right placeholder:text-pata-400 hover:bg-pata-500"  type="text" placeholder="1"/> 
-		              <input name="color" value={JSON.parse(item)["Color"]} className="min-w-0 basis-1/6 bg-transparent text-right placeholder:text-pata-400 hover:bg-pata-500"  type="text" placeholder="Black"/>
+		              <input name="weight" value={item["Weight (Metric)"]} className="min-w-0 basis-1/6 bg-transparent text-right placeholder:text-pata-400 hover:bg-pata-500"  type="text" placeholder="1"/> 
+		              <input name="color" value={item["Color"]} className="min-w-0 basis-1/6 bg-transparent text-right placeholder:text-pata-400 hover:bg-pata-500"  type="text" placeholder="Black"/>
 		            </li>
-		          	)))
-		      	  }	
-		      	  <Divider />
+		        	)))
+		      	}	
+		      	  <Divider />	
 		      	  <AddOutlinedIcon style={{ color: "#28384f" }} className="hover:cursor-pointer hover:bg-pata-500" onClick={() => setTableData([...tableData,{}])	} />
 		      	  <RemoveOutlinedIcon style={{ color: "#28384f" }} className="hover:cursor-pointer hover:bg-pata-500" onClick={() => setTableData(tableData.slice(0,-1))	} />
 	       	</ul>

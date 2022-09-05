@@ -11,7 +11,8 @@ import Header from '../components/Header';
 import Landscape from '../components/landscape/landscape'
 
 import { getGlobalData } from '../utils/global-data';
-import { getBackpacks } from './api/backpacks';
+import { getBackpacks} from './api/backpacks';
+import { getAllModels} from './api/matos_2';
 
 import SEO from '../components/SEO';
 import EquipTable from "../components/backpack/table";
@@ -20,7 +21,7 @@ import BackpackList from "../components/backpack/list";
 import Divider from '@mui/material/Divider';
 
 
-export default function Equips({  globalData, equips, initTableData, backpacks }) {
+export default function Equips({  globalData, equips, initTableData, backpacks, itemModels }) {
   
   const [bpSelected, setBpSelected] = useState("");
   const [tableData, setTableData] = useState(initTableData);
@@ -54,18 +55,18 @@ export default function Equips({  globalData, equips, initTableData, backpacks }
     if (bptodisplay) {
       const tempdata=[]
       for (const [key, value] of Object.entries(bptodisplay.items)) {
-        if(key == "spleepingBag") {
+        if(key == "sleepingBag") {
             var responsebag= await fetch('/api/matos_2?usecase=fillTable&collection=SleepingBags&id='+value, {headers: {'Content-Type': 'application/json'},method: 'GET'})
             var bag = await responsebag.json();
-            bag.type = key;
-            tempdata.push(JSON.stringify(bag));
+            bag["type"] = key;
+            tempdata.push(bag);
         }
 
-        if(key == "spleepingPad") {
+        if(key == "sleepingPad") {
           var responsepad = await fetch('/api/matos_2?usecase=fillTable&collection=SleepingPads&id='+value, {headers: {'Content-Type': 'application/json'},method: 'GET'})
           var pad = await responsepad.json();
-          pad.type = key;
-          tempdata.push(JSON.stringify(pad));
+          pad["type"] = key;
+          tempdata.push(pad);
         }           
       }
       setTableData(tempdata)
@@ -93,8 +94,8 @@ export default function Equips({  globalData, equips, initTableData, backpacks }
       owner: await getUserId(),
       name: "Backpack N°2",
       items: {
-        spleepingPad: pad._id,  
-        spleepingBag: bag._id
+        sleepingPad: pad._id,  
+        sleepingBag: bag._id
       } 
     };
 
@@ -124,7 +125,7 @@ export default function Equips({  globalData, equips, initTableData, backpacks }
             Build your backpack
           </h1>
           <BackpackList data={backpacks} state={bpSelected} setState={setBpSelected}/>
-          <EquipTable tableData={tableData} setTableData={setTableData}/>
+          <EquipTable tableData={tableData} setTableData={setTableData} models={itemModels}/>
           <button className="my-5 mx-auto rounded-full bg-cyan-100 w-1/5 border-2 border-black" type="submit" onClick={handleSubmit}>Submit</button>
           <button className="my-5 mx-auto rounded-full bg-cyan-100 w-1/5 border-2 border-black" type="submit" onClick={debug}>Debug</button>          
         </main>
@@ -138,22 +139,29 @@ export async function getServerSideProps(context) {
   const client = await clientPromise;
 
   const equips = [];
-  const initTableData=[
-  "{\"type\":\"backpack\"}",
-    "{\"type\":\"spleepingPad\"}",
-    "{\"type\":\"spleepingBag\"}"
-  ];
+  
+
+   const initTableData=[
+    { type: "backpack"},
+    { type: "sleepingPad"},
+    { type: "sleepingBag"}
+    ]
 
   const session = await getSession(context);
   const backpacks = session ? await getBackpacks(session.additionnalUserInfos._id): []
-  console.log("SERVER BP", backpacks)
 
+  const itemModels = [
+    { sleepingBag: await getAllModels("SleepingBags") },
+    { sleepingPad: await getAllModels("SleepingPads") }
+   ]
+   console.log(itemModels)
   return {
     props: {
       globalData,
       equips,
       initTableData: JSON.parse(JSON.stringify(initTableData)),
-      backpacks: JSON.parse(JSON.stringify(backpacks))
+      backpacks: JSON.parse(JSON.stringify(backpacks)),
+      itemModels: JSON.parse(JSON.stringify(itemModels))
     },
   };
 }
