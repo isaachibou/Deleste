@@ -50,27 +50,31 @@ export default function Equips({  globalData, equips, initTableData, backpacks, 
    * bpSelected is the id of the backpack I clicked 
    * on in the list */  
   const fetchBackpackMatos = async () => {  
-    console.log("fetching here")
+    console.log("\n API fetch here")
     var bptodisplay = backpacks.find(backpack => {return backpack._id === bpSelected})
     if (bptodisplay) {
-      const tempdata=[]
+      console.log("there is", bptodisplay)
+      let tempdata=[]
       for (const [key, value] of Object.entries(bptodisplay.items)) {
+        console.log("key is", key)
         if(key == "sleepingBag") {
+          console.log("fetching bags !")
             var responsebag= await fetch('/api/matos_2?usecase=fillTable&collection=SleepingBags&id='+value, {headers: {'Content-Type': 'application/json'},method: 'GET'})
             var bag = await responsebag.json();
+            console.log("fetched " ,bag)
             bag["type"] = key;
             tempdata.push(bag);
         }
 
         if(key == "sleepingPad") {
           var responsepad = await fetch('/api/matos_2?usecase=fillTable&collection=SleepingPads&id='+value, {headers: {'Content-Type': 'application/json'},method: 'GET'})
-          var pad = await responsepad.json();
+          var pad = await responsepad.json();console.log("fetched", pad)
           pad["type"] = key;
           tempdata.push(pad);
         }           
       }
-      setTableData(tempdata)
-      console.log("updated ", tableData)
+      console.log("updated with" , tempdata)
+      setTableData(tempdata)  
     }
   }  
 
@@ -150,11 +154,15 @@ export async function getServerSideProps(context) {
   const session = await getSession(context);
   const backpacks = session ? await getBackpacks(session.additionnalUserInfos._id): []
 
-  const itemModels = [
+  const itemModels = new Object();
+  itemModels.sleepingBag = await getAllModels("SleepingBags");
+  itemModels.sleepingPad = await getAllModels("SleepingPads");
+  /*
     { sleepingBag: await getAllModels("SleepingBags") },
     { sleepingPad: await getAllModels("SleepingPads") }
-   ]
-   console.log(itemModels)
+    { sleepingPad: await getAllModels("SleepingPads") }
+  }
+   */
   return {
     props: {
       globalData,

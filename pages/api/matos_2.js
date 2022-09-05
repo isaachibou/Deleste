@@ -70,7 +70,7 @@ export async function getMatosByID(id, collection) {
     .findOne(
     	{ "_id": ObjectId(id) },
     	{ projection: { 
-    		_id: 0, 
+    		_id: 1, 
     		"SKU": 0,
     		"Weight (Standard)": 0, 
     		"Width (Standard)": 0, 
