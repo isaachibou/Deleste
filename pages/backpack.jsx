@@ -24,7 +24,7 @@ import Divider from '@mui/material/Divider';
 export default function Equips({  globalData, equips, initTableData, backpacks, itemModels }) {
   
   const [bpSelected, setBpSelected] = useState("");
-  const [tableData, setTableData] = useState(initTableData);
+  const [tableData, setTableData] = useState(initTableData);  
 
   console.log("BpSelected ", bpSelected)
 
@@ -50,7 +50,7 @@ export default function Equips({  globalData, equips, initTableData, backpacks, 
    * bpSelected is the id of the backpack I clicked 
    * on in the list */  
   const fetchBackpackMatos = async () => {  
-    var bptodisplay = backpacks.find(backpack => {return backpack._id === bpSelected})
+    var bptodisplay = backpacks.find(backpack => {return backpack._id === bpSelected._id})
     if (bptodisplay) {
       let tempdata=[]
       for (const [key, value] of Object.entries(bptodisplay.items)) {
