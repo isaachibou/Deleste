@@ -50,10 +50,8 @@ export default function Equips({  globalData, equips, initTableData, backpacks, 
    * bpSelected is the id of the backpack I clicked 
    * on in the list */  
   const fetchBackpackMatos = async () => {  
-    console.log("\n API fetch here")
     var bptodisplay = backpacks.find(backpack => {return backpack._id === bpSelected})
     if (bptodisplay) {
-      console.log("there is", bptodisplay)
       let tempdata=[]
       for (const [key, value] of Object.entries(bptodisplay.items)) {
         console.log("key is", key)
@@ -73,7 +71,7 @@ export default function Equips({  globalData, equips, initTableData, backpacks, 
           tempdata.push(pad);
         }           
       }
-      console.log("updated with" , tempdata)
+
       setTableData(tempdata)  
     }
   }  
@@ -157,12 +155,7 @@ export async function getServerSideProps(context) {
   const itemModels = new Object();
   itemModels.sleepingBag = await getAllModels("SleepingBags");
   itemModels.sleepingPad = await getAllModels("SleepingPads");
-  /*
-    { sleepingBag: await getAllModels("SleepingBags") },
-    { sleepingPad: await getAllModels("SleepingPads") }
-    { sleepingPad: await getAllModels("SleepingPads") }
-  }
-   */
+
   return {
     props: {
       globalData,

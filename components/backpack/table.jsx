@@ -8,7 +8,7 @@ import EquipRow from "./row";
 function EquipTable({ tableData, setTableData, models}) {
 
 	console.log("table data ", tableData)
-	console.log("items models ", models)
+/*	console.log("items models ", models)*/
 
 	const options = [
 	  {
@@ -22,6 +22,10 @@ function EquipTable({ tableData, setTableData, models}) {
 	  {
 	    label: "Sleeping Pad",
 	    value: "sleepingPad",
+	  },
+	  {
+	    label: "None",
+	    value: "None",
 	  }
 	];							
  
@@ -46,7 +50,7 @@ function EquipTable({ tableData, setTableData, models}) {
 		        	)))
 		      	}	
 		      	  <Divider />	
-		      	  <AddOutlinedIcon style={{ color: "#28384f" }} className="hover:cursor-pointer hover:bg-pata-500" onClick={() => setTableData([...tableData,{}])	} />
+		      	  <AddOutlinedIcon style={{ color: "#28384f" }} className="hover:cursor-pointer hover:bg-pata-500" onClick={() => setTableData([{type: "None", _id:""},...tableData])	} />
 		      	  <RemoveOutlinedIcon style={{ color: "#28384f" }} className="hover:cursor-pointer hover:bg-pata-500" onClick={() => setTableData(tableData.slice(0,-1))	} />
 	       	</ul>
 	       </div>
