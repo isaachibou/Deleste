@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import Divider from '@mui/material/Divider';
 
-function BackpackList({data, state, setState}) {
+function BackpackList({data, state, setState, bpName, setBpName }) {
 	return(
 		<div className="mt-10">
 			<p className="whitespace-nowrap text-left text-pata-400 text-xl bg-transparent   ">
@@ -11,7 +11,7 @@ function BackpackList({data, state, setState}) {
 	        <Divider />
 	        <ul className="px-10 py-3 list-disc">
 	        { data && (data.map((backpack) => (
-	        	<li className="hover:cursor-pointer hover:bg-pata-500 max-w-min whitespace-nowrap" onClick={() => setState(backpack._id)}>{backpack.name}</li>
+	        	<li className="hover:cursor-pointer hover:bg-pata-500 max-w-min whitespace-nowrap" onClick={() => {setState(backpack._id); setBpName(backpack.name)}}>{backpack.name}</li>
 	        )))}
 	       	</ul>
         </div>

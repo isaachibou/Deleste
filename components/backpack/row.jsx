@@ -9,8 +9,6 @@ function equipRow({item, models}) {
 	const [typeOption, setTypeOption] = useState(item.type);
 	const [modelOption, setModelOption] = useState(item._id)
 	const [modelOptions, setModelOptions] = useState(models[typeOption])
-
-	
 	
 	const options = [
 	  {
@@ -53,7 +51,7 @@ function equipRow({item, models}) {
 	              <option value={option.value}>{option.label}</option>
 	            ))}
 			</select>
-	      	<select name="items" id="itemsFetched" className="basis-3/6 bg-transparent hover:bg-pata-500" value={modelOption}>
+	      	<select name="items" id="itemsFetched" className="basis-3/6 bg-transparent hover:bg-pata-500" value={modelOption} onChange={(event) => (setModelOption(event.target.value))}>
 	      		{modelOptions?.map((option) => (
 					<option value={option._id}>{option.Model} - {option.Size}</option>
 				))}
