@@ -94,12 +94,14 @@ export default function Equips({  globalData, equips, initTableData, backpacks, 
     
     var backpackObject = {
       owner: await getUserId(),
-      name: "Backpack N°2",
+      name: equipName,
       items: {
-        sleepingPad: pad._id,  
-        sleepingBag: bag._id
       } 
     };
+
+    for(let item of tableData) {
+      backpackObject.items[item.type] = item._id
+    }
 
     const JSONdata = JSON.stringify(backpackObject)
     console.log(JSONdata)

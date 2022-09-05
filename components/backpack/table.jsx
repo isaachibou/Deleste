@@ -7,7 +7,7 @@ import EquipRow from "./row";
 
 function EquipTable({ tableData, setTableData, models}) {
 
-	console.log("table data ", tableData)
+	/*console.log("table data ", tableData)*/
 /*	console.log("items models ", models)*/
 
 	const options = [
