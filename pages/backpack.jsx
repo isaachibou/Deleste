@@ -27,6 +27,7 @@ export default function Equips({  globalData, equips, initTableData, backpacks, 
   const [bpName, setBpName] = useState("Your equipment name");
   const [tableData, setTableData] = useState(initTableData);  
 
+
   console.log("BpSelected ", bpSelected)
 
   /* Only run effect when bpSelected changes otherwise we have a infinite loop */
@@ -34,19 +35,19 @@ export default function Equips({  globalData, equips, initTableData, backpacks, 
     fetchBackpackMatos()
   },[bpSelected])
 
+  useEffect(async () => {     
+    console.log("IIIIIIIIIIIIIIIITTTTTTTTTTTT CHHHHHHHHHHHHAAAAAAAAAAAAAAAAAAAANNNNNNNNNNGGGGGGGGGGEEEEEEEEEDDDD")
+  },[tableData])
+
   const getUserId = async () => {
     const session = await getSession();
     return session.additionnalUserInfos._id;
   }
-  
+ 
   const debug = () => {
     console.log(Debug)
-
   }
-  const fetchSleepingBag = async(id) => {
-
-  }
-
+ 
   /* backpacks contains all bp from the logged in user
    * bpSelected is the id of the backpack I clicked 
    * on in the list */  
@@ -55,19 +56,19 @@ export default function Equips({  globalData, equips, initTableData, backpacks, 
     if (bptodisplay) {
       let tempdata=[]
       for (const [key, value] of Object.entries(bptodisplay.items)) {
-        console.log("key is", key)
-        if(key == "sleepingBag") {
+          if(key == "sleepingBag") {
           console.log("fetching bags !")
             var responsebag= await fetch('/api/matos_2?usecase=fillTable&collection=SleepingBags&id='+value, {headers: {'Content-Type': 'application/json'},method: 'GET'})
             var bag = await responsebag.json();
-            console.log("fetched " ,bag)
+            /*console.log("fetched " ,bag)*/
             bag["type"] = key;
             tempdata.push(bag);
         }
 
         if(key == "sleepingPad") {
           var responsepad = await fetch('/api/matos_2?usecase=fillTable&collection=SleepingPads&id='+value, {headers: {'Content-Type': 'application/json'},method: 'GET'})
-          var pad = await responsepad.json();console.log("fetched", pad)
+          var pad = await responsepad.json();
+          /*console.log("fetched", pad)*/
           pad["type"] = key;
           tempdata.push(pad);
         }           
@@ -118,6 +119,9 @@ export default function Equips({  globalData, equips, initTableData, backpacks, 
     const result = await response.json()
     alert(`You have updated ${equipName}`)
     console.log("result ", result)
+
+    // Refresh backpack list
+    fetchBackpackMatos()
   }
     
 
@@ -144,13 +148,27 @@ export async function getServerSideProps(context) {
   const client = await clientPromise;
 
   const equips = [];
-  
 
-   const initTableData=[
-    { type: "backpack"},
-    { type: "sleepingPad"},
-    { type: "sleepingBag"}
-    ]
+  const initTableData=[
+    { 
+        _id: "62bc45991baf30a4a46d86e5",
+        Model: "Matelas NeoAir® XLite™",
+        Size: "Regular",
+        Color: "Lemon Curry",
+        "Weight (Metric)": "0.36 kg",
+        type: "sleepingPad",
+        quantity: "1"
+    },
+    {
+        _id: "62bc46091baf30a4a46d8732",
+        Model: "Couverture Juno™",
+        Size: "No size",
+        Color: "Warp Speed Print, Fun Guy Print, Deep Pacific, Tidepool Print",
+        "Weight (Metric)": "0.38 kg",
+        type: "sleepingBag",
+        quantity: "1"
+    }
+  ];
 
   const session = await getSession(context);
   const backpacks = session ? await getBackpacks(session.additionnalUserInfos._id): []

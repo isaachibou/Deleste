@@ -7,10 +7,6 @@ import EquipRow from "./row";
 
 function EquipTable({ tableData, setTableData, models, bpName, setBpName }) {
 
-	
-	/*console.log("table data ", tableData)*/
-/*	console.log("items models ", models)*/
-
 	const options = [
 	  {
 	    label: "Backpack",
@@ -50,12 +46,12 @@ function EquipTable({ tableData, setTableData, models, bpName, setBpName }) {
 		        	<span className="basis-1/6 text-right">Color</span>
 	        	</li>
 
-		        {tableData && (tableData.map((item) => (
-		      		 <EquipRow item={item} models={models} />
+		        {tableData && (tableData.map((row, index) => (
+		      		 <EquipRow row={row} models={models} index={index} tableData={tableData} setTableData={setTableData}/>
 		        	)))
 		      	}	
 		      	  <Divider />	
-		      	  <AddOutlinedIcon style={{ color: "#28384f" }} className="hover:cursor-pointer hover:bg-pata-500" onClick={() => setTableData([...tableData,{type: "None", _id:""}])} />
+		      	  <AddOutlinedIcon style={{ color: "#28384f" }} className="hover:cursor-pointer hover:bg-pata-500" onClick={() => setTableData([...tableData,{ _id: "", Model: "", Size: "", Color: "", "": "", type: "None", quantity: "1" }])} />
 		      	  <RemoveOutlinedIcon style={{ color: "#28384f" }} className="hover:cursor-pointer hover:bg-pata-500" onClick={() => setTableData(tableData.slice(0,-1))	} />
 	       	</ul>
 	       </div>

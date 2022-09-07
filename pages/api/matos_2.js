@@ -52,7 +52,7 @@ export async function getAllModels(collection) {
     .db("ZakIGatsbyProject")
     .collection(String(collection))
     .find({"Model":{$exists:true}})
-    .project({Model: 1, "Weight (Metric)": 1, Size:1, Color: 1 })
+    .project({_id:1, Model: 1, "Weight (Metric)": 1, Size:1, Color: 1 })
     .sort({ Model: 1, Size: 1 })
     .limit(20)
     .toArray();
