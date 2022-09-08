@@ -7,6 +7,8 @@ import EquipRow from "./row";
 
 function EquipTable({ tableData, setTableData, models, bpName, setBpName }) {
 
+	 
+
 	const options = [
 	  {
 	    label: "Backpack",

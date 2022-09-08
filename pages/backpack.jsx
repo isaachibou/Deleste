@@ -29,15 +29,15 @@ export default function Equips({  globalData, currentUser, equips, initTableData
   const [tableData, setTableData] = useState(initTableData);
 
 
-  console.log("BpSelected ", bpSelected)
-
+/*  console.log("BpSelected ", bpSelected)
+*/
   /* Only run effect when bpSelected changes otherwise we have a infinite loop */
   useEffect(async () => {     
     fetchBackpackMatos()  
   },[bpSelected])
 
   useEffect(async () => {     
-    /*console.log("tableData update !", ...tableData)*/
+    console.log("tableData update !"/*, ...tableData*/)
   },[tableData])
 
   const getUserId = async () => {
@@ -52,8 +52,8 @@ export default function Equips({  globalData, currentUser, equips, initTableData
   const fetchBackpackList = async () => {
     const bps = await fetch('/api/backpacks?&owner='+currentUser, {headers: {'Content-Type': 'application/json'},method: 'GET'})
     var response = await bps.json();
+    console.log("refresh bp list with", response)
     setBpList(response)
-    console.log("updating backpacks with", response)
   }
    
   /* backpacks contains all bp from the logged in user
@@ -65,32 +65,25 @@ export default function Equips({  globalData, currentUser, equips, initTableData
       let tempdata=[]
       for (const [key, value] of Object.entries(bptodisplay.items)) {
           if(key == "sleepingBag") {
-          console.log("fetching bags !")
-            var responsebag= await fetch('/api/matos_2?usecase=fillTable&collection=SleepingBags&id='+value, {headers: {'Content-Type': 'application/json'},method: 'GET'})
+            var responsebag= await fetch('/api/matos_2?usecase=fillTable&collection=SleepingBags&id='+value._id, {headers: {'Content-Type': 'application/json'},method: 'GET'})
             var bag = await responsebag.json();
-            /*console.log("fetched " ,bag)*/
-            bag["type"] = key;
+            bag["type"] = key;  
             tempdata.push(bag);
         }
 
         if(key == "sleepingPad") {
-          var responsepad = await fetch('/api/matos_2?usecase=fillTable&collection=SleepingPads&id='+value, {headers: {'Content-Type': 'application/json'},method: 'GET'})
+          var responsepad = await fetch('/api/matos_2?usecase=fillTable&collection=SleepingPads&id='+value._id, {headers: {'Content-Type': 'application/json'},method: 'GET'})
           var pad = await responsepad.json();
-          /*console.log("fetched", pad)*/
           pad["type"] = key;
           tempdata.push(pad);
         }           
       }
-      console.log("updating ! with", ...tempdata)
-      Object.assign(tableData,tempdata)
-      console.log(...tableData)
-      //  setTableData(tempdata)  
+      var target = Object.assign(tableData,tempdata)
+      setTableData(tempdata)  
     }
   }  
 
   const handleSubmit = async () => {
-    // TODO: its hardcoded right now !
-    console.log("submit backpack new way");
     var rows = document.querySelectorAll("li")
     var nameselector = document.querySelector("input[name='EquipmentName']");
     let equipName = nameselector.value; 
@@ -101,8 +94,6 @@ export default function Equips({  globalData, currentUser, equips, initTableData
     
     var pad = await responsepad.json()
     var bag = await responsebag.json()
-
-    console.log("retrieved",bag)
     
     var backpackObject = {
       owner: await getUserId(),
@@ -112,15 +103,12 @@ export default function Equips({  globalData, currentUser, equips, initTableData
     };
 
     for(let item of tableData) {
-      console.log("item ", item)
       backpackObject.items[item.type] = {};
       backpackObject.items[item.type]._id = item._id
       backpackObject.items[item.type].quantity = item.quantity
     }
 
     const JSONdata = JSON.stringify(backpackObject)
-    console.log(JSONdata)
-
 
     const response = await fetch('/api/backpacks', {
       body: JSONdata,
@@ -132,7 +120,7 @@ export default function Equips({  globalData, currentUser, equips, initTableData
 
     const result = await response.json()
     alert(`You have updated ${equipName}`)
-    console.log("result ", result)
+    console.log('upsert', JSONdata)
 
     // Refresh backpack list
     fetchBackpackList()

@@ -9,7 +9,9 @@ function equipRow({row,index, models, tableData, setTableData}) {
 	const [typeOption, setTypeOption] = useState(row.type);
 	const [modelOption, setModelOption] = useState(row._id)
 	const [modelOptions, setModelOptions] = useState(models[typeOption])
+	const [qty, setQty] = useState(row.quantity)
 
+	console.log(row)
 	const options = [
 	  {
 	    label: "Backpack",
@@ -30,13 +32,29 @@ function equipRow({row,index, models, tableData, setTableData}) {
 	];
 
 	useEffect(async() => {
+		console.log("row updated")
+		setTypeOption(row.type)
+		setModelOption(row._id)
+	},[row])
+
+	useEffect(async() => {
 		console.log("use effect modelOption");
 		if(models[typeOption]) {
 			var item = models[typeOption].find(item => item._id === modelOption);
 			Object.assign(row,item)
 		} else { console.log("no models available for this item type")}
-		console.log("update", ...tableData)
 	},[modelOption])
+
+	useEffect(async() => {
+		console.log("use effect qty");
+		if(models[typeOption]) {
+			var item = models[typeOption].find(item => item._id === modelOption);
+			item.quantity = qty;
+			Object.assign(row,item)
+			console.log(item)
+		} else { console.log("no models available for this item type")}
+	},[qty])
+
 
 	useEffect(async() => {
 		console.log("use effect  typeOption")
@@ -66,8 +84,8 @@ function equipRow({row,index, models, tableData, setTableData}) {
 					<option value={option._id}>{option.Model} - {option.Size}</option>
 				))}
 		  </select>
-	      <input className="min-w-0 basis-1/6 bg-transparent text-right placeholder:text-pata-400 hover:bg-pata-500"  type="text" placeholder="1" />
-	      <input name="weight" value={row["Weight (Metric)"]} className="min-w-0 basis-1/6 bg-transparent text-right placeholder:text-pata-400 hover:bg-pata-500"  type="text" placeholder="1"/> 
+	      <input className="min-w-0 basis-1/6 bg-transparent text-right placeholder:text-pata-400 hover:bg-pata-500"  type="text" placeholder="1" value={qty} onChange={(event) => (setQty(event.target.value))}/>
+	      <input name="weight" value={qty*parseFloat(row["Weight (Metric)"])} className="min-w-0 basis-1/6 bg-transparent text-right placeholder:text-pata-400 hover:bg-pata-500"  type="text" placeholder="1"/> 
 	      <input name="color" value={row["Color"]} className="min-w-0 basis-1/6 bg-transparent text-right placeholder:text-pata-400 hover:bg-pata-500"  type="text" placeholder="Black"/>
 	    </li>
 	)
