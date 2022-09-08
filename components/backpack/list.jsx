@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import Divider from '@mui/material/Divider';
 
-function BackpackList({data, state, setState, bpName, setBpName }) {
+function BackpackList({data, setData, state, setState, bpName, setBpName }) {
 	return(
 		<div className="mt-10">
 			<p className="whitespace-nowrap text-left text-pata-400 text-xl bg-transparent   ">
