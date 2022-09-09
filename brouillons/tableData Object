@@ -1,0 +1,21 @@
+
+  const initTableData=[
+    { 
+        _id: "62bc45991baf30a4a46d86e5",
+        Model: "Matelas NeoAir® XLite™",
+        Size: "Regular",
+        Color: "Lemon Curry",
+        Weight (Metric): "0.36 kg"
+        type: "sleepingPad",
+        quantity: "1"
+    },
+    {
+        _id: "62bc46091baf30a4a46d8732",
+        Model: "Couverture Juno™",
+        Size: "No size",
+        Color: "Warp Speed Print, Fun Guy Print, Deep Pacific, Tidepool Print",
+        Weight (Metric): "0.38 kg",
+        type: "sleepingBag",
+        quantity: "1"
+    }
+ ]

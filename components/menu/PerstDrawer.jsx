@@ -26,7 +26,7 @@ import Person2OutlinedIcon from '@mui/icons-material/Person2Outlined';
 import HikingIcon from '@mui/icons-material/Hiking';
 import CabinIcon from '@mui/icons-material/Cabin';
 import ConstructionOutlinedIcon from '@mui/icons-material/ConstructionOutlined';
-import { signOut } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 
 const drawerWidth = 240;
 
@@ -76,6 +76,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 }));
 
 export default function PersistentDrawerLeft() {
+  const { data: session, status } = useSession()
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
@@ -121,26 +122,29 @@ export default function PersistentDrawerLeft() {
         <List>
           {
             [
-              { "key":"home", "text": "Home", "icon": <CabinIcon />, "href":"/", "onClick":"" },
-              { "key":"profile", "text": "Profile", "icon": <Person2OutlinedIcon />, "href":"/profile", "onClick":"" },
-              { "key":"matos", "text": "Matos", "icon": <HikingIcon />, "href":"/matos", "onClick":"" },
-              { "key":"backpack", "text": "Backpack", "icon": <BackpackIcon />, "href":"/backpack", "onClick":"" },
-              { "key":"sandbag", "text": "Sandbag", "icon": <ConstructionOutlinedIcon />, "href":"/sandbag", "onClick":"" },
-              { "key":"logout", "text": "Log Out", "icon": <LogoutIcon />, "href":"", "onClick":signOut}
+              { "key":"home", "text": "Home", "icon": <CabinIcon style={{ color: "#28384f" }}/>, "href":"/", "onClick":"" },
+              { "key":"profile", "text": "Profile", "icon": <Person2OutlinedIcon style={{ color: "#28384f" }}/>, "href":"/profile", "onClick":"" },
+              { "key":"matos", "text": "Matos", "icon": <HikingIcon style={{ color: "#28384f" }} />, "href":"/matos", "onClick":"" },
+              { "key":"backpack", "text": "Backpack", "icon": <BackpackIcon style={{ color: "#28384f" }} />, "href":"/backpack", "onClick":"" },
+              { "key":"sandbag", "text": "Sandbag", "icon": <ConstructionOutlinedIcon style={{ color: "#28384f" }}/>, "href":"/sandbag", "onClick":"" },
+              { "key":"logout", "text": "Log Out", "icon": <LogoutIcon style={{ color: "#28384f" }} />, "href":"", "onClick":signOut}
             ].map((entry) => (
             <ListItem key={entry.key} disablePadding>
               <ListItemButton disablePadding>
                 <ListItemIcon disablePadding>
                   {entry.icon}
                 </ListItemIcon>
-                <Link href={entry.href}>
-                  <ListItemText primary={entry.text}  onClick={entry.onClick}/>
+                <Link href={entry.href} >
+                  <ListItemText className="text-pata-400" primary={entry.text}  onClick={entry.onClick}/>
                 </Link>
               </ListItemButton>
             </ListItem>
           ))}
         </List>
-        {/*<Divider />*/}
+        <Divider />
+        {session && (
+        <p className="mt-2 text-center text-xs text-pata-400">Logged in as {session.user.email}</p>
+      )}
       </Drawer>
       <Main open={open}>
         <DrawerHeader />

@@ -7,9 +7,17 @@ export default async (req, res) => {
  
   const query = req.query;
   const type = query.type;
+  const use = query.usecase;
+  const id = query.id;
+  const collection = query.collection 
 
-  const equips = await getData(type)
-  res.end(JSON.stringify(equips, undefined, 2));
+  if(use == "fillTable") {
+    var matos = await getMatosByID(id, collection)
+    res.end(JSON.stringify(matos, undefined, 2));
+  } else {
+    const equips = await getData(type)
+    res.end(JSON.stringify(equips, undefined, 2));
+  }
 };
 
 export async function getData(type) {
@@ -38,17 +46,31 @@ export async function getData(type) {
     return equips
 }
 
-export async function getMatosByID(id) {
+export async function getAllModels(collection) {
+  const client = await clientPromise;
+  const models = await client
+    .db("ZakIGatsbyProject")
+    .collection(String(collection))
+    .find({"Model":{$exists:true}})
+    .project({_id:1, Model: 1, "Weight (Metric)": 1, Size:1, Color: 1 })
+    .sort({ Model: 1, Size: 1 })
+    .limit(20)
+    .toArray();
+
+  return models;
+}
+
+export async function getMatosByID(id, collection) {
 
 	const client = await clientPromise;
 
 	let equips = await client
     .db("ZakIGatsbyProject")
-    .collection("SleepingPads")
+    .collection(collection)
     .findOne(
     	{ "_id": ObjectId(id) },
     	{ projection: { 
-    		_id: 0, 
+    		_id: 1, 
     		"SKU": 0,
     		"Weight (Standard)": 0, 
     		"Width (Standard)": 0, 

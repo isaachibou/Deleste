@@ -3,6 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { MongoDBAdapter } from "@next-auth/mongodb-adapter"
 import clientPromise from "../../../utils/mongodb";
 import { verifyPassword } from '../../../utils/auth';
+import { server } from '../../../config';
 
 // For more information on each option (and a full list of options) go to
 // https://next-auth.js.org/configuration/options
@@ -20,10 +21,10 @@ export default NextAuth({
         const usersCollection = client.db("ZakIGatsbyProject").collection('users');
 
         const user = await usersCollection.findOne({
-          email: credentials.email,
+          email: credentials.email, 
         });
 
-        console.log("user :" + user)
+        console.debug("user :" + JSON.stringify(user))
 
         if (!user) {
           throw new Error('No user found!');
@@ -38,7 +39,9 @@ export default NextAuth({
           throw new Error('Could not log you in!');
         }
 
-        return { email: "toutpremieruser@gmail.com" };
+        return { 
+          email: credentials.email
+        };
        
       },
     }),
@@ -60,6 +63,20 @@ export default NextAuth({
   },
   session: {
     strategy: 'jwt',
+  },
+  callbacks: {
+    async session({ session, token, user }) {
+
+      const response = await fetch(`${server}/api/auth/users?email=`+session.user.email, {
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          method: 'GET'
+      });
+
+      session.additionnalUserInfos = await response.json()
+      return session
+    }
   },
 /*pages: {
   

@@ -8,3 +8,123 @@
 		"color": "lava"
 	}]
 }
+
+
+
+  const onItemTypeSelection = async (event) => {
+    const data = event.target.value; 
+    
+    if(data=="pad" || data =="bag") {
+      console.debug(`You have chosen type: ${data}`);
+
+      const response = await fetch('/api/allitems?type='+data, {
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        method: 'GET'
+      })
+
+      const items = await response.json()
+      console.debug(`I have retrieved this: `+JSON.stringify(items));
+
+      var option, select = event.target.parentElement.querySelector("li select[name='items']");
+      select.options.length = 0;
+      for(let item in items) {
+        console.debug(items[item])
+        option = document.createElement("option");
+        option.text = items[item].Model + " - " + items[item].Size
+        option.value = items[item]
+        select.appendChild(option);
+      }
+
+      var weight = event.target.parentElement.querySelector("li input[name='weight']");
+
+      weight.value= items[select.selectedIndex]["Weight (Metric)"]
+
+      var color = event.target.parentElement.querySelector("li input[name='color']");
+      color.value=items[select.selectedIndex].Color  
+    }
+  }
+
+  const onItemSelection = async (event) => {
+    const target = event.target;
+    const model = target.options[target.selectedIndex].text.split(" - ")[0]
+    console.debug(model)
+    
+
+    var type = event.target.parentElement.querySelector("li select[name='types']").value;
+      
+    const response = await fetch('/api/oneitem?type='+type+"&model="+model, {
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        method: 'GET'
+    });
+
+    const item = await response.json()
+    console.debug("item " + item)
+    
+    var weight = event.target.parentElement.querySelector("li input[name='weight']");
+    console.debug("weight " +weight)
+    weight.value= item["Weight (Metric)"];
+
+    var color = event.target.parentElement.querySelector("li input[name='color']");
+    color.value= item.Color;
+  }
+
+  const handleSubmit = async (event) => {
+    var rows = document.querySelectorAll("li")
+    var nameselector = document.querySelector("input[name='EquipmentName']");
+    let equipName = nameselector.value; 
+    console.debug(equipName)
+    
+    let backpackObject = {
+      owner: "63038e3fb8f2137592d31979"/*await getUserId()*/,
+      name: equipName
+    }; 
+
+    for(let row of rows) {
+      if(row.children[name="types"]) {
+        var indexType = row.children[name="types"].selectedIndex
+        var type = row.children[name="types"].options[indexType].value
+        var indexItem = row.children[name="items"].selectedIndex
+        var item = row.children[name="items"].options[indexItem].text
+        var weight = row.children[name="weight"].value
+        var color = row.children[name="color"].value
+        console.debug(item)
+       
+        let itemObject = {
+          brand:"",
+          model: String(item).split(" - ")[0],
+          volume:"",
+          weight: weight,
+          color: color
+        };
+        switch(type) {
+          case "pad":
+            backpackObject["spleepingPad"] = itemObject;
+            break;
+          case "bag":
+            backpackObject.spleepingBad = itemObject;
+            break;
+          default:
+            break;
+        }
+      } 
+    }
+      console.debug(backpackObject)
+
+    const JSONdata = JSON.stringify(backpackObject)
+    console.log(JSONdata)
+
+    const response = await fetch('/api/backpacks', {
+      body: JSONdata,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      method: 'POST',
+    })
+
+    const result = await response.json()
+    alert(`You have updated ${equipName}`)
+  }
