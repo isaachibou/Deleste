@@ -51,6 +51,8 @@ export default function Equips({  globalData, currentUser, equips, initTableData
 
   const fetchBackpackList = async () => {
     console.log("fetch bp list")
+    /*[TRY INSTEAD]
+    const sessions = await getSession({ req })*/
     const bps = await fetch('/api/backpacks?&owner='+currentUser, {headers: {'Content-Type': 'application/json'},method: 'GET'})
     var response = await bps.json();
     console.log("refresh bp list with", response)
@@ -174,7 +176,8 @@ export async function getServerSideProps(context) {
   ];
 
   const session = await getSession(context);
-  const currentUser = session.additionnalUserInfos._id;
+  let currentUser=null;
+  if (session) {  currentUser = session.additionnalUserInfos._id };
   const backpacks = session ? await getBackpacks(currentUser): []
 
   const itemModels = new Object();

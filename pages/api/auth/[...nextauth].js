@@ -59,8 +59,9 @@ export default NextAuth({
           },
           method: 'GET'
       });
-
-      session.additionnalUserInfos = await response.json()
+      let userx =await response.json()
+      session.additionnalUserInfos = userx._id
+      session.user.role = userx.role
       return session
     }
   },

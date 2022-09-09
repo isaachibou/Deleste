@@ -19,7 +19,7 @@ export async function getUserId(email) {
     .collection(String(collection))
     .findOne(
     	{ "email": email },
-    	{ projection: { _id: 1} }
+    	{ projection: { _id: 1, role: 1} }
     );
 
     return userid

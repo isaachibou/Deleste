@@ -26,7 +26,10 @@ import Person2OutlinedIcon from '@mui/icons-material/Person2Outlined';
 import HikingIcon from '@mui/icons-material/Hiking';
 import CabinIcon from '@mui/icons-material/Cabin';
 import ConstructionOutlinedIcon from '@mui/icons-material/ConstructionOutlined';
-import { signOut, useSession } from 'next-auth/react';
+import StorageOutlinedIcon from '@mui/icons-material/StorageOutlined';
+import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
+import { signOut, useSession, getSession } from 'next-auth/react';
+
 
 const drawerWidth = 240;
 
@@ -142,8 +145,32 @@ export default function PersistentDrawerLeft() {
           ))}
         </List>
         <Divider />
+        {session && (session.user.role === "admin" && (
+            <List>
+              <h1 className=" italic text-center text-pata-400"> Administrator Content </h1>
+              <p className="mb-2 text-center text-xs text-pata-400">Logged in as {session.user.role}</p>
+
+            {
+              [
+                { "key":"users", "text": "Users", "icon": <PersonOutlineOutlinedIcon style={{ color: "#28384f" }}/>, "href":"/userlist", "onClick":"" },
+                { "key":"data", "text": "Data", "icon": <StorageOutlinedIcon style={{ color: "#28384f" }}/>, "href":"/data", "onClick":"" },
+              ].map((entry) => (
+              <ListItem key={entry.key} disablePadding>
+                <ListItemButton disablePadding>
+                  <ListItemIcon disablePadding>
+                    {entry.icon}
+                  </ListItemIcon>
+                  <Link href={entry.href} >
+                    <ListItemText className="text-pata-400" primary={entry.text}  onClick={entry.onClick}/>
+                  </Link>
+                </ListItemButton>
+              </ListItem>
+            ))}
+            </List>
+           ))}
+        <Divider />
         {session && (
-        <p className="mt-2 text-center text-xs text-pata-400">Logged in as {session.user.email}</p>
+        <p className="mt-2 text-center text-xs text-pata-400">Logged in as {session.user.email} {session.user.role}</p>
       )}
       </Drawer>
       <Main open={open}>
