@@ -3,6 +3,7 @@ import { ObjectId } from 'mongodb'
 
 export default async function handler(req, res) {
   const query = req.query;
+  const id = query._id;
   const owner = query.owner;
 
   switch(req.method) {
@@ -11,6 +12,8 @@ export default async function handler(req, res) {
     case 'GET':
       var bp = await getBackpacks(owner);
       res.end(JSON.stringify(bp, undefined, 2));
+    case 'DELETE':
+      return deleteBackpack(req, res);
   }
 };
 
@@ -50,6 +53,31 @@ async function addBackpack(req, res) {
         message: 'Details updated successfully',
         success: response
     });
+  } catch (error) {
+        // return an error
+        return res.json({
+            message: new Error(error).message,
+            success: false,
+        })
+  }
+}
+
+async function deleteBackpack(req, res) {
+  try {
+    const query = req.query;
+    const id = query._id;
+
+    //connect to database
+    const client = await clientPromise;
+    const db = client.db("ZakIGatsbyProject");
+
+    //DELETE request
+    const response = await db.collection('Backpacks').deleteOne({ "_id": ObjectId(id) });
+  
+    return res.json({
+        message: 'Removed successfully',
+        success: response
+    }); 
   } catch (error) {
         // return an error
         return res.json({

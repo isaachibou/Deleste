@@ -1,7 +1,22 @@
 import { useState, useEffect, useRef } from 'react'
 import Divider from '@mui/material/Divider';
+import classes from './table.module.css';
+import RemoveOutlinedIcon from '@mui/icons-material/RemoveOutlined';
 
-function BackpackList({data, setData, state, setState, bpName, setBpName }) {
+
+function BackpackList({data, setData, state, setState, bpName, setBpName, refresh }) {
+
+	const deleteBackpack = async (id) => {
+		console.log("delete", id)
+	    const response = await fetch('/api/backpacks?&_id='+id, {headers: {'Content-Type': 'application/json'},method: 'DELETE'})
+	    const result = await response.json()
+    	
+    	alert(`You have deleted ${id}`)
+    	console.log('delete', result)
+    	refresh()
+    	return result
+	}
+   
 	return(
 		<div className="mt-10">
 			<p className="whitespace-nowrap text-left text-pata-400 text-xl bg-transparent   ">
@@ -9,10 +24,14 @@ function BackpackList({data, setData, state, setState, bpName, setBpName }) {
 	            My Backpacks
 	        </p>
 	        <Divider />
-	        <ul className="px-10 py-3 list-disc">
+	        <ul className="px-10 py-3 ">
 	        { data && (data.map((backpack) => (
-	        	<li className="hover:cursor-pointer hover:bg-pata-500 max-w-min whitespace-nowrap" onClick={() => {setState(backpack._id); setBpName(backpack.name)}}>{backpack.name}</li>
+	        	<li className= {`hover:cursor-pointer  max-w-min whitespace-nowrap ${backpack._id == state? classes.active : "teub	"}`}
+	        	 onClick={() => {setState(backpack._id); setBpName(backpack.name)}}>	        	      	  		
+	        	 <RemoveOutlinedIcon style={{ color: "#28384f" }} className="hover:cursor-pointer" onClick={() => { if (window.confirm('Are you sure you wish to delete this item?')) deleteBackpack(backpack._id) }}  /*onClick={() => deleteBackpack(backpack._id)} *//>
+				<span className="hover:bg-pata-500" >{backpack.name}</span></li>
 	        )))}
+
 	       	</ul>
         </div>
 	)

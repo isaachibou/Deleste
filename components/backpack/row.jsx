@@ -11,7 +11,7 @@ function equipRow({row,index, models, tableData, setTableData}) {
 	const [modelOptions, setModelOptions] = useState(models[typeOption])
 	const [qty, setQty] = useState(row.quantity)
 
-	console.log(row)
+/*	console.log(row)*/
 	const options = [
 	  {
 	    label: "Backpack",
@@ -32,8 +32,8 @@ function equipRow({row,index, models, tableData, setTableData}) {
 	];
 
 	useEffect(async() => {
-		console.log("row updated")
-		setTypeOption(row.type)
+/*		console.log("row updated")
+*/		setTypeOption(row.type)
 		setModelOption(row._id)
 	},[row])
 
@@ -61,10 +61,8 @@ function equipRow({row,index, models, tableData, setTableData}) {
 
 		// Displays the correct list of options upon change of item type
 		setModelOptions(models[typeOption])
-		console.log(models[typeOption][0]	)
 		setModelOption(models[typeOption][0]._id)
-		console.log(modelOption)
-
+		
 	},[typeOption])	
 
 	function handleChange(event) {
