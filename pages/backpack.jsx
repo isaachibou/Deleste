@@ -4,7 +4,6 @@ import { getCsrfToken } from "next-auth/react"
 
 
 import { useState, useEffect, useRef } from 'react'
-import { getSession } from "next-auth/react"
 
 import Link from 'next/link';
 import Image from 'next/image'
