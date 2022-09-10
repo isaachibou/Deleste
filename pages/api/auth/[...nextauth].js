@@ -60,8 +60,8 @@ export default NextAuth({
           method: 'GET'
       });
       let userx =await response.json()
-      session.additionnalUserInfos = userx._id
       session.user.role = userx.role
+      session.user.id = userx._id
       return session
     }
   },

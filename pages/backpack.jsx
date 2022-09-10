@@ -177,7 +177,7 @@ export async function getServerSideProps(context) {
 
   const session = await getSession(context);
   let currentUser=null;
-  if (session) {  currentUser = session.additionnalUserInfos._id };
+  if (session) {  currentUser = session.user.id };console.log("feef",session)
   const backpacks = session ? await getBackpacks(currentUser): []
 
   const itemModels = new Object();
