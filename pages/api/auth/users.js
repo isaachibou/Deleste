@@ -15,7 +15,7 @@ export async function getUserId(email) {
 	var collection ="users";
 	 
 	const userid = await client
-    .db("ZakIGatsbyProject")
+    .db("Délesté")
     .collection(String(collection))
     .findOne(
     	{ "email": email },

@@ -6,7 +6,6 @@ import { ObjectId } from 'mongodb'
 export default async (req, res) => {
  
   const query = req.query;
-  const type = query.type;
   const use = query.usecase;
   const id = query.id;
   const collection = query.collection 
@@ -15,29 +14,16 @@ export default async (req, res) => {
     var matos = await getMatosByID(id, collection)
     res.end(JSON.stringify(matos, undefined, 2));
   } else {
-    const equips = await getData(type)
+    const equips = await getData()
     res.end(JSON.stringify(equips, undefined, 2));
   }
 };
 
-export async function getData(type) {
-	const client = await clientPromise;
-	var collection
-	switch(type) {
-	    case "pad":
-	      collection = "SleepingPads";
-	      break;
-	    case "bag":
-	      collection = "SleepingBags";
-	      break;
-	    default: 
-	      collection = "SleepingBags";
-	      break;
-  	}
+export async function getData() {
 
 	const equips = await client
-    .db("ZakIGatsbyProject")
-    .collection(String(collection))
+    .db("Délesté")
+    .collection("Matos")
     .find({"Model":{$exists:true}})
     .sort({ Model: 1, SKU: 1 })
     .limit(20)
@@ -46,11 +32,11 @@ export async function getData(type) {
     return equips
 }
 
-export async function getAllModels(collection) {
+export async function getAllModels() {
   const client = await clientPromise;
   const models = await client
-    .db("ZakIGatsbyProject")
-    .collection(String(collection))
+    .db("Délesté")
+    .collection("Matos")
     .find({"Model":{$exists:true}})
     .project({_id:1, Model: 1, "Weight (Metric)": 1, Size:1, Color: 1 })
     .sort({ Model: 1, Size: 1 })
@@ -65,7 +51,7 @@ export async function getMatosByID(id, collection) {
 	const client = await clientPromise;
 
 	let equips = await client
-    .db("ZakIGatsbyProject")
+    .db("Délesté")
     .collection(collection)
     .findOne(
     	{ "_id": ObjectId(id) },
@@ -84,7 +70,7 @@ export async function getMatosByID(id, collection) {
  
   if (equips == null) {
   	equips = await client
-    .db("ZakIGatsbyProject")
+    .db("Délesté")
     .collection("SleepingBags")
     .findOne(
     	{ "_id": ObjectId(id) },
@@ -100,7 +86,7 @@ export async function getPrevMatos(id) {
 	const client = await clientPromise;
 
 	const prevMatos = await client
-    .db("ZakIGatsbyProject")
+    .db("Délesté")
     .collection("SleepingPads")
     .find({"_id": {$gt: ObjectId(id)}, "Model": {$exists:true}})
     .project({_id: 1, Model: 1, Size: 1, Image: 1})
@@ -116,7 +102,7 @@ export async function getNextMatos(id) {
 	const client = await clientPromise;
  
 	 const nextMatos = await client
-    .db("ZakIGatsbyProject")
+    .db("Délesté")
     .collection("SleepingPads")
     .find({"_id": {$lt: ObjectId(id)}, "Model": {$exists:true}})
     .project({_id: 1, Model: 1, Size: 1, Image: 1})

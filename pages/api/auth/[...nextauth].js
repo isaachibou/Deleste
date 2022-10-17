@@ -18,7 +18,7 @@ export default NextAuth({
       },*/
       async authorize(credentials) {
         const client = await clientPromise;
-        const usersCollection = client.db("ZakIGatsbyProject").collection('users');
+        const usersCollection = client.db("Délesté").collection('users');
 
         const user = await usersCollection.findOne({
           email: credentials.email, 

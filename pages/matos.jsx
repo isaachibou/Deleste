@@ -97,7 +97,7 @@ export default function Equips({ equips, globalData }) {
 export async function getServerSideProps(context) {
   const globalData = getGlobalData();
    const client = await clientPromise;
-   const equips = await getData("pad")
+   const equips = await getData()
 
   return {
     props: {

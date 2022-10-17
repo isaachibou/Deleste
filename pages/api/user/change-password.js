@@ -23,7 +23,7 @@ async function handler(req, res) {
 
   const client = await clientPromise;
   
-  const db = client.db("ZakIGatsbyProject");
+  const db = client.db("Délesté");
 
   const usersCollection = db.collection('users');
 

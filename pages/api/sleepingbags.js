@@ -6,7 +6,7 @@ export default async (req, res) => {
   const client = await clientPromise;
 
   const equips = await client
-    .db("ZakIGatsbyProject")
+    .db("Délesté")
     .collection("SleepingBags")
     .find({})
     /*.project({"_id": 1})*/
