@@ -64,22 +64,14 @@ export default function Equips({  globalData, currentUser, equips, initTableData
    * on in the list */  
   const fetchBackpackMatos = async () => {  
     var bptodisplay = backpacks.find(backpack => {return backpack._id === bpSelected})
+    console.log("bptodisplay ", bptodisplay)
     if (bptodisplay) {
       let tempdata=[]
       for (const [key, value] of Object.entries(bptodisplay.items)) {
-          if(key == "sleepingBag") {
-            var responsebag= await fetch('/api/matos_2?usecase=fillTable&collection=SleepingBags&id='+value._id, {headers: {'Content-Type': 'application/json'},method: 'GET'})
-            var bag = await responsebag.json();
-            bag["type"] = key;  
-            tempdata.push(bag);
-        }
-
-        if(key == "sleepingPad") {
-          var responsepad = await fetch('/api/matos_2?usecase=fillTable&collection=SleepingPads&id='+value._id, {headers: {'Content-Type': 'application/json'},method: 'GET'})
-          var pad = await responsepad.json();
-          pad["type"] = key;
-          tempdata.push(pad);
-        }           
+        var responsematos = await fetch('/api/matos_2?usecase=fillTable&id='+value._id, {headers: {'Content-Type': 'application/json'},method: 'GET'})
+        var matos = await responsematos.json();
+        matos["Type"] = key;
+        tempdata.push(matos);      
       }
       var target = Object.assign(tableData,tempdata)
       setTableData(tempdata)  
@@ -99,7 +91,7 @@ export default function Equips({  globalData, currentUser, equips, initTableData
     var bag = await responsebag.json()
     
     var backpackObject = {
-      owner: await getUserId(),
+      owner: await getUserId (),
       name: equipName,
       items: {
       } 
@@ -181,8 +173,10 @@ export async function getServerSideProps(context) {
   const backpacks = session ? await getBackpacks(currentUser): []
 
   const itemModels = new Object();
-  itemModels.sleepingBag = await getAllModels("SleepingBags");
-  itemModels.sleepingPad = await getAllModels("SleepingPads");
+  itemModels.pillow = await getAllModels("pillow");
+  itemModels.sleepingBag = await getAllModels("sleepingbag");
+  console.log(itemModels.sleepingBag)
+  itemModels.sleepingPad = await getAllModels("sleepingmat");
 
   return {
     props: {

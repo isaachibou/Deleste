@@ -14,11 +14,11 @@ function EquipTable({ tableData, setTableData, models, bpName, setBpName }) {
 	  },
 	  {
 	    label: "Sleeping Bag",
-	    value: "sleepingBag",
+	    value: "sleepbags",
 	  },
 	  {
 	    label: "Sleeping Pad",
-	    value: "sleepingPad",
+	    value: "sleepingmat",
 	  },
 	  {
 	    label: "None",
