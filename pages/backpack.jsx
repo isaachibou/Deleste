@@ -42,7 +42,7 @@ export default function Equips({  globalData, currentUser, equips, initTableData
 
   const getUserId = async () => {
     const session = await getSession();
-    return session.additionnalUserInfos._id;
+    return session.user.id;
   }
  
   const debug = () => {
