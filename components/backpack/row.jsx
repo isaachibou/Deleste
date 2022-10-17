@@ -49,10 +49,12 @@ function equipRow({row,index, models, tableData, setTableData}) {
 		console.log("use effect qty");
 		if(models[typeOption]) {
 			var item = models[typeOption].find(item => item._id === modelOption);
-			item.quantity = qty;
-			Object.assign(row,item)
-			console.log(item)
-		} else { console.log("no models available for this item type")}
+			if(item) {
+				item.quantity = qty;
+				Object.assign(row,item)
+				console.log(item)
+			} else { console.log("no models available for this item type")}
+		} 
 	},[qty])
 
 
