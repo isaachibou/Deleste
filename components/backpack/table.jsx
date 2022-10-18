@@ -7,6 +7,7 @@ import EquipRow from "./row";
 
 function EquipTable({ tableData, setTableData, models, bpName, setBpName }) {
 
+	//console.log("tableData ",tableData)
 	const options = [
 	  {
 	    label: "Backpack",
@@ -14,17 +15,21 @@ function EquipTable({ tableData, setTableData, models, bpName, setBpName }) {
 	  },
 	  {
 	    label: "Sleeping Bag",
-	    value: "sleepbags",
+	    value: "sleepingbag",
 	  },
 	  {
 	    label: "Sleeping Pad",
 	    value: "sleepingmat",
 	  },
 	  {
+	    label: "Pillows",
+	    value: "pillow",
+	  },
+	  {
 	    label: "None",
 	    value: "None",
 	  }
-	];			
+	];		
 
 	const handleChange = event => {
     	setBpName(event.target.value);
@@ -51,7 +56,7 @@ function EquipTable({ tableData, setTableData, models, bpName, setBpName }) {
 		        	)))
 		      	}	
 		      	  <Divider />	
-		      	  <AddOutlinedIcon style={{ color: "#28384f" }} className="hover:cursor-pointer hover:bg-pata-500" onClick={() => setTableData([...tableData,{ _id: "", Model: "", Size: "", Color: "", "": "", type: "None", quantity: "1" }])} />
+		      	  <AddOutlinedIcon style={{ color: "#28384f" }} className="hover:cursor-pointer hover:bg-pata-500" onClick={() => setTableData([...tableData,{ _id: "", Model: "", Size: "", Color: "", "": "", type: "custom", quantity: "1" }])} />
 		      	  <RemoveOutlinedIcon style={{ color: "#28384f" }} className="hover:cursor-pointer hover:bg-pata-500" onClick={() => setTableData(tableData.slice(0,-1))	} />
 	       	</ul>
 	       </div>

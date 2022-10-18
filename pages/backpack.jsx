@@ -74,7 +74,8 @@ export default function Equips({  globalData, currentUser, equips, initTableData
         tempdata.push(matos);      
       }
       var target = Object.assign(tableData,tempdata)
-      setTableData(tempdata)  
+      console.log("fetch backpack " ,target)
+      setTableData(target)  
     }
   }  
 
@@ -82,14 +83,7 @@ export default function Equips({  globalData, currentUser, equips, initTableData
     var rows = document.querySelectorAll("li")
     var nameselector = document.querySelector("input[name='EquipmentName']");
     let equipName = nameselector.value; 
-    console.debug(equipName)
-
-    var responsepad = await fetch('/api/oneitem?type=pad&model=Matelas NeoAir® XLite™', {headers: {'Content-Type': 'application/json'},method: 'GET'})
-    var responsebag= await fetch('/api/oneitem?type=bag&model=Sac de couchage Parsec™ 20F/-6C', {headers: {'Content-Type': 'application/json'},method: 'GET'})
-    
-    var pad = await responsepad.json()
-    var bag = await responsebag.json()
-    
+      
     var backpackObject = {
       owner: await getUserId (),
       name: equipName,
@@ -153,7 +147,7 @@ export async function getServerSideProps(context) {
         Size: "Regular",
         Color: "Lemon Curry",
         "Weight (Metric)": "0.36 kg",
-        type: "sleepingPad",
+        type: "sleepingmat",
         quantity: "1"
     },
     {
@@ -162,7 +156,7 @@ export async function getServerSideProps(context) {
         Size: "No size",
         Color: "Warp Speed Print, Fun Guy Print, Deep Pacific, Tidepool Print",
         "Weight (Metric)": "0.38 kg",
-        type: "sleepingBag",
+        type: "sleepingbag",
         quantity: "1"
     }
   ];
@@ -174,9 +168,9 @@ export async function getServerSideProps(context) {
 
   const itemModels = new Object();
   itemModels.pillow = await getAllModels("pillow");
-  itemModels.sleepingBag = await getAllModels("sleepingbag");
-  console.log(itemModels.sleepingBag)
-  itemModels.sleepingPad = await getAllModels("sleepingmat");
+  itemModels.sleepingbag = await getAllModels("sleepingbag");
+  itemModels.sleepingmat = await getAllModels("sleepingmat");
+  console.log("sleeping baaags",itemModels)
 
   return {
     props: {
