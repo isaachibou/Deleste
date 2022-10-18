@@ -8,28 +8,42 @@ export default async (req, res) => {
   const query = req.query;
   const use = query.usecase;
   const id = query.id;
+  const type = query.type
+  const brand = query.brand
   const collection = "Matos"
 
   if(use == "fillTable") {
     var matos = await getMatosByID(id)
     res.end(JSON.stringify(matos, undefined, 2));
   } else {
-    const equips = await getData()
+    const equips = await getData(type, brand)
     res.end(JSON.stringify(equips, undefined, 2));
   }
 };
 
-export async function getData() {
+export async function getData(type, brand) {
 
-	const equips = await client
+	const client = await clientPromise;
+  const equips = await client
     .db("Délesté")
     .collection("Matos")
-    .find({"Model":{$exists:true}})
+    .find({"Model":{$exists:true}, "Type": type == "all" ? {$exists:true} : type, "Brand": brand == "all" ? {$exists:true} : brand })
     .sort({ Model: 1, SKU: 1 })
     .limit(20)
     .toArray();
 
     return equips
+}
+export async function getAllBrands() {
+  const client = await clientPromise;
+  const brands = await client
+    .db("Délesté")
+    .collection("Matos")
+    .distinct("Brand")
+    /*.toArray();*/
+
+  return brands;
+
 }
 
 export async function getAllModels(type) {
