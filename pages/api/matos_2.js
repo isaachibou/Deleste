@@ -27,7 +27,7 @@ export async function getData(type, brand) {
   const equips = await client
     .db("Délesté")
     .collection("Matos")
-    .find({"Model":{$exists:true}, "Type": type == "all" ? {$exists:true} : type, "Brand": brand == "all" ? {$exists:true} : brand })
+    .find({"Model":{$exists:true}, "Type": type == "all" ? {$exists:true} : type, "Brand": String(brand).toLowerCase() == "all" ? {$exists:true} : brand })
     .sort({ Model: 1, SKU: 1 })
     .limit(20)
     .toArray();
