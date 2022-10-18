@@ -25,9 +25,19 @@ export default function Equips({  globalData, currentUser, equips, initTableData
   
   const [bpSelected, setBpSelected] = useState("");
   const [bpList, setBpList] = useState(backpacks);
-  const [bpName, setBpName] = useState("Your equipment name");
+  const [bpName, setBpName] = useState("Your equipment name here ...");
   const [tableData, setTableData] = useState(initTableData);
 
+  const emptyTableData = [
+    { 
+        Type: "sleepingbag",
+        quantity: "1"
+    },
+    {
+        Type: "sleepingmat",
+        quantity: "1"
+    }
+  ];
 
   console.log("BpSelected ", bpSelected)
 
@@ -37,7 +47,7 @@ export default function Equips({  globalData, currentUser, equips, initTableData
   },[bpSelected])
 
   useEffect(async () => {     
-    console.log("tableData update !"/*, ...tableData*/)
+    console.log("tableData update !", ...tableData)
   },[tableData])
 
   const getUserId = async () => {
@@ -74,8 +84,10 @@ export default function Equips({  globalData, currentUser, equips, initTableData
         tempdata.push(matos);      
       }
       var target = Object.assign(tableData,tempdata)
-      console.log("fetch backpack " ,target)
-      setTableData(target)  
+      console.log("fetch backpack items: " ,target)
+      setTableData(tempdata)  // And not target because it would not trigger any useeffect
+    } else {
+      setTableData(emptyTableData)
     }
   }  
 
@@ -92,9 +104,9 @@ export default function Equips({  globalData, currentUser, equips, initTableData
     };
 
     for(let item of tableData) {
-      backpackObject.items[item.type] = {};
-      backpackObject.items[item.type]._id = item._id
-      backpackObject.items[item.type].quantity = item.quantity
+      backpackObject.items[item.Type] = {};
+      backpackObject.items[item.Type]._id = item._id
+      backpackObject.items[item.Type].quantity = item.quantity
     }
 
     const JSONdata = JSON.stringify(backpackObject)
@@ -147,7 +159,7 @@ export async function getServerSideProps(context) {
         Size: "Regular",
         Color: "Lemon Curry",
         "Weight (Metric)": "0.36 kg",
-        type: "sleepingmat",
+        Type: "sleepingmat",
         quantity: "1"
     },
     {
@@ -156,7 +168,7 @@ export async function getServerSideProps(context) {
         Size: "No size",
         Color: "Warp Speed Print, Fun Guy Print, Deep Pacific, Tidepool Print",
         "Weight (Metric)": "0.38 kg",
-        type: "sleepingbag",
+        Type: "sleepingbag",
         quantity: "1"
     }
   ];

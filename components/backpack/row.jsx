@@ -6,7 +6,7 @@ import Divider from '@mui/material/Divider';
 
 function equipRow({row, index, models, tableData, setTableData}) {
 
-	const [typeOption, setTypeOption] = useState(row.type);
+	const [typeOption, setTypeOption] = useState(row.Type);
 	const [modelOption, setModelOption] = useState(row._id)
 	const [modelOptions, setModelOptions] = useState(models[typeOption])
 	const [qty, setQty] = useState(row.quantity)
@@ -37,7 +37,7 @@ function equipRow({row, index, models, tableData, setTableData}) {
 
 	useEffect(async() => {
 		console.log("row updated: ", row)
-		setTypeOption(row.type)
+		setTypeOption(row.Type)
 		setModelOption(row._id)
 	},[row])
 
