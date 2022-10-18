@@ -28,6 +28,7 @@ import CabinIcon from '@mui/icons-material/Cabin';
 import ConstructionOutlinedIcon from '@mui/icons-material/ConstructionOutlined';
 import StorageOutlinedIcon from '@mui/icons-material/StorageOutlined';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
+import ApiOutlinedIcon from '@mui/icons-material/ApiOutlined';
 import { signOut, useSession, getSession } from 'next-auth/react';
 
 
@@ -134,11 +135,11 @@ export default function PersistentDrawerLeft() {
             ].map((entry) => (
             <ListItem key={entry.key} disablePadding>
               <ListItemButton disablePadding>
-                <ListItemIcon disablePadding>
+                <ListItemIcon className="md:min-w-[35px]" disablePadding>
                   {entry.icon}
                 </ListItemIcon>
                 <Link href={entry.href} >
-                  <ListItemText className="text-pata-400" primary={entry.text}  onClick={entry.onClick}/>
+                  <ListItemText className="text-pata-400" classes={{primary:"leading-3"}} primary={entry.text}  onClick={entry.onClick}/>
                 </Link>
               </ListItemButton>
             </ListItem>
@@ -147,21 +148,22 @@ export default function PersistentDrawerLeft() {
         <Divider />
         {session && (session.user.role === "admin" && (
             <List>
-              <h1 className=" italic text-center text-pata-400"> Administrator Content </h1>
+              <h2 className=" italic text-center text-pata-400"> Administrator Content </h2>
               <p className="mb-2 text-center text-xs text-pata-400">Logged in as {session.user.role}</p>
 
             {
               [
                 { "key":"users", "text": "Users", "icon": <PersonOutlineOutlinedIcon style={{ color: "#28384f" }}/>, "href":"/userlist", "onClick":"" },
                 { "key":"data", "text": "Data", "icon": <StorageOutlinedIcon style={{ color: "#28384f" }}/>, "href":"/data", "onClick":"" },
+                { "key":"api", "text": "Items API", "icon": < ApiOutlinedIcon style={{ color: "#28384f" }}/>, "href":"/api/allitems", "onClick":"" },
               ].map((entry) => (
               <ListItem key={entry.key} disablePadding>
                 <ListItemButton disablePadding>
-                  <ListItemIcon disablePadding>
+                  <ListItemIcon className="md:min-w-[35px]" disablePadding>
                     {entry.icon}
                   </ListItemIcon>
                   <Link href={entry.href} >
-                    <ListItemText className="text-pata-400" primary={entry.text}  onClick={entry.onClick}/>
+                    <ListItemText classes={{primary:"leading-3"}} className="text-pata-400" primary={entry.text}  onClick={entry.onClick}/>
                   </Link>
                 </ListItemButton>
               </ListItem>
