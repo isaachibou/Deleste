@@ -1,4 +1,4 @@
-/* This pages serves the purpose of holding place for every item single queried item by id in the collection */
+/* This pages serves the purpose of showing every item in the collection */
 
 import clientPromise from "../../../utils/mongodb";
 import { ObjectId } from 'mongodb'
@@ -8,8 +8,8 @@ export default async function handler(req, res) {
   const client = await clientPromise;
 
   const equips = await client
-    .db("ZakIGatsbyProject")
-    .collection("SleepingBags")
+    .db("Délesté")
+    .collection("Matos")
     .find({
       "_id": ObjectId({id}.id),
     })

@@ -4,14 +4,14 @@ import RemoveOutlinedIcon from '@mui/icons-material/RemoveOutlined';
 import { useState, useEffect, useRef } from 'react'
 import Divider from '@mui/material/Divider';
 
-function equipRow({row,index, models, tableData, setTableData}) {
+function equipRow({row, index, models, tableData, setTableData}) {
 
-	const [typeOption, setTypeOption] = useState(row.type);
+	const [typeOption, setTypeOption] = useState(row.Type);
 	const [modelOption, setModelOption] = useState(row._id)
 	const [modelOptions, setModelOptions] = useState(models[typeOption])
 	const [qty, setQty] = useState(row.quantity)
 
-/*	console.log(row)*/
+	//console.log("row: ",row)
 	const options = [
 	  {
 	    label: "Backpack",
@@ -19,21 +19,25 @@ function equipRow({row,index, models, tableData, setTableData}) {
 	  },
 	  {
 	    label: "Bag",
-	    value: "sleepingBag",
+	    value: "sleepingbag",
 	  },
 	  {
 	    label: "Pad",
-	    value: "sleepingPad",
+	    value: "sleepingmat",
 	  },
 	  {
-	    label: "None",
-	    value: "None",
+	    label: "Pillows",
+	    value: "pillow",
+	  },
+	  {
+	    label: "Custom",
+	    value: "custom",
 	  }
 	];
 
 	useEffect(async() => {
-/*		console.log("row updated")
-*/		setTypeOption(row.type)
+		console.log("row updated: ", row)
+		setTypeOption(row.Type)
 		setModelOption(row._id)
 	},[row])
 
@@ -49,10 +53,12 @@ function equipRow({row,index, models, tableData, setTableData}) {
 		console.log("use effect qty");
 		if(models[typeOption]) {
 			var item = models[typeOption].find(item => item._id === modelOption);
-			item.quantity = qty;
-			Object.assign(row,item)
-			console.log(item)
-		} else { console.log("no models available for this item type")}
+			if(item) {
+				item.quantity = qty;
+				Object.assign(row,item)
+				console.log(item)
+			} else { console.log("no models available for this item type")}
+		} 
 	},[qty])
 
 
@@ -61,8 +67,7 @@ function equipRow({row,index, models, tableData, setTableData}) {
 
 		// Displays the correct list of options upon change of item type
 		setModelOptions(models[typeOption])
-		setModelOption(models[typeOption][0]._id)
-		
+		if(models[typeOption]) { setModelOption(models[typeOption][0]._id) }		
 	},[typeOption])	
 
 	function handleChange(event) {

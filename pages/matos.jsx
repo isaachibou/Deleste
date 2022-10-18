@@ -1,6 +1,6 @@
 import clientPromise from "../utils/mongodb";
 
-import { getData } from './api/matos_2'
+import { getData, getAllBrands } from './api/matos_2'
 
 import { useState, useEffect, useRef } from 'react'
 
@@ -13,18 +13,47 @@ import Landscape from '../components/landscape/landscape'
 import { getGlobalData } from '../utils/global-data';
 import SEO from '../components/SEO';
 
-export default function Equips({ equips, globalData }) {
+export default function Equips({ brands, equips, globalData }) {
 
   const isInitialMount = useRef(true);
   let setEquips="";
    
   [equips, setEquips] = useState(equips);
 
+  const options = [
+    {
+      label: "All",
+      value: "all"
+    },
+    {
+      label: "Backpack",
+      value: "backpack"
+    },
+    {
+      label: "Bag",
+      value: "sleepingbag"
+    },
+    {
+      label: "Pad",
+      value: "sleepingmat"
+    },
+    {
+      label: "Pillows",
+      value: "pillow"
+    },
+    {
+      label: "Custom",
+      value: "custom"
+    }
+  ];
+
+
   // API fetch function
   const fetchMatos = async () => {  
     console.log("This is client side fetching")
     const type = document.querySelector("#itemTypes").value
-    const response = await fetch('/api/matos_2?type='+type, {
+    const brand = document.querySelector("#itemBrands").value
+    const response = await fetch('/api/matos_2?type='+type+"&brand="+brand, {
       headers: {
         'Content-Type': 'application/json'
       },
@@ -52,14 +81,20 @@ export default function Equips({ equips, globalData }) {
       <SEO title={globalData.name} description={globalData.blogTitle} />
       <Header name={globalData.blogTitle} title={globalData.blogSubtitle}/>
       <main className="flex flex-col items-center max-w-4xl w-full mx-auto">
-        <h1 className="text-3xl lg:text-5xl text-center ">Everything Therm-a-rest</h1>
+        <h1 className="text-3xl lg:text-5xl text-center ">Everything we have in the books</h1>
         <p className="text-2xl text-center md:text-3xl mb-10">
           <small>(Scrapped straight from the source)</small>
         </p>
         <div>
           <select name="types" id="itemTypes" className="basis-1/6 bg-transparent" onChange={fetchMatos}>
-            <option value="pad">Pad</option>
-            <option value="bag">Bag</option>
+            {options.map((option) => (
+                <option value={option.value}>{option.label}</option>
+              ))}
+          </select>
+          <select name="brands" id="itemBrands" className="basis-1/6 bg-transparent" onChange={fetchMatos}>
+            {brands.map((brand) => (
+                <option value={brand}>{brand}</option>
+              ))}
           </select>
           
         </div>
@@ -78,6 +113,7 @@ export default function Equips({ equips, globalData }) {
                     width={200}
                     height={200}
                   />
+                  <h2 className="text-center">{equip.Brand}</h2>
                   <h2 className="text-center">{String(equip.Model).replace("Matelas","")}</h2>
                   <div className="text-left pl-5 pt-5 ">
                     <h3><span className="font-bold">Size: </span>{equip.Size}</h3>
@@ -96,13 +132,16 @@ export default function Equips({ equips, globalData }) {
 
 export async function getServerSideProps(context) {
   const globalData = getGlobalData();
-   const client = await clientPromise;
-   const equips = await getData("pad")
+  const client = await clientPromise;
+  const equips = await getData("sleepingbag", "all");console.log("résultat seuqips ",equips)
+  let brands = await getAllBrands()
+  brands.unshift("All")
 
   return {
     props: {
       globalData,
-      equips: JSON.parse(JSON.stringify(equips))
+      equips: JSON.parse(JSON.stringify(equips)),
+      brands: brands
     },
   };
 }

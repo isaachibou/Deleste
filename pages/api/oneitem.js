@@ -23,7 +23,7 @@ export default async (req, res) => {
   }
 
   const equips = await client
-    .db("ZakIGatsbyProject")
+    .db("Délesté")
     .collection(String(collection))
     .findOne(
     {"Model": model},

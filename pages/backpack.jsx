@@ -27,9 +27,19 @@ export default function Equips({  globalData, currentUser, equips, initTableData
   
   const [bpSelected, setBpSelected] = useState("");
   const [bpList, setBpList] = useState(backpacks);
-  const [bpName, setBpName] = useState("Your equipment name");
+  const [bpName, setBpName] = useState("Your equipment name here ...");
   const [tableData, setTableData] = useState(initTableData);
 
+  const emptyTableData = [
+    { 
+        Type: "sleepingbag",
+        quantity: "1"
+    },
+    {
+        Type: "sleepingmat",
+        quantity: "1"
+    }
+  ];
 
   console.log("BpSelected ", bpSelected)
 
@@ -39,12 +49,12 @@ export default function Equips({  globalData, currentUser, equips, initTableData
   },[bpSelected])
 
   useEffect(async () => {     
-    console.log("tableData update !"/*, ...tableData*/)
+    console.log("tableData update !", ...tableData)
   },[tableData])
 
   const getUserId = async () => {
     const session = await getSession();
-    return session.additionnalUserInfos._id;
+    return session.user.id;
   }
  
   const debug = () => {
@@ -53,6 +63,8 @@ export default function Equips({  globalData, currentUser, equips, initTableData
 
   const fetchBackpackList = async () => {
     console.log("fetch bp list")
+    /*[TRY INSTEAD]
+    const sessions = await getSession({ req })*/
     const bps = await fetch('/api/backpacks?&owner='+currentUser, {headers: {'Content-Type': 'application/json'},method: 'GET'})
     var response = await bps.json();
     console.log("refresh bp list with", response)
@@ -64,25 +76,20 @@ export default function Equips({  globalData, currentUser, equips, initTableData
    * on in the list */  
   const fetchBackpackMatos = async () => {  
     var bptodisplay = backpacks.find(backpack => {return backpack._id === bpSelected})
+    console.log("bptodisplay ", bptodisplay)
     if (bptodisplay) {
       let tempdata=[]
       for (const [key, value] of Object.entries(bptodisplay.items)) {
-          if(key == "sleepingBag") {
-            var responsebag= await fetch('/api/matos_2?usecase=fillTable&collection=SleepingBags&id='+value._id, {headers: {'Content-Type': 'application/json'},method: 'GET'})
-            var bag = await responsebag.json();
-            bag["type"] = key;  
-            tempdata.push(bag);
-        }
-
-        if(key == "sleepingPad") {
-          var responsepad = await fetch('/api/matos_2?usecase=fillTable&collection=SleepingPads&id='+value._id, {headers: {'Content-Type': 'application/json'},method: 'GET'})
-          var pad = await responsepad.json();
-          pad["type"] = key;
-          tempdata.push(pad);
-        }           
+        var responsematos = await fetch('/api/matos_2?usecase=fillTable&id='+value._id, {headers: {'Content-Type': 'application/json'},method: 'GET'})
+        var matos = await responsematos.json();
+        matos["Type"] = key;
+        tempdata.push(matos);      
       }
       var target = Object.assign(tableData,tempdata)
-      setTableData(tempdata)  
+      console.log("fetch backpack items: " ,target)
+      setTableData(tempdata)  // And not target because it would not trigger any useeffect
+    } else {
+      setTableData(emptyTableData)
     }
   }  
 
@@ -90,25 +97,18 @@ export default function Equips({  globalData, currentUser, equips, initTableData
     var rows = document.querySelectorAll("li")
     var nameselector = document.querySelector("input[name='EquipmentName']");
     let equipName = nameselector.value; 
-    console.debug(equipName)
-
-    var responsepad = await fetch('/api/oneitem?type=pad&model=Matelas NeoAir® XLite™', {headers: {'Content-Type': 'application/json'},method: 'GET'})
-    var responsebag= await fetch('/api/oneitem?type=bag&model=Sac de couchage Parsec™ 20F/-6C', {headers: {'Content-Type': 'application/json'},method: 'GET'})
-    
-    var pad = await responsepad.json()
-    var bag = await responsebag.json()
-    
+      
     var backpackObject = {
-      owner: await getUserId(),
+      owner: await getUserId (),
       name: equipName,
       items: {
       } 
     };
 
     for(let item of tableData) {
-      backpackObject.items[item.type] = {};
-      backpackObject.items[item.type]._id = item._id
-      backpackObject.items[item.type].quantity = item.quantity
+      backpackObject.items[item.Type] = {};
+      backpackObject.items[item.Type]._id = item._id
+      backpackObject.items[item.Type].quantity = item.quantity
     }
 
     const JSONdata = JSON.stringify(backpackObject)
@@ -161,7 +161,7 @@ export async function getServerSideProps(context) {
         Size: "Regular",
         Color: "Lemon Curry",
         "Weight (Metric)": "0.36 kg",
-        type: "sleepingPad",
+        Type: "sleepingmat",
         quantity: "1"
     },
     {
@@ -170,18 +170,21 @@ export async function getServerSideProps(context) {
         Size: "No size",
         Color: "Warp Speed Print, Fun Guy Print, Deep Pacific, Tidepool Print",
         "Weight (Metric)": "0.38 kg",
-        type: "sleepingBag",
+        Type: "sleepingbag",
         quantity: "1"
     }
   ];
 
   const session = await getSession(context);
-  const currentUser = session.additionnalUserInfos._id;
+  let currentUser=null;
+  if (session) {  currentUser = session.user.id };console.log("feef",session)
   const backpacks = session ? await getBackpacks(currentUser): []
 
   const itemModels = new Object();
-  itemModels.sleepingBag = await getAllModels("SleepingBags");
-  itemModels.sleepingPad = await getAllModels("SleepingPads");
+  itemModels.pillow = await getAllModels("pillow");
+  itemModels.sleepingbag = await getAllModels("sleepingbag");
+  itemModels.sleepingmat = await getAllModels("sleepingmat");
+  console.log("sleeping baaags",itemModels)
 
   return {
     props: {

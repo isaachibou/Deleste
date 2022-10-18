@@ -13,8 +13,8 @@ export default async (req, res) => {
    .sort({_id:1}) */
 
     const equips = await client
-    .db("ZakIGatsbyProject")
-    .collection("SleepingPads")
+    .db("Délesté")
+    .collection("Matos")
     .find({"_id": {$gt: ObjectId(id)}, "Model": {$exists:true}})
     .project({_id: 1, Model: 1, Size: 1, Image: 1})
     .sort({ _id: 1, Model: -1, Size: -1 })

@@ -15,11 +15,11 @@ export async function getUserId(email) {
 	var collection ="users";
 	 
 	const userid = await client
-    .db("ZakIGatsbyProject")
+    .db("Délesté")
     .collection(String(collection))
     .findOne(
     	{ "email": email },
-    	{ projection: { _id: 1} }
+    	{ projection: { _id: 1, role: 1} }
     );
 
     return userid

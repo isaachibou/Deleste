@@ -6,67 +6,69 @@ import { ObjectId } from 'mongodb'
 export default async (req, res) => {
  
   const query = req.query;
-  const type = query.type;
   const use = query.usecase;
   const id = query.id;
-  const collection = query.collection 
+  const type = query.type
+  const brand = query.brand
+  const collection = "Matos"
 
   if(use == "fillTable") {
-    var matos = await getMatosByID(id, collection)
+    var matos = await getMatosByID(id)
     res.end(JSON.stringify(matos, undefined, 2));
   } else {
-    const equips = await getData(type)
+    const equips = await getData(type, brand)
     res.end(JSON.stringify(equips, undefined, 2));
   }
 };
 
-export async function getData(type) {
-	const client = await clientPromise;
-	var collection
-	switch(type) {
-	    case "pad":
-	      collection = "SleepingPads";
-	      break;
-	    case "bag":
-	      collection = "SleepingBags";
-	      break;
-	    default: 
-	      collection = "SleepingBags";
-	      break;
-  	}
+export async function getData(type, brand) {
 
-	const equips = await client
-    .db("ZakIGatsbyProject")
-    .collection(String(collection))
-    .find({"Model":{$exists:true}})
+	const client = await clientPromise;
+  const equips = await client
+    .db("Délesté")
+    .collection("Matos")
+    .find({"Model":{$exists:true}, "Type": type == "all" ? {$exists:true} : type, "Brand": String(brand).toLowerCase() == "all" ? {$exists:true} : brand })
     .sort({ Model: 1, SKU: 1 })
     .limit(20)
     .toArray();
 
     return equips
 }
+export async function getAllBrands() {
+  const client = await clientPromise;
+  const brands = await client
+    .db("Délesté")
+    .collection("Matos")
+    .distinct("Brand")
+    /*.toArray();*/
 
-export async function getAllModels(collection) {
+  return brands;
+
+}
+
+export async function getAllModels(type) {
   const client = await clientPromise;
   const models = await client
-    .db("ZakIGatsbyProject")
-    .collection(String(collection))
-    .find({"Model":{$exists:true}})
-    .project({_id:1, Model: 1, "Weight (Metric)": 1, Size:1, Color: 1 })
-    .sort({ Model: 1, Size: 1 })
-    .limit(20)
+    .db("Délesté")
+    .collection("Matos")
+    .find({
+      "Model":{$exists:true},
+      "Type": type
+    })
+    .project({_id:1, Type:1, Model: 1, "Weight (Metric)": 1, Size:1, Color: 1 })
+    .sort({ Brand: -1, Model: 1, Size: 1 })
     .toArray();
 
   return models;
 }
 
-export async function getMatosByID(id, collection) {
+export async function getMatosByID(id) {
 
 	const client = await clientPromise;
 
 	let equips = await client
-    .db("ZakIGatsbyProject")
-    .collection(collection)
+    .db("Délesté")
+    .collection("Matos")
     .findOne(
     	{ "_id": ObjectId(id) },
     	{ projection: { 
@@ -84,8 +86,8 @@ export async function getMatosByID(id, collection) {
  
   if (equips == null) {
   	equips = await client
-    .db("ZakIGatsbyProject")
-    .collection("SleepingBags")
+    .db("Délesté")
+    .collection("Matos")
     .findOne(
     	{ "_id": ObjectId(id) },
     	{ projection: { _id: 0, "Weight (Standard)": 0, "Width (Standard)": 0, SKU: 0 } }
@@ -100,8 +102,8 @@ export async function getPrevMatos(id) {
 	const client = await clientPromise;
 
 	const prevMatos = await client
-    .db("ZakIGatsbyProject")
-    .collection("SleepingPads")
+    .db("Délesté")
+    .collection("Matos")
     .find({"_id": {$gt: ObjectId(id)}, "Model": {$exists:true}})
     .project({_id: 1, Model: 1, Size: 1, Image: 1})
     .sort({ _id: 1, Model: 1, Size: 1 })
@@ -116,8 +118,8 @@ export async function getNextMatos(id) {
 	const client = await clientPromise;
  
 	 const nextMatos = await client
-    .db("ZakIGatsbyProject")
-    .collection("SleepingPads")
+    .db("Délesté")
+    .collection("Matos")
     .find({"_id": {$lt: ObjectId(id)}, "Model": {$exists:true}})
     .project({_id: 1, Model: 1, Size: 1, Image: 1})
     .sort({ _id: -1, Model: -1, Size: -1 })
