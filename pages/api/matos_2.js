@@ -24,15 +24,49 @@ export default async (req, res) => {
 export async function getData(type, brand) {
 
 	const client = await clientPromise;
-  const equips = await client
+  /*const equips = await client
     .db("Délesté")
     .collection("Matos")
     .find({"Model":{$exists:true}, "Type": type == "all" ? {$exists:true} : type, "Brand": String(brand).toLowerCase() == "all" ? {$exists:true} : brand })
     .sort({ Model: 1, SKU: 1 })
-    .limit(20)
-    .toArray();
+    //.limit(20)
+    .toArray();*/
 
-    return equips
+    let pipeline = [];
+    if(type && type != "all") { 
+      pipeline.push({
+          $match: { 
+            "Type" : type
+          }
+      })
+    }
+
+    if(brand && brand != "All") { 
+      pipeline.push({
+          $match: { 
+            "Brand" : brand
+          }
+      })
+    }
+
+    pipeline.push({
+            "$group": {
+              _id: "$Model",
+              Models: {
+                "$first": "$$ROOT"
+              }
+            }
+        },)
+
+    const equips = await client
+    .db("Délesté")
+    .collection("Matos")
+    .aggregate(pipeline)
+    .sort({ Model: 1, SKU: 1 })
+    .toArray();
+    
+    
+    return equips.map((pipe) => pipe["Models"])
 }
 export async function getAllBrands() {
   const client = await clientPromise;

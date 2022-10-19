@@ -133,7 +133,7 @@ export default function Equips({ brands, equips, globalData }) {
 export async function getServerSideProps(context) {
   const globalData = getGlobalData();
   const client = await clientPromise;
-  const equips = await getData("sleepingbag", "all");console.log("résultat seuqips ",equips)
+  const equips = await getData("sleepingbag", "All");console.log("résultat seuqips ",equips)
   let brands = await getAllBrands()
   brands.unshift("All")
 
