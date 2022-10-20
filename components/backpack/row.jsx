@@ -4,7 +4,7 @@ import RemoveOutlinedIcon from '@mui/icons-material/RemoveOutlined';
 import { useState, useEffect, useRef } from 'react'
 import Divider from '@mui/material/Divider';
 
-function equipRow({row, index, models, tableData, setTableData}) {
+function EquipRow({row, index, models, tableData, setTableData}) {
 
 	const [typeOption, setTypeOption] = useState(row.Type);
 	const [modelOption, setModelOption] = useState(row._id)
@@ -79,12 +79,12 @@ function equipRow({row, index, models, tableData, setTableData}) {
 		<li className="flex flex-row flex-end space-x-1 text-center ">
 	    	<select name="types" id="rowTypes" className="basis-1/6 bg-transparent hover:bg-pata-500" value={typeOption} onChange={handleChange}>
 	            {options.map((option) => (
-	              <option value={option.value}>{option.label}</option>
+	              <option key={option.value} value={option.value}>{option.label}</option>
 	            ))}
 			</select>
 	      	<select name="rows" id="rowsFetched" className="basis-3/6 bg-transparent hover:bg-pata-500" value={modelOption} onChange={(event) => (setModelOption(event.target.value))}>
 	      		{modelOptions?.map((option) => (
-					<option value={option._id}>{option.Model} - {option.Size}</option>
+					<option key={option.Model} value={option._id}>{option.Model} - {option.Size}</option>
 				))}
 		  </select>
 	      <input className="min-w-0 basis-1/6 bg-transparent text-right placeholder:text-pata-400 hover:bg-pata-500"  type="text" placeholder="1" value={qty} onChange={(event) => (setQty(event.target.value))}/>
@@ -94,6 +94,6 @@ function equipRow({row, index, models, tableData, setTableData}) {
 	)
 }	
 
-export default equipRow;
+export default EquipRow;
 
  

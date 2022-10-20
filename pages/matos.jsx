@@ -64,17 +64,17 @@ export default function Equips({ brands, equips, globalData }) {
     setEquips(items)
   }   
 
-  // Do not instantiate with client fetch, but with ServerSideProps
-   if (!isInitialMount.current) {
-    isInitialMount.current = false;
-    console.log("not InitialMount")
-     
+  // Do not instantiate with client fetch, but with ServerSideProps     
     useEffect(async () => {    
-          fetchMatos()
+      if (!isInitialMount.current) {
+        isInitialMount.current = false;
+        console.log("not InitialMount")
+        fetchMatos()
+      } else {
+        console.log("InitialMount")
+      }
     })
-  } else {
-    console.log("InitialMount")
-  }
+
 
   return (
     <Landscape>
