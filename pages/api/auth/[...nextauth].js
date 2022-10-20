@@ -26,7 +26,7 @@ export default NextAuth({
 
         console.debug("user :" + JSON.stringify(user))
 
-        if (!user) {
+        if ( user === null) {
           throw new Error('No user found!');
         }
 
@@ -38,6 +38,8 @@ export default NextAuth({
         if (!isValid) {
           throw new Error('Could not log you in!');
         }
+
+        console.debug("user :" + JSON.stringify(user))
 
         return { 
           email: credentials.email
