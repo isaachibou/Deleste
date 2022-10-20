@@ -61,8 +61,8 @@ export default NextAuth({
       return token;
     },
   },
-  secret: process.env.JWT_SECRET,
-  session: {
+/*  secret: "JeLb11t0mI44tTvv8LFrNkd2+eIuMOlJVYvyfYCbv+s=",
+*/  session: {
     strategy: 'jwt',
   },
   callbacks: {
