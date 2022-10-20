@@ -1,13 +1,16 @@
 {
-  "name": "Deleste",
-  "description": "A Next.js and Tailwind pack builder.",
-  "author": "Isaac Hibou",
+  "name": "nextjs-blog-theme",
+  "description": "A customizable Next.js and Tailwind blog starter. Designed by the Bejamas agency.",
+  "author": "Bejamas and Netlify Inc.",
   "contributors": [
-    "Isaac Hibou",
+    "Charlie Gerard",
+    "Prince Wilson",
+    "Tara Manicsic",
+    "Thom Krupa"
   ],
-  "homepage": "",
+  "homepage": "https://github.com/netlify-templates/nextjs-blog-theme",
   "bugs": {
-    "url": ""
+    "url": "https://github.com/netlify-templates/nextjs-blog-theme/issues"
   },
   "scripts": {
     "dev": "NODE_OPTIONS='--inspect' next dev",
