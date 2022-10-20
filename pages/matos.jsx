@@ -88,12 +88,12 @@ export default function Equips({ brands, equips, globalData }) {
         <div>
           <select name="types" id="itemTypes" className="basis-1/6 bg-transparent" onChange={fetchMatos}>
             {options.map((option) => (
-                <option value={option.value}>{option.label}</option>
+                <option key={option.value} value={option.value}>{option.label}</option>
               ))}
           </select>
           <select name="brands" id="itemBrands" className="basis-1/6 bg-transparent" onChange={fetchMatos}>
             {brands.map((brand) => (
-                <option value={brand}>{brand}</option>
+                <option key={brand}value={brand}>{brand}</option>
               ))}
           </select>
           
