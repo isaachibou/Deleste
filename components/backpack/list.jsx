@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import Divider from '@mui/material/Divider';
 import classes from './table.module.css';
 import RemoveOutlinedIcon from '@mui/icons-material/RemoveOutlined';
+import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 
 
 function BackpackList({data, setData, state, setState, bpName, setBpName, refresh }) {
@@ -14,8 +15,10 @@ function BackpackList({data, setData, state, setState, bpName, setBpName, refres
     	alert(`You have deleted ${id}`)
     	console.log('delete', result)
     	refresh()
+    	setState("")
     	return result
 	}
+
    
 	return(
 		<div className="mt-10">
@@ -24,18 +27,19 @@ function BackpackList({data, setData, state, setState, bpName, setBpName, refres
 	            My Backpacks
 	        </p>
 	        <Divider />
-	        <ul className="px-10 py-3 ">
-	       		<li className= {`hover:cursor-pointer  max-w-min whitespace-nowrap ${ state == null ? classes.active : "teub "}`}
-	        	 onClick={() => {setState('EMPTY'); setBpName("")}}>	       	      	  		
-	        	 <RemoveOutlinedIcon style={{ color: "#28384f"}} className="hover:cursor-pointer"  /*onClick={() => deleteBackpack(backpack._id)} *//>
-				<span className="hover:bg-pata-500" >New Backpack</span></li>	
+	        <ul className="px-10 py-3 ">	
 	        { data && (data.map((backpack) => (
 	        	<li key={backpack._id} className= {`hover:cursor-pointer  max-w-min whitespace-nowrap ${backpack._id == state? classes.active : "teub "}`}
 	        	 onClick={() => {setState(backpack._id); setBpName(backpack.name)}}>	        	      	  		
-	        	 <RemoveOutlinedIcon style={{ color: "#28384f" }} className="hover:cursor-pointer" onClick={() => { if (window.confirm('Are you sure you wish to delete this item?')) deleteBackpack(backpack._id) }}  /*onClick={() => deleteBackpack(backpack._id)} *//>
-				<span className="hover:bg-pata-500" >{backpack.name}</span></li>
+	        		<RemoveOutlinedIcon style={{ color: "#28384f" }} className="hover:cursor-pointer" onClick={() => { if (window.confirm('Are you sure you wish to delete this item?')) deleteBackpack(backpack._id) }}  /*onClick={() => deleteBackpack(backpack._id)} *//>
+					<span className="hover:bg-pata-500 px-2 " >{backpack.name}</span>
+				</li>
 	        )))}
-
+	        	<li className= {`hover:cursor-pointer  max-w-min whitespace-nowrap ${ state == "" ? classes.active : "teub "}`}
+	        	 onClick={() => {setState(''); setBpName("")}}>	       	      	  		
+	        		<AddOutlinedIcon style={{ color: "#28384f"}} className="hover:cursor-pointer"  /*onClick={() => setState("")}*/ />
+					<span className="hover:bg-pata-500 px-2" >New Backpack</span>
+				</li>	
 	       	</ul>
         </div>
 	)

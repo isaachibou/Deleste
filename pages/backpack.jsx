@@ -32,11 +32,18 @@ export default function Equips({  globalData, currentUser, equips, initTableData
 
   const emptyTableData = [
     { 
+        Type: "backpack",
+        Model: "",
+        quantity: "1"
+    },
+    { 
         Type: "sleepingbag",
+        Model: "",
         quantity: "1"
     },
     {
         Type: "sleepingmat",
+        Model: "",
         quantity: "1"
     }
   ];
@@ -127,6 +134,8 @@ export default function Equips({  globalData, currentUser, equips, initTableData
 
     // Refresh backpack list
     fetchBackpackList()
+    console.log("upserted id :", result.success.upsertedId)
+    setBpSelected(result.success.upsertedId)
   }
     
 
