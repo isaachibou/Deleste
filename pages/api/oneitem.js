@@ -23,7 +23,7 @@ export default async (req, res) => {
   }
 
   const equips = await client
-    .db("Délesté")
+    .db("Délesté"+process.env.NEXT_PUBLIC_DB_SUFFIX)
     .collection(String(collection))
     .findOne(
     {"Model": model},

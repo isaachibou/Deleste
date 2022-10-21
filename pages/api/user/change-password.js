@@ -23,7 +23,7 @@ async function handler(req, res) {
 
   const client = await clientPromise;
   
-  const db = client.db("Délesté");
+  const db = client.db("Délesté"+process.env.NEXT_PUBLIC_DB_SUFFIX);
 
   const usersCollection = db.collection('users');
 

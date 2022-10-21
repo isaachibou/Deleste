@@ -6,7 +6,7 @@ export default async (req, res) => {
   const client = await clientPromise;
 
     const equips = await client
-    .db("Délesté")
+    .db("Délesté"+process.env.NEXT_PUBLIC_DB_SUFFIX)
     .collection("SleepingPads")
     .find({Image: {$ne: null}})
     

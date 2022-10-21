@@ -25,7 +25,7 @@ export async function getData(type, brand) {
 
 	const client = await clientPromise;
   /*const equips = await client
-    .db("Délesté")
+    .db("Délesté"+process.env.NEXT_PUBLIC_DB_SUFFIX)
     .collection("Matos")
     .find({"Model":{$exists:true}, "Type": type == "all" ? {$exists:true} : type, "Brand": String(brand).toLowerCase() == "all" ? {$exists:true} : brand })
     .sort({ Model: 1, SKU: 1 })
@@ -59,7 +59,7 @@ export async function getData(type, brand) {
         },)
 
     const equips = await client
-    .db("Délesté")
+    .db("Délesté"+process.env.NEXT_PUBLIC_DB_SUFFIX)
     .collection("Matos")
     .aggregate(pipeline)
     .sort({ Model: 1, SKU: 1 })
@@ -71,7 +71,7 @@ export async function getData(type, brand) {
 export async function getAllBrands() {
   const client = await clientPromise;
   const brands = await client
-    .db("Délesté")
+    .db("Délesté"+process.env.NEXT_PUBLIC_DB_SUFFIX)
     .collection("Matos")
     .distinct("Brand")
     /*.toArray();*/
@@ -83,7 +83,7 @@ export async function getAllBrands() {
 export async function getAllModels(type) {
   const client = await clientPromise;
   const models = await client
-    .db("Délesté")
+    .db("Délesté"+process.env.NEXT_PUBLIC_DB_SUFFIX)
     .collection("Matos")
     .find({
       "Model":{$exists:true},
@@ -101,7 +101,7 @@ export async function getMatosByID(id) {
 	const client = await clientPromise;
 
 	let equips = await client
-    .db("Délesté")
+    .db("Délesté"+process.env.NEXT_PUBLIC_DB_SUFFIX)
     .collection("Matos")
     .findOne(
     	{ "_id": ObjectId(id) },
@@ -120,7 +120,7 @@ export async function getMatosByID(id) {
  
   if (equips == null) {
   	equips = await client
-    .db("Délesté")
+    .db("Délesté"+process.env.NEXT_PUBLIC_DB_SUFFIX)
     .collection("Matos")
     .findOne(
     	{ "_id": ObjectId(id) },
@@ -136,7 +136,7 @@ export async function getPrevMatos(id) {
 	const client = await clientPromise;
 
 	const prevMatos = await client
-    .db("Délesté")
+    .db("Délesté"+process.env.NEXT_PUBLIC_DB_SUFFIX)
     .collection("Matos")
     .find({"_id": {$gt: ObjectId(id)}, "Model": {$exists:true}})
     .project({_id: 1, Model: 1, Size: 1, Image: 1})
@@ -152,7 +152,7 @@ export async function getNextMatos(id) {
 	const client = await clientPromise;
  
 	 const nextMatos = await client
-    .db("Délesté")
+    .db("Délesté"+process.env.NEXT_PUBLIC_DB_SUFFIX)
     .collection("Matos")
     .find({"_id": {$lt: ObjectId(id)}, "Model": {$exists:true}})
     .project({_id: 1, Model: 1, Size: 1, Image: 1})

@@ -18,7 +18,7 @@ export default NextAuth({
       },*/
       async authorize(credentials) {
         const client = await clientPromise;
-        const usersCollection = client.db("Délesté").collection('users');
+        const usersCollection = client.db("Délesté"+process.env.NEXT_PUBLIC_DB_SUFFIX).collection('users');
 
         const user = await usersCollection.findOne({
           email: credentials.email, 
@@ -49,7 +49,7 @@ export default NextAuth({
     }),
   ],
   //adapter: MongoDBAdapter(clientPromise),
-  callbacks: {
+ /* callbacks: {
     session: async ({ session, token }) => {
       if (session?.user) {
         session.user.id = token.uid;
@@ -62,7 +62,7 @@ export default NextAuth({
       }
       return token;
     },
-  },
+  },*/
   secret: process.env.NEXT_PUBLIC_SECRET,
   session: {
     strategy: 'jwt',

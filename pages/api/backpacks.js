@@ -21,7 +21,7 @@ export async function getBackpacks(owner) {
 
     const client = await clientPromise;
     const backpacks = await client
-    .db("Délesté")
+    .db("Délesté"+process.env.NEXT_PUBLIC_DB_SUFFIX)
     .collection("Backpacks")
     .find({"owner": ObjectId(owner)})
     .toArray();
@@ -41,7 +41,7 @@ async function addBackpack(req, res) {
   
     //connect to database
     const client = await clientPromise;
-    const db = client.db("Délesté");
+    const db = client.db("Délesté"+process.env.NEXT_PUBLIC_DB_SUFFIX);
 
     //POST request
     const query = { name: bp.name };
@@ -69,7 +69,7 @@ async function deleteBackpack(req, res) {
 
     //connect to database
     const client = await clientPromise;
-    const db = client.db("Délesté");
+    const db = client.db("Délesté"+process.env.NEXT_PUBLIC_DB_SUFFIX);
 
     //DELETE request
     const response = await db.collection('Backpacks').deleteOne({ "_id": ObjectId(id) });

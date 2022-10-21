@@ -15,7 +15,7 @@ export async function getUserId(email) {
 	var collection ="users";
 	 
 	const userid = await client
-    .db("Délesté")
+    .db("Délesté"+process.env.NEXT_PUBLIC_DB_SUFFIX)
     .collection(String(collection))
     .findOne(
     	{ "email": email },

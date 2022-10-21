@@ -24,7 +24,7 @@ async function handler(req, res) {
 
   const client = await clientPromise;
   const existingUser = await client
-    .db("Délesté")
+    .db("Délesté"+process.env.NEXT_PUBLIC_DB_SUFFIX)
     .collection("users")
     .findOne({ email: email });
 
@@ -38,7 +38,7 @@ async function handler(req, res) {
   const hashedPassword = await hashPassword(password);
 
   const result = await client
-    .db("Délesté")
+    .db("Délesté"+process.env.NEXT_PUBLIC_DB_SUFFIX)
     .collection("users")
     .insertOne({
       email: email,

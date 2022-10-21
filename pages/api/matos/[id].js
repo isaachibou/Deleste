@@ -8,7 +8,7 @@ export default async function handler(req, res) {
   const client = await clientPromise;
 
   const equips = await client
-    .db("Délesté")
+    .db("Délesté"+process.env.NEXT_PUBLIC_DB_SUFFIX)
     .collection("Matos")
     .find({
       "_id": ObjectId({id}.id),

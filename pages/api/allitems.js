@@ -6,7 +6,7 @@ export default async (req, res) => {
   const client = await clientPromise;
  
   const equips = await client
-    .db("Délesté")
+    .db("Délesté"+process.env.NEXT_PUBLIC_DB_SUFFIX)
     .collection("Matos")
     .find({"Model":{$exists:true}})
     .project({Type: 1, Brand:1, Model: 1, "Weight (Metric)": 1, Size:1, Color: 1 })
