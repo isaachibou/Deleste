@@ -68,6 +68,7 @@ export default function Equips({  globalData, currentUser, equips, initTableData
     console.log(Debug)
   }
 
+
   const fetchBackpackList = async () => {
     console.log("fetch bp list")
     /*[TRY INSTEAD]

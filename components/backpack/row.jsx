@@ -88,7 +88,7 @@ function EquipRow({row, index, models, tableData, setTableData}) {
 				))}
 		  </select>
 	      <input className="min-w-0 basis-1/6 bg-transparent text-right placeholder:text-pata-400 hover:bg-pata-500"  type="text" placeholder="1" value={qty} onChange={(event) => (setQty(event.target.value))}/>
-	      <input name="weight" value={qty*parseFloat(row["Weight (Metric)"])} className="min-w-0 basis-1/6 bg-transparent text-right placeholder:text-pata-400 hover:bg-pata-500"  type="text" placeholder="1"/> 
+	      <input name="weight" value={1000*qty*parseFloat(row["Weight (Metric)"])} className="min-w-0 basis-1/6 bg-transparent text-right placeholder:text-pata-400 hover:bg-pata-500"  type="text" placeholder="1"/> 
 	      <input name="color" value={row["Color"]} className="min-w-0 basis-1/6 bg-transparent text-right placeholder:text-pata-400 hover:bg-pata-500"  type="text" placeholder="Black"/>
 	    </li>
 	)
