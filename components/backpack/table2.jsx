@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 
+
 function EquipTable({ }) {
 
 	const [data, setData] = useState([]);

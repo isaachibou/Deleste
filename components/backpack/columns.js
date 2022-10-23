@@ -1,0 +1,61 @@
+import ColumnFilter from './ColumnFilter';
+
+export const COLUMNS = [
+  {
+    Header: 'Type',
+    accessor: 'Type',
+    Footer: 'Type',
+    // Filter: ColumnFilter,
+    disableFilters: true
+  },
+  {
+    Header: 'Model',
+    accessor: 'Model',
+    Footer: 'Model'
+    // Filter: ColumnFilter
+  },
+  {
+    Header: 'Weight',
+    accessor: 'Weight (Metric)',
+    Footer: 'Weight'
+    // Filter: ColumnFilter
+  },
+  {
+    Header: 'Color',
+    accessor: 'Color',
+    Footer: 'Color',
+/*    Cell: ({ value }) => {
+      return format(new Date(value), 'dd/MM/yyyy');
+    }*/
+    // Filter: ColumnFilter
+  }
+];
+
+export const GROUPED_COLUMNS = [
+  {
+    Header: 'Id',
+    accessor: 'id',
+    Footer: 'Id'
+  },
+  {
+    Header: 'Name',
+    Footer: 'Name',
+    columns: [
+      { Header: 'שם פרטי', accessor: 'first_name', Footer: 'First Name' },
+      { Header: 'שם משפחה', accessor: 'last_name', Footer: 'Last Name' }
+    ]
+  },
+  {
+    Header: 'Info',
+    Footer: 'Info',
+    columns: [
+      {
+        Header: 'Date of Birth',
+        accessor: 'date_of_birth',
+        Footer: 'Date of Birth'
+      },
+      { Header: 'Country', accessor: 'country', Footer: 'Country' },
+      { Header: 'Phone', accessor: 'phone', Footer: 'Phone' }
+    ]
+  }
+];
