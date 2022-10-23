@@ -5,6 +5,7 @@ import { getGlobalData } from '../utils/global-data';
 import SEO from '../components/SEO';
 import StartingPageContent from '../components/starting-page/starting-page';
 import MenuDrawer from '../components/menu/PerstDrawer'
+import Table2 from '../components/backpack/table2'
  
 
 import Landscape from '../components/landscape/landscape'
@@ -19,7 +20,7 @@ export default function Index({ globalData }) {
       <Header name={globalData.blogTitle} title={globalData.blogSubtitle}/>
 
        <main className="">
-        
+        <Table2/>
          <div className="px-10 py-10 md:first:rounded-t-lg lg:last:rounded-b-lg backdrop-blur-lg bg-pata-100/30 hover:bg-gray/30 transition border border-pata-500 dark:border-white border-opacity-10 border-b-0 last:border-b hover:border-b hovered-sibling:border-t-0">
           <h2 className=" text-2xl md:text-3xl text-pata-400">Authenticate!</h2>
           <StartingPageContent />

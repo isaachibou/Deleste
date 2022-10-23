@@ -61,7 +61,7 @@ function EquipTable({ tableData, setTableData, models, bpName, setBpName }) {
 		    <RemoveOutlinedIcon style={{ color: "#28384f" }} className="hover:cursor-pointer hover:bg-pata-500" onClick={() => setTableData(tableData.slice(0,-1))	} />
 			<div className="flex flex-row"> 
         <span className="basis-3/6 text-right"></span>
-        <span className="basis-2/6 text-center border-[1px] border-pata-500 text-pata-500">Total Weight: {totalweight}</span>
+        <span className="basis-2/6 text-center border-[1px] border-pata-500 text-pata-500">Total Weight: {/*totalweight*/}</span>
       </div>
 			
 	    </div>
