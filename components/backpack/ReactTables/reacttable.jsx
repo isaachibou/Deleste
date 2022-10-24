@@ -9,9 +9,13 @@ import {
   useReactTable,
 } from '@tanstack/react-table'
 
-export function ReactTable({bpName, setBpName, refresh}) {
+export function ReactTable({parentData, bpName, models, setBpName, refresh}) {
 
-  const [dataMatos, setDataMatos] = useState([]);
+  console.log("parentData", parentData)
+
+  const [dataMatos, setDataMatos] = useState([parentData]);
+  const [typeOption, setTypeOption] = useState("backpack");
+  console.log("typeOption", typeOption)
 
   useEffect(() => {
     (async () => {
@@ -24,43 +28,67 @@ export function ReactTable({bpName, setBpName, refresh}) {
   const Matos = [
     "Type",
     "Model",
+    "Quantity",
     "Weight (Metric)",
     "Color",
   ]
 
-  const defaultData = [
-    {
-      Type: 'tanner',
-      Model: 'linsley',
-      "Weight (Metric)": 24,
-      Color: 100
-    },
-    {
-      Type: 'tandy',
-      Model: 'miller',
-      "Weight (Metric)": 40,
-      Color: 40
-    },
-    {
-      Type: 'joe',
-      Model: 'dirte',
-      "Weight (Metric)": 45,
-      Color: 20
-    },
-  ]
-
   const columnHelper = createColumnHelper(Matos)
 
+  const typeOptions = [
+    {
+      label: "Backpack",
+      value: "backpack",
+    },
+    {
+      label: "Bag",
+      value: "sleepingbag",
+    },
+    {
+      label: "Pad",
+      value: "sleepingmat",
+    },
+    {
+      label: "Pillows",
+      value: "pillow",
+    },
+    {
+      label: "Custom",
+      value: "custom",
+    }
+  ];
+/*
+  function handleTypeChange(event) {
+    console.log("its a change ! ", event.target.value)
+    console.log("test ", event.target)
+
+  }
+*/
   const columns = [
     columnHelper.accessor(row => row.Type, {
       id: 'Type',
-      cell: info => <i>{info.getValue()}</i>,
+      cell: info => //<i>{info.row.index}</i>,
+      <select name="types" id="rowTypes" className="basis-1/6 bg-transparent hover:bg-pata-500"/* onChange={handleTypeChange}*/>
+              {typeOptions?.map((option) => (
+                <option key={info.row.index} value={option.value}>{option.label}</option>
+              ))}
+      </select>,
       header: () => <span>Type</span>,
     }),
     columnHelper.accessor(row => row.Model, {
       id: 'Model',
-      cell: info => <i>{info.getValue()}</i>,
+      cell: info => 
+      <select name="rows" id="rowsFetched" className="basis-3/6 bg-transparent hover:bg-pata-500" /*value={modelOption} onChange={(event) => (setModelOption(event.target.value))}*/>
+        {models["sleepingmat"]?.map((option) => (
+        <option key={option.Model} value={option._id}> {option.Model} - {option.Size}</option>
+        ))}
+      </select>,
       header: () => <span>Model</span>,
+    }),
+    columnHelper.accessor(row => row.quantity, {
+      id: 'Quantity',
+      cell: info => 1,
+      header: () => <span>Qty</span>,
     }),
     columnHelper.accessor(row => row["Weight (Metric)"], {
       id: 'Weight (Metric)',
@@ -77,7 +105,7 @@ export function ReactTable({bpName, setBpName, refresh}) {
 
   /*const [data, setData] = React.useState(() => [...defaultData])*/
 const rerender = React.useReducer(() => ({}), {})[1]
-  let data = dataMatos 
+  let data = parentData 
   const table = useReactTable({
     data,
     columns,

@@ -5,7 +5,7 @@ import Link from 'next/link'
 import Image from "next/image"
 import { getGlobalData } from '../utils/global-data'
 import { getBackpacks} from './api/backpacks'
-import { getData} from './api/matos_2'
+import { getData, getAllModels } from './api/matos_2'
 import SEO from '../components/SEO'
 import MenuDrawer from '../components/menu/PerstDrawer'
 import BackpackListReact from '../components/backpack/ReactTables/backpacklist'
@@ -17,12 +17,38 @@ import Landscape from '../components/landscape/landscape'
 import Header from '../components/Header'
 
 
-export default function Equips({ globalData, data, backpacks }) {
+export default function Equips(props/*{ globalData, data, backpacks, itemModels }*/) {
 
   const [bpSelected, setBpSelected] = useState("");
-  const [bpList, setBpList] = useState(backpacks);
+  const [bpList, setBpList] = useState(props.backpacks);
   const [bpName, setBpName] = useState("Your equipment name here ...");
+  const [tableData, setTableData] = useState([
+    { 
+        _id: "62bc45991baf30a4a46d86e5",
+        Model: "Matelas NeoAir® XLite™",
+        Size: "Regular",
+        Color: "Lemon Curry",
+        "Weight (Metric)": "0.36 kg",
+        Type: "sleepingmat",
+        quantity: "1"
+    },
+    {
+        _id: "62bc46091baf30a4a46d8732",
+        Model: "Couverture Juno™",
+        Size: "No size",
+        Color: "Warp Speed Print, Fun Guy Print, Deep Pacific, Tidepool Print",
+        "Weight (Metric)": "0.38 kg",
+        Type: "sleepingbag",
+        quantity: "1"
+    }
+  ]);
 
+
+
+  const getUserId = async () => {
+    const session = await getSession();
+    return session.user.id;
+  }
 
   const fetchBackpackList = async () => {
     console.log("fetch bp list")
@@ -34,10 +60,32 @@ export default function Equips({ globalData, data, backpacks }) {
     setBpList(response)
   }
 
+  /* backpacks contains all bp from the logged in user
+   * bpSelected is the id of the backpack I clicked 
+   * on in the list */  
+  const fetchBackpackMatos = async () => {  
+    var bptodisplay = backpacks.find(backpack => {return backpack._id === bpSelected})
+    console.log("bptodisplay ", bptodisplay)
+    if (bptodisplay) {
+      let tempdata=[]
+      for (const [key, value] of Object.entries(bptodisplay.items)) {
+        var responsematos = await fetch('/api/matos_2?usecase=fillTable&id='+value._id, {headers: {'Content-Type': 'application/json'},method: 'GET'})
+        var matos = await responsematos.json();
+        matos["Type"] = key;
+        tempdata.push(matos);      
+      }
+      var target = Object.assign(tableData,tempdata)
+      console.log("fetch backpack items: " ,target)
+      setTableData(tempdata)  // And not target because it would not trigger any useeffect
+    } else {
+      setTableData(emptyTableData)
+    }
+  } 
+
   return (
     <Landscape>
     
-      <SEO title={globalData.name} description={globalData.blogTitle} /> 
+      <SEO title={props.globalData.name} description={props.globalData.blogTitle} /> 
 {/*      <Header name={globalData.blogTitle} title={globalData.blogSubtitle}/>
 */}
       <main  className="flex flex-col max-w-4xl w-full mx-auto ">
@@ -52,7 +100,7 @@ export default function Equips({ globalData, data, backpacks }) {
         </div>
         
         <div className="{classes.container} px-10 py-5 md:first:rounded-t-lg lg:last:rounded-b-lg backdrop-blur-lg bg-pata-100/30 hover:bg-gray/30 transition border border-pata-500 dark:border-white border-opacity-10 border-b-0 last:border-b hover:border-b hovered-sibling:border-t-0">
-          <TanStackTable data="data" bpName={bpName} setBpName={setBpName}/>
+          <TanStackTable parentData={tableData} models={props.itemModels} bpName={bpName} setBpName={setBpName}/>
         </div>
          
          {/*<div className="px-10 py-10 md:first:rounded-t-lg lg:last:rounded-b-lg backdrop-blur-lg bg-pata-100/30 hover:bg-gray/30 transition border border-pata-500 dark:border-white border-opacity-10 border-b-0 last:border-b hover:border-b hovered-sibling:border-t-0">
@@ -99,14 +147,21 @@ export async function getServerSideProps(context) {
 
   const session = await getSession(context);
   let currentUser=null;
-  if (session) {  currentUser = session.user.id };console.log("feef",session)
+  if (session) {  currentUser = session.user.id };
   const backpacks = session ? await getBackpacks(currentUser): []
 
+  const itemModels = new Object();
+  itemModels.pillow = await getAllModels("pillow");
+  itemModels.sleepingbag = await getAllModels("sleepingbag");
+  itemModels.sleepingmat = await getAllModels("sleepingmat");
+  
   return {
     props: {
       globalData,
       data: JSON.parse(JSON.stringify(data)),
       backpacks: JSON.parse(JSON.stringify(backpacks)),
+      itemModels: JSON.parse(JSON.stringify(itemModels))
+
     },
   };
 
