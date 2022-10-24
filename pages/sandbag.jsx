@@ -1,32 +1,58 @@
-import Link from 'next/link';
-import Image from "next/image";
-import ArrowIcon from '../components/ArrowIcon';
-import { getGlobalData } from '../utils/global-data';
-import SEO from '../components/SEO';
-import StartingPageContent from '../components/starting-page/starting-page';
+import clientPromise from "../utils/mongodb"
+import { getSession } from 'next-auth/react'
+import { useState, useEffect, useRef } from 'react'
+import Link from 'next/link'
+import Image from "next/image"
+import { getGlobalData } from '../utils/global-data'
+import { getBackpacks} from './api/backpacks'
+import { getData} from './api/matos_2'
+import SEO from '../components/SEO'
 import MenuDrawer from '../components/menu/PerstDrawer'
-import BasicTable from '../components/backpack/basictable'
-import TanStackTable from '../components/backpack/reacttable'
+import BackpackListReact from '../components/backpack/ReactTables/backpacklist'
+import BackpackList from "../components/backpack/ZakiTable/list";
 
- 
-
+import TanStackTable from '../components/backpack/ReactTables/reacttable'
+import classes from '../components/backpack/table.module.css'
 import Landscape from '../components/landscape/landscape'
 import Header from '../components/Header'
 
 
-export default function Index({ globalData }) {
+export default function Equips({ globalData, data, backpacks }) {
+
+  const [bpSelected, setBpSelected] = useState("");
+  const [bpList, setBpList] = useState(backpacks);
+  const [bpName, setBpName] = useState("Your equipment name here ...");
+
+
+  const fetchBackpackList = async () => {
+    console.log("fetch bp list")
+    /*[TRY INSTEAD]
+    const sessions = await getSession({ req })*/
+    const bps = await fetch('/api/backpacks?&owner='+currentUser, {headers: {'Content-Type': 'application/json'},method: 'GET'})
+    var response = await bps.json();
+    console.log("refresh bp list with", response)
+    setBpList(response)
+  }
+
   return (
     <Landscape>
     
       <SEO title={globalData.name} description={globalData.blogTitle} /> 
-      <Header name={globalData.blogTitle} title={globalData.blogSubtitle}/>
+{/*      <Header name={globalData.blogTitle} title={globalData.blogSubtitle}/>
+*/}
+      <main  className="flex flex-col max-w-4xl w-full mx-auto ">
 
-       <main className="">
-        <div className="{classes.container} px-10 py-10 md:first:rounded-t-lg lg:last:rounded-b-lg backdrop-blur-lg bg-pata-100/30 hover:bg-gray/30 transition border border-pata-500 dark:border-white border-opacity-10 border-b-0 last:border-b hover:border-b hovered-sibling:border-t-0">
-          <BasicTable/>
+        <h1 className="text-center text-pata-400 text-3xl lg:text-5xl">
+          <svg xmlns="http://www.w3.org/2000/svg" className="mr-1 scale-x-[-1] inline-flex align-baseline feather feather-feather" width="35" height="35" viewBox="0 0 24 24" fill="none" stroke="#28384f" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"  ><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path><line x1="16" y1="8" x2="2" y2="22"></line><line x1="17.5" y1="15" x2="9" y2="15"></line></svg>
+          Build your backpack
+        </h1>
+
+        <div className="{classes.container} px-10 py-5 mb-5 md:first:rounded-t-lg lg:last:rounded-b-lg backdrop-blur-lg bg-pata-100/30 hover:bg-gray/30 transition border border-pata-500 dark:border-white border-opacity-10 border-b-0 last:border-b hover:border-b hovered-sibling:border-t-0">
+          <BackpackList data={bpList} setData={setBpList} state={bpSelected} setState={setBpSelected} bpName={bpName} setBpName={setBpName} refresh={fetchBackpackList}/>
         </div>
-        <div className="{classes.container} px-10 py-10 md:first:rounded-t-lg lg:last:rounded-b-lg backdrop-blur-lg bg-pata-100/30 hover:bg-gray/30 transition border border-pata-500 dark:border-white border-opacity-10 border-b-0 last:border-b hover:border-b hovered-sibling:border-t-0">
-          <TanStackTable/>
+        
+        <div className="{classes.container} px-10 py-5 md:first:rounded-t-lg lg:last:rounded-b-lg backdrop-blur-lg bg-pata-100/30 hover:bg-gray/30 transition border border-pata-500 dark:border-white border-opacity-10 border-b-0 last:border-b hover:border-b hovered-sibling:border-t-0">
+          <TanStackTable data="data" bpName={bpName} setBpName={setBpName}/>
         </div>
          
          {/*<div className="px-10 py-10 md:first:rounded-t-lg lg:last:rounded-b-lg backdrop-blur-lg bg-pata-100/30 hover:bg-gray/30 transition border border-pata-500 dark:border-white border-opacity-10 border-b-0 last:border-b hover:border-b hovered-sibling:border-t-0">
@@ -65,8 +91,23 @@ export default function Index({ globalData }) {
   );
 }
 
-export function getStaticProps() {
+export async function getServerSideProps(context) {
   const globalData = getGlobalData();
-  console.log(globalData)
-  return { props: { globalData } };
+  const client = await clientPromise;
+
+  const data = await getData("sleepingmat")
+
+  const session = await getSession(context);
+  let currentUser=null;
+  if (session) {  currentUser = session.user.id };console.log("feef",session)
+  const backpacks = session ? await getBackpacks(currentUser): []
+
+  return {
+    props: {
+      globalData,
+      data: JSON.parse(JSON.stringify(data)),
+      backpacks: JSON.parse(JSON.stringify(backpacks)),
+    },
+  };
+
 }

@@ -17,8 +17,8 @@ import { getBackpacks} from './api/backpacks';
 import { getAllModels} from './api/matos_2';
 
 import SEO from '../components/SEO';
-import EquipTable from "../components/backpack/table";
-import BackpackList from "../components/backpack/list";
+import EquipTable from "../components/backpack/ZakiTable/table";
+import BackpackList from "../components/backpack/ZakiTable/list";
 
 import Divider from '@mui/material/Divider';
 
@@ -147,7 +147,7 @@ export default function Equips({  globalData, currentUser, equips, initTableData
           <h1 className="text-center text-pata-400 text-3xl lg:text-5xl">
             <svg xmlns="http://www.w3.org/2000/svg" className="mr-1 scale-x-[-1] inline-flex align-baseline feather feather-feather" width="35" height="35" viewBox="0 0 24 24" fill="none" stroke="#28384f" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"  ><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path><line x1="16" y1="8" x2="2" y2="22"></line><line x1="17.5" y1="15" x2="9" y2="15"></line></svg>
             Build your backpack
-            </h1>
+          </h1>
           <BackpackList data={bpList} setData={setBpList} state={bpSelected} setState={setBpSelected} bpName={bpName} setBpName={setBpName} refresh={fetchBackpackList}/>
           <EquipTable tableData={tableData} setTableData={setTableData} models={itemModels} bpName={bpName} setBpName={setBpName}/>
           <button className="my-5 mx-auto rounded-full bg-cyan-100 w-1/5 border-2 border-black" type="submit" onClick={handleSubmit}>Submit</button>

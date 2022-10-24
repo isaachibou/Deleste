@@ -1,7 +1,6 @@
 import { SessionProvider } from 'next-auth/react';
 import React from 'react';
 import '../styles/globals.css';
-import '../styles/table.css';
 import 'normalize.css/normalize.css';
 
 function MyApp({ Component, pageProps }) {

@@ -1,4 +1,4 @@
-import classes from './table.module.css';
+import classes from '../table.module.css';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import RemoveOutlinedIcon from '@mui/icons-material/RemoveOutlined';
 import { useState, useEffect, useRef } from 'react'
