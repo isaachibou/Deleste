@@ -43,7 +43,9 @@ export default function Equips(props/*{ globalData, data, backpacks, itemModels 
     }
   ]);
 
-
+  useEffect(async () => {     
+    fetchBackpackMatos()  
+  },[bpSelected])
 
   const getUserId = async () => {
     const session = await getSession();
@@ -64,7 +66,7 @@ export default function Equips(props/*{ globalData, data, backpacks, itemModels 
    * bpSelected is the id of the backpack I clicked 
    * on in the list */  
   const fetchBackpackMatos = async () => {  
-    var bptodisplay = backpacks.find(backpack => {return backpack._id === bpSelected})
+    var bptodisplay = props.backpacks.find(backpack => {return backpack._id === bpSelected})
     console.log("bptodisplay ", bptodisplay)
     if (bptodisplay) {
       let tempdata=[]
@@ -78,8 +80,9 @@ export default function Equips(props/*{ globalData, data, backpacks, itemModels 
       console.log("fetch backpack items: " ,target)
       setTableData(tempdata)  // And not target because it would not trigger any useeffect
     } else {
-      setTableData(emptyTableData)
+      //setTableData()
     }
+    console.log("fetched table data is ", tableData)
   } 
 
   return (
