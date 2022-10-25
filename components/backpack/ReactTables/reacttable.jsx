@@ -2,6 +2,8 @@ import * as React from 'react'
 import { useState, useEffect, useRef } from 'react'
 import Divider from '@mui/material/Divider';
 import DropdownCell from './dropdown'
+import DropdownTypeCell from './dropdowntype'
+
 
 import {
   createColumnHelper,
@@ -10,24 +12,7 @@ import {
   useReactTable,
 } from '@tanstack/react-table'
 
-export function ReactTable(props/*{parentData, bpName, models, setBpName, refresh}*/) {
-
-  console.log("models", props.models)
-  console.log("parentData", props.parentData)
-
-  const [dataMatos, setDataMatos] = useState([props.parentData]);
-  const [typeOption, setTypeOption] = useState("backpack");
-  console.log("typeOption", typeOption)
-
-  useEffect(() => {
-    (async () => {
-      const matos = await fetch('/api/matos_2?type=sleepingmat', {headers: {'Content-Type': 'application/json'},method: 'GET'})
-      var response = await matos.json();
-      setDataMatos(response)
-    })()
-  }, [])
-
-  const Matos = [
+const Matos = [
     "Type",
     "Model",
     "Quantity",
@@ -60,29 +45,24 @@ export function ReactTable(props/*{parentData, bpName, models, setBpName, refres
       value: "custom",
     }
   ];
-/*
-  function handleTypeChange(event) {
-    console.log("its a change ! ", event.target.value)
-    console.log("test ", event.target)
 
-  }
-*/
+export function ReactTable(props /*{parentData, bpName, models, setBpName, refresh}*/) {
+
+  console.log("models", props.models)
+  console.log("parentData", props.parentData)
+
+  const [dataMatos, setDataMatos] = useState(props.parentData)
+
   const columns = [
     columnHelper.accessor(row => row.Type, {
       id: 'Type',
       //cell: info => 1,
-      cell: info => <DropdownCell id="types" display="label" data={info.getValue()} options={typeOptions} index={info.row.index}/>,
+      cell: info => <DropdownTypeCell id="types" display="label" data={info.getValue()} tableData={dataMatos} setTableData={setDataMatos} options={typeOptions} index={info.row.index}/>,
       header: () => <span>Type</span>,
     }),
     columnHelper.accessor(row => row.Model, {
       id: 'Model',
       cell: info => <DropdownCell id="models" display="Model" data={info.getValue()} options={props.models[info.row.getValue("Type")]} index={info.row.index}/>,
-    /*cell: info => 
-      <select name="rows" id="rowsFetched" className="basis-3/6 bg-transparent hover:bg-pata-500" value={info.getValue()} onChange={(event) => (setModelOption(event.target.value))}>
-        {props.models[info.row.getValue("Type")]?.map((option) => (
-        <option key={info.row.index} value={option.Model}> {option.Model} - {option.Size}</option>
-        ))}
-      </select>,*/
       header: () => <span>Model</span>,
     }),
     columnHelper.accessor(row => row.quantity, {
@@ -107,16 +87,16 @@ export function ReactTable(props/*{parentData, bpName, models, setBpName, refres
     }),*/
      
   ]
+  const rerender = React.useReducer(() => ({}), {})[1]
 
-  /*const [data, setData] = React.useState(() => [...defaultData])*/
-const rerender = React.useReducer(() => ({}), {})[1]
-  let data = props.parentData 
+  let data = props.parentData
+ 
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
   })
-
+  
   return (
     <div className="p-2">
       <div className="flex flex-row">

@@ -2,12 +2,16 @@ import * as React from 'react'
 import { useState, useEffect, useRef } from 'react'
 
 function DropdownCell(props) {
+	console.log("PROPS ", props)
 	const [option, setOption] = useState(props.data);
 
 	function handleChange(event) {
-		console.log("its a change ! ", event.target.value)
-    	setOption(event.target.value);
+		console.log("its a change ! "+ event.target.value)
+    //	setOption(event.target.value);
   	}
+
+  
+
 
 	return (
 		 
