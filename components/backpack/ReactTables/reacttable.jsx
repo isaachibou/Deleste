@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { useState, useEffect, useRef } from 'react'
 import Divider from '@mui/material/Divider';
+import DropdownCell from './dropdown'
 
 import {
   createColumnHelper,
@@ -69,23 +70,19 @@ export function ReactTable(props/*{parentData, bpName, models, setBpName, refres
   const columns = [
     columnHelper.accessor(row => row.Type, {
       id: 'Type',
-      cell: info => //<i>{info.row.index}</i>,
-      <select name="types" id="rowTypes" className="basis-1/6 bg-transparent hover:bg-pata-500" value={info.getValue()}/* onChange={handleTypeChange}*/>
-        {typeOptions?.map((option) => (
-          <option key={info.row.index} value={option.value}>{option.label}</option>
-        ))}
-      </select>,
+      //cell: info => 1,
+      cell: info => <DropdownCell id="types" display="label" data={info.getValue()} options={typeOptions} index={info.row.index}/>,
       header: () => <span>Type</span>,
     }),
     columnHelper.accessor(row => row.Model, {
       id: 'Model',
-      cell: info => 
-      <select name="rows" id="rowsFetched" className="basis-3/6 bg-transparent hover:bg-pata-500" value={info.getValue()} /*onChange={(event) => (setModelOption(event.target.value))}*/>
+      cell: info => <DropdownCell id="models" display="Model" data={info.getValue()} options={props.models[info.row.getValue("Type")]} index={info.row.index}/>,
+    /*cell: info => 
+      <select name="rows" id="rowsFetched" className="basis-3/6 bg-transparent hover:bg-pata-500" value={info.getValue()} onChange={(event) => (setModelOption(event.target.value))}>
         {props.models[info.row.getValue("Type")]?.map((option) => (
         <option key={info.row.index} value={option.Model}> {option.Model} - {option.Size}</option>
         ))}
-
-      </select>,
+      </select>,*/
       header: () => <span>Model</span>,
     }),
     columnHelper.accessor(row => row.quantity, {
@@ -103,11 +100,11 @@ export function ReactTable(props/*{parentData, bpName, models, setBpName, refres
       cell: info => <i>{info.getValue()}</i>,
       header: () => <span>Color</span>,
     }),
-    columnHelper.accessor(row => row.Model, {
+    /*columnHelper.accessor(row => row.Model, {
       id: 'Test',
       cell: info => <i>{info.row.getValue("Type")}</i>,
       header: () => <span>Test</span>,
-    }),
+    }),*/
      
   ]
 
@@ -132,7 +129,7 @@ const rerender = React.useReducer(() => ({}), {})[1]
           {table.getHeaderGroups().map(headerGroup => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map(header => (
-                <th key={header.id}>
+                <th key={header.id} className="whitespace-nowrap">
                   {header.isPlaceholder
                     ? null
                     : flexRender(
@@ -148,7 +145,7 @@ const rerender = React.useReducer(() => ({}), {})[1]
           {table.getRowModel().rows.map(row => (
             <tr key={row.id}>
               {row.getVisibleCells().map(cell => (
-                <td key={cell.id}>
+                <td key={cell.id} className="min-w-full">
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
               ))}
