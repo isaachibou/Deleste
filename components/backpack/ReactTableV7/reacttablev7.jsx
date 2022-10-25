@@ -1,38 +1,6 @@
 import * as React from 'react'
 import { useTable } from 'react-table'
 
-// Create an editable cell renderer
-const EditableCell = ({
-  value: initialValue,
-  row: { index },
-  column: { id },
-  updateMyData, // This is a custom function that we supplied to our table instance
-}) => {
-  // We need to keep and update the state of the cell normally
-  const [value, setValue] = React.useState(initialValue)
-
-  const onChange = e => {
-    setValue(e.target.value)
-  }
-
-  // We'll only update the external data when the input is blurred
-  const onBlur = () => {
-    updateMyData(index, id, value)
-  }
-
-  // If the initialValue is changed external, sync it up with our state
-  React.useEffect(() => {
-    setValue(initialValue)
-  }, [initialValue])
-
-  return <input className="max-w-[50px] block bg-transparent hover:bg-pata-500 cursor-pointer" value={value} onChange={onChange} onBlur={onBlur} />
-}
-
-// Set our editable cell renderer as the default Cell renderer
-const defaultColumn = {
-  Cell: EditableCell,
-}
-
 export default function Table({ columns, data, updateMyData }) {
   // Use the state and functions returned from useTable to build your UI
   const {
@@ -43,7 +11,6 @@ export default function Table({ columns, data, updateMyData }) {
     prepareRow,
   } = useTable({
     columns,
-    defaultColumn,
     data,
     // updateMyData isn't part of the API, but
   	// anything we put into these options will

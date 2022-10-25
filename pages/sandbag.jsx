@@ -105,33 +105,57 @@ export default function Equips(props/*{ globalData, data, backpacks, itemModels 
       })
     )
   }
+  
+  const EditableCell = ({
+  value: initialValue,
+  row: { index },
+  column: { id },
+  updateMyData, // This is a custom function that we supplied to our table instance
+}) => {
+  // We need to keep and update the state of the cell normally
+  const [value, setValue] = React.useState(initialValue)
+
+  const onChange = e => {
+    setValue(e.target.value)
+  }
+
+  // We'll only update the external data when the input is blurred
+  const onBlur = () => {
+    updateMyData(index, id, value)
+  }
+
+  // If the initialValue is changed external, sync it up with our state
+  React.useEffect(() => {
+    setValue(initialValue)
+  }, [initialValue])
+
+  return <input className="max-w-[50px] block bg-transparent hover:bg-pata-500 cursor-pointer" value={value} onChange={onChange} onBlur={onBlur} />
+}
+
   const columns = React.useMemo(
     () => [
       {
         Header: 'Type',
         accessor: 'Type',
-        Cell: ({ value }) => <span>{String(value)}</span>
       },
       {
         Header: 'Model',
         accessor: 'Model',
-        Cell: ({ value }) => <span>{String(value)}</span>
 
       },
       {
         Header: 'Qty',
         accessor: 'quantity',
+        Cell: ({value, row,column}) => <EditableCell value={value} row={row} column={column} updateMyData={updateMyData}/>
       },
       {
         Header: 'Weight (g)',
         accessor: 'Weight (Metric)',
-        Cell: ({ value }) => <span>{String(value)}</span>
 
       },
       {
         Header: 'Color',
         accessor: 'Color',
-        Cell: ({ value }) => <span>{String(value)}</span>
       }
     ],
     []
