@@ -9,7 +9,7 @@ import {
   createColumnHelper,
   flexRender,
   getCoreRowModel,
-  useReactTable,
+  useReactTablev8,
 } from '@tanstack/react-table'
 
 const Matos = [
@@ -46,7 +46,7 @@ const Matos = [
     }
   ];
 
-export function ReactTable(props /*{parentData, bpName, models, setBpName, refresh}*/) {
+export function ReactTablev8(props /*{parentData, bpName, models, setBpName, refresh}*/) {
 
   console.log("models", props.models)
   console.log("parentData", props.parentData)
@@ -91,7 +91,7 @@ export function ReactTable(props /*{parentData, bpName, models, setBpName, refre
 
   let data = props.parentData
  
-  const table = useReactTable({
+  const table = useReactTablev8({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
@@ -125,7 +125,7 @@ export function ReactTable(props /*{parentData, bpName, models, setBpName, refre
           {table.getRowModel().rows.map(row => (
             <tr key={row.id}>
               {row.getVisibleCells().map(cell => (
-                <td key={cell.id} className="min-w-full">
+                <td key={cell.id} className=" min-w-full">
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
               ))}
@@ -157,4 +157,4 @@ export function ReactTable(props /*{parentData, bpName, models, setBpName, refre
   )
 }
 
-export default ReactTable;
+export default ReactTablev8;
