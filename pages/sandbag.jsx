@@ -9,7 +9,7 @@ import { getBackpacks} from './api/backpacks'
 import { getData, getAllModels } from './api/matos_2'
 import SEO from '../components/SEO'
 import MenuDrawer from '../components/menu/PerstDrawer'
-import BackpackList from "../components/backpack/ZakiTable/list"
+import BackpackList from "../components/backpack/list"
 import ReactTablev8 from '../components/backpack/ReactTableV8/reacttablev8'
 import ReactTablev7 from '../components/backpack/ReactTableV7/reacttablev7'
 import classes from '../components/backpack/table.module.css'
@@ -318,17 +318,7 @@ export default function Equips(props) {
           <svg xmlns="http://www.w3.org/2000/svg" className="mr-1 scale-x-[-1] inline-flex align-baseline feather feather-feather" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#d3a38f" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" class="feather feather-feather"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path><line x1="16" y1="8" x2="2" y2="22"></line><line x1="17.5" y1="15" x2="9" y2="15"></line></svg>
             {totalWeight<10000?totalWeight+" g":totalWeight/1000+" kg"} 
           </span>
-        </div>
-
-        
-
-        {/*
-        // V8 beta too soon<div className="{classes.container} px-10 py-5 md:first:rounded-t-lg lg:last:rounded-b-lg backdrop-blur-lg bg-pata-100/30 hover:bg-gray/30 transition border border-pata-500 dark:border-white border-opacity-10 border-b-0 last:border-b hover:border-b hovered-sibling:border-t-0">
-          <ReactTablev8 parentData={tableData} models={props.itemModels} bpName={bpName} setBpName={setBpName}/>
-        </div>*/}
-         
-        
-        
+        </div>    
       </main>
     </Landscape>
   );

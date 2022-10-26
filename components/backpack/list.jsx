@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import Divider from '@mui/material/Divider';
-import classes from '../table.module.css';
+import classes from './table.module.css';
 import RemoveOutlinedIcon from '@mui/icons-material/RemoveOutlined';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 
