@@ -93,9 +93,13 @@ export default function Equips(props/*{ globalData, data, backpacks, itemModels 
 
   const updateMyData = (rowIndex, columnId, value) => {
     // We also turn on the flag to not reset the page
-    setTableData(old =>
+        setTableData(old =>
       old.map((row, index) => {
         if (index === rowIndex) {
+          if(columnId == "Type") {
+            console.log("\n! Type just changed \n")
+            console.log("-- " + old[rowIndex].Model)
+          }
           return {
             ...old[rowIndex],
             [columnId]: value,
@@ -105,62 +109,109 @@ export default function Equips(props/*{ globalData, data, backpacks, itemModels 
       })
     )
   }
+
+  const typeOptions = [
+    {label: "Backpack",value: "backpack",},
+    {label: "Bag",value: "sleepingbag",},
+    {label: "Pad",value: "sleepingmat",},
+    {label: "Pillows",value: "pillow",},
+    {label: "Custom",value: "custom",}  
+  ];
+
+  const DropdownCell = ({
+    value: initialValue,
+    options: options,
+    row: { index },
+    column: { id },
+    display,
+    updateMyData,
+    }) => {
+      // We need to keep and update the state of the cell normally
+      const [value, setValue] = React.useState(initialValue)
+
+      const onChange = e => {
+        setValue(e.target.value)
+      }
+
+      
+
+      React.useEffect(() => {
+        updateMyData(index, id, value)
+      },[value])
+
+      // If the initialValue is changed external, sync it up with our state
+      React.useLayoutEffect(() => {
+        setValue(initialValue)
+      }, [initialValue])
+
+      return (
+        <select className="min-w-full basis-1/6 bg-transparent hover:bg-pata-500" value={value} onChange={onChange}>
+          {options?.map((option) => (
+              <option key={props.index} value={option.value}>{option.label?option.label:option.Model}</option>
+          ))}
+        </select>
+      )
+
+    }
+  
   
   const EditableCell = ({
-  value: initialValue,
-  row: { index },
-  column: { id },
-  updateMyData, // This is a custom function that we supplied to our table instance
-}) => {
-  // We need to keep and update the state of the cell normally
-  const [value, setValue] = React.useState(initialValue)
+    value: initialValue,
+    row: { index },
+    column: { id },
+    updateMyData, // This is a custom function that we supplied to our table instance
+    }) => {
+      // We need to keep and update the state of the cell normally
+      const [value, setValue] = React.useState(initialValue)
 
-  const onChange = e => {
-    setValue(e.target.value)
-  }
-
-  // We'll only update the external data when the input is blurred
-  const onBlur = () => {
-    updateMyData(index, id, value)
-  }
-
-  // If the initialValue is changed external, sync it up with our state
-  React.useEffect(() => {
-    setValue(initialValue)
-  }, [initialValue])
-
-  return <input className="max-w-[50px] block bg-transparent hover:bg-pata-500 cursor-pointer" value={value} onChange={onChange} onBlur={onBlur} />
-}
-
-  const columns = React.useMemo(
-    () => [
-      {
-        Header: 'Type',
-        accessor: 'Type',
-      },
-      {
-        Header: 'Model',
-        accessor: 'Model',
-
-      },
-      {
-        Header: 'Qty',
-        accessor: 'quantity',
-        Cell: ({value, row,column}) => <EditableCell value={value} row={row} column={column} updateMyData={updateMyData}/>
-      },
-      {
-        Header: 'Weight (g)',
-        accessor: 'Weight (Metric)',
-
-      },
-      {
-        Header: 'Color',
-        accessor: 'Color',
+      const onChange = e => {
+        setValue(e.target.value)
       }
-    ],
-    []
-  )
 
+      // We'll only update the external data when the input is blurred
+      const onBlur = () => {
+        updateMyData(index, id, value)
+      }
+
+      // If the initialValue is changed external, sync it up with our state
+      React.useEffect(() => {
+        setValue(initialValue)
+      }, [initialValue])
+
+      return <input className="max-w-[50px] block bg-transparent hover:bg-pata-500 cursor-pointer" value={value} onChange={onChange} onBlur={onBlur} />
+    }
+
+    const columns = React.useMemo(
+      () => [
+        {
+          Header: 'Type',
+          accessor: 'Type',
+          Cell: ({value, row,column}) => <DropdownCell value={value} options={typeOptions} row={row} column={column} updateMyData={updateMyData}/>
+
+        },
+        {
+          Header: 'Model',
+          accessor: 'Model',
+          Cell: ({value, row,column}) => <DropdownCell value={value} options={props.itemModels[row.original.Type]} row={row} column={column} updateMyData={updateMyData}/>
+        },
+        {
+          Header: 'Qty',
+          accessor: 'quantity',
+          Cell: ({value, row,column}) => <EditableCell value={value} row={row} column={column} updateMyData={updateMyData}/>
+        },
+        {
+          Header: 'Weight (g)',
+          accessor: 'Weight (Metric)',
+
+        },
+        {
+          Header: 'Color',
+          accessor: 'Color',
+        }
+      ],
+      []
+    )
+  
   return (
     <Landscape>
     

@@ -11,6 +11,7 @@ export default function Table({ columns, data, updateMyData }) {
     prepareRow,
   } = useTable({
     columns,
+    //defaultColumn,
     data,
     // updateMyData isn't part of the API, but
   	// anything we put into these options will
