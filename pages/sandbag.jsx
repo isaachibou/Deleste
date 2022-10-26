@@ -16,6 +16,8 @@ import classes from '../components/backpack/table.module.css'
 import Landscape from '../components/landscape/landscape'
 import Header from '../components/Header'
 import Divider from '@mui/material/Divider';
+import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
+import RemoveOutlinedIcon from '@mui/icons-material/RemoveOutlined';
 
 
 export default function Equips(props) {
@@ -61,7 +63,7 @@ export default function Equips(props) {
     console.log("fetch bp list")
     /*[TRY INSTEAD]
     const sessions = await getSession({ req })*/
-    const bps = await fetch('/api/backpacks?&owner='+currentUser, {headers: {'Content-Type': 'application/json'},method: 'GET'})
+    const bps = await fetch('/api/backpacks?&owner='+props.currentUser, {headers: {'Content-Type': 'application/json'},method: 'GET'})
     var response = await bps.json();
     console.log("refresh bp list with", response)
     setBpList(response)
@@ -89,6 +91,47 @@ export default function Equips(props) {
       //setTableData()
     }
     console.log("fetched table data is ", tableData)
+  }
+
+  const handleSubmit = async () => {
+    var rows = document.querySelectorAll("li")
+    var nameselector = document.querySelector("input[name='EquipmentName']");
+    let equipName = nameselector.value; 
+
+    console.log("tableData in submit", tableData)
+      
+    var backpackObject = {
+      owner: await getUserId (),
+      name: equipName,
+      items: {
+      } 
+    };
+
+    // this system does not let you add several sleepingbags for example... work on that
+    for(let item of tableData) {
+      backpackObject.items[item.Type] = {};
+      backpackObject.items[item.Type]._id = item._id
+      backpackObject.items[item.Type].quantity = item.quantity
+    }
+
+    const JSONdata = JSON.stringify(backpackObject)
+
+    const response = await fetch('/api/backpacks', {
+      body: JSONdata,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      method: 'POST',
+    })
+
+    const result = await response.json()
+    alert(`You have updated ${equipName}`)
+    console.log('upsert', JSONdata)
+
+    // Refresh backpack list
+    fetchBackpackList()
+    console.log("upserted id :", result.success.upsertedId)
+    setBpSelected(result.success.upsertedId)
   } 
 
   const updateMyData = (rowIndex, columnId, value) => {
@@ -215,8 +258,10 @@ export default function Equips(props) {
         {
           Header: 'Weight (g)',
           accessor: 'Weight (Metric)',
-          Cell: ({value, row,column}) => parseInt(row.original.quantity)*parseFloat(value)*1000
-
+          Cell: ({value, row,column}) => {
+            let weight= parseInt(row.original.quantity)*parseFloat(value)*1000
+            return weight?weight:0
+          }
         },
         {
           Header: 'Color',
@@ -246,7 +291,14 @@ export default function Equips(props) {
             </div>
             <Divider />
             <ReactTablev7 columns={columns} data={tableData} updateMyData={updateMyData} bpName={bpName} setBpName={setBpName} />
-          </div>
+            <Divider />
+            <AddOutlinedIcon style={{ color: "#28384f" }} className="hover:cursor-pointer hover:bg-pata-500" onClick={() => setTableData([...tableData,{ _id: "", Model: "", Size: "", Color: "", "": "", type: "custom", quantity: "1" }])} />
+            <RemoveOutlinedIcon style={{ color: "#28384f" }} className="hover:cursor-pointer hover:bg-pata-500" onClick={() => setTableData(tableData.slice(0,-1))  } />
+        </div>
+
+        <button className="my-5 mx-auto rounded-full bg-cyan-100 w-1/5 border-2 border-black" type="submit" onClick={handleSubmit}>Submit</button>
+{/*     <button className="my-5 mx-auto rounded-full bg-cyan-100 w-1/5 border-2 border-black" type="submit" onClick={debug}>Debug</button>          
+*/}  
         
 
         {/*
