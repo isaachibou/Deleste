@@ -9,16 +9,16 @@ import { getBackpacks} from './api/backpacks'
 import { getData, getAllModels } from './api/matos_2'
 import SEO from '../components/SEO'
 import MenuDrawer from '../components/menu/PerstDrawer'
-import BackpackList from "../components/backpack/ZakiTable/list";
-
+import BackpackList from "../components/backpack/ZakiTable/list"
 import ReactTablev8 from '../components/backpack/ReactTableV8/reacttablev8'
 import ReactTablev7 from '../components/backpack/ReactTableV7/reacttablev7'
 import classes from '../components/backpack/table.module.css'
 import Landscape from '../components/landscape/landscape'
 import Header from '../components/Header'
+import Divider from '@mui/material/Divider';
 
 
-export default function Equips(props/*{ globalData, data, backpacks, itemModels }*/) {
+export default function Equips(props) {
 
   const [bpSelected, setBpSelected] = useState("");
   const [bpList, setBpList] = useState(props.backpacks);
@@ -192,6 +192,8 @@ export default function Equips(props/*{ globalData, data, backpacks, itemModels 
       return <input className="max-w-[50px] block bg-transparent hover:bg-pata-500 cursor-pointer" value={value} onChange={onChange} onBlur={onBlur} />
     }
 
+    
+
     const columns = React.useMemo(
       () => [
         {
@@ -213,6 +215,7 @@ export default function Equips(props/*{ globalData, data, backpacks, itemModels 
         {
           Header: 'Weight (g)',
           accessor: 'Weight (Metric)',
+          Cell: ({value, row,column}) => parseInt(row.original.quantity)*parseFloat(value)*1000
 
         },
         {
@@ -238,7 +241,12 @@ export default function Equips(props/*{ globalData, data, backpacks, itemModels 
         </div>
 
         <div className="{classes.container} px-10 py-5 md:first:rounded-t-lg lg:last:rounded-b-lg backdrop-blur-lg bg-pata-100/30 hover:bg-gray/30 transition border border-pata-500 dark:border-white border-opacity-10 border-b-0 last:border-b hover:border-b hovered-sibling:border-t-0">
-          <ReactTablev7 columns={columns} data={tableData} updateMyData={updateMyData} />
+          <div className="flex flex-row">
+            <svg xmlns="http://www.w3.org/2000/svg" className="scale-x-[-1] inline-flex align-baseline feather feather-feather" width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#28384f" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"  ><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path><line x1="16" y1="8" x2="2" y2="22"></line><line x1="17.5" y1="15" x2="9" y2="15"></line></svg>
+            <input name="EquipmentName" className="min-w-max ml-1 whitespace-nowrap w-52 text-left text-pata-400 text-xl bg-transparent  placeholder:text-pata-400" value={bpName} onChange={((e) => setBpName(e.target.value))} type="text" placeholder="Your equipment name here ..."/>
+          </div>
+          <Divider />
+          <ReactTablev7 columns={columns} data={tableData} updateMyData={updateMyData} bpName={bpName} setBpName={setBpName} />
         </div>*
         
 
@@ -276,7 +284,6 @@ export async function getServerSideProps(context) {
       data: JSON.parse(JSON.stringify(data)),
       backpacks: JSON.parse(JSON.stringify(backpacks)),
       itemModels: JSON.parse(JSON.stringify(itemModels))
-
     },
   };
 

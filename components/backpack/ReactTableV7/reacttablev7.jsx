@@ -2,7 +2,8 @@ import * as React from 'react'
 import { useTable } from 'react-table'
 
 export default function Table({ columns, data, updateMyData }) {
-  // Use the state and functions returned from useTable to build your UI
+  
+  // Use the state and functions returned from useTable to build your UI  
   const {
     getTableProps,
     getTableBodyProps,
@@ -23,12 +24,12 @@ export default function Table({ columns, data, updateMyData }) {
 
   // Render the UI for your table
   return (
-    <table className="mx-auto" {...getTableProps()}>
+    <table className="mx-auto my-3" {...getTableProps()}>
       <thead>
         {headerGroups.map(headerGroup => (
-          <tr className="whitespace-nowrap" {...headerGroup.getHeaderGroupProps()}>
+          <tr className="whitespace-nowrap text-left" {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map(column => (
-              <th {...column.getHeaderProps()}>{column.render('Header')}</th>
+              <th className="px-3" {...column.getHeaderProps()}>{column.render('Header')}</th>
             ))}
           </tr>
         ))}
