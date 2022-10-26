@@ -93,12 +93,22 @@ export default function Equips(props/*{ globalData, data, backpacks, itemModels 
 
   const updateMyData = (rowIndex, columnId, value) => {
     // We also turn on the flag to not reset the page
+    console.log(tableData)
         setTableData(old =>
       old.map((row, index) => {
         if (index === rowIndex) {
-          if(columnId == "Type") {
-            console.log("\n! Type just changed \n")
-            console.log("-- " + old[rowIndex].Model)
+          if(columnId == "Model") {
+            if(props.itemModels[row.Type]) {
+                var item = props.itemModels[row.Type].find(item => item._id === value);
+                Object.assign(row,item)
+              } else { console.log("no models available for this item type")}
+          }
+         if(columnId == "Type") {
+          console.log("value")
+          if(props.itemModels[row.Type]) {
+            var item = props.itemModels[value][0]
+            Object.assign(row,item)
+            } else { console.log("no models available for this item type")}
           }
           return {
             ...old[rowIndex],
@@ -130,6 +140,7 @@ export default function Equips(props/*{ globalData, data, backpacks, itemModels 
       const [value, setValue] = React.useState(initialValue)
 
       const onChange = e => {
+        console.log("onChange from dropdowncell ", value)
         setValue(e.target.value)
       }
 
@@ -147,7 +158,7 @@ export default function Equips(props/*{ globalData, data, backpacks, itemModels 
       return (
         <select className="min-w-full basis-1/6 bg-transparent hover:bg-pata-500" value={value} onChange={onChange}>
           {options?.map((option) => (
-              <option key={props.index} value={option.value}>{option.label?option.label:option.Model}</option>
+              <option key={props.index} value={option._id?option._id:option.value}>{option.label?option.label:option.Model}</option>
           ))}
         </select>
       )
