@@ -24,12 +24,12 @@ export default function Table({ columns, data, updateMyData }) {
 
   // Render the UI for your table
   return (
-    <table className="mx-auto my-3" {...getTableProps()}>
+    <table className=" my-3" {...getTableProps()}>
       <thead>
         {headerGroups.map(headerGroup => (
-          <tr className="whitespace-nowrap text-left" {...headerGroup.getHeaderGroupProps()}>
+          <tr className="whitespace-nowrap text-left " {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map(column => (
-              <th className="px-3" {...column.getHeaderProps()}>{column.render('Header')}</th>
+              <th className="px-3 font-normal underline underline-offset-3" {...column.getHeaderProps()}>{column.render('Header')}</th>
             ))}
           </tr>
         ))}
