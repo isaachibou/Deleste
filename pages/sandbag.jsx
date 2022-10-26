@@ -10,7 +10,6 @@ import { getData, getAllModels } from './api/matos_2'
 import SEO from '../components/SEO'
 import MenuDrawer from '../components/menu/PerstDrawer'
 import BackpackList from "../components/backpack/list"
-import ReactTablev8 from '../components/backpack/ReactTableV8/reacttablev8'
 import ReactTablev7 from '../components/backpack/ReactTableV7/reacttablev7'
 import classes from '../components/backpack/table.module.css'
 import Landscape from '../components/landscape/landscape'
