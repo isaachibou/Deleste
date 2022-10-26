@@ -17,8 +17,7 @@ export default function Index({ globalData }) {
       <Header name={globalData.blogTitle} title={globalData.blogSubtitle}/>
 
 
-       <main className="">
-         
+      <main className="">
         <StartingPageContent />
       </main>
     </Landscape>

@@ -30,38 +30,15 @@ function StartingPageContent() {
   return (
     <section className="">
     <div className="md:first:rounded-t-lg lg:last:rounded-b-lg backdrop-blur-lg bg-pata-100/30 hover:bg-gray/30 transition border border-pata-500 dark:border-white border-opacity-10 border-b-0 last:border-b hover:border-b hovered-sibling:border-t-0">
+     <Link href="https://www.pinterest.fr/pascalpiat/landing-page-inspiration/" >
       <a className="py-6 lg:py-10 px-6 lg:px-16 block focus:outline-none focus:ring-4">
-        <h2 className="text-2xl md:text-3xl text-pata-400">Welcome !</h2>
-        <p className="mt-3 text-lg opacity-60">Feel free to navigate in this website, It is a summer project I am still working on.<br/>
-        Here you can explore all the equipments and their characteristics that I gathered, build a backpack or several and visualize them.
-        <br/>Soon a feature about food packing will be there as well !</p>
+        <h2 className="text-2xl md:text-3xl text-pata-400">Inspiration pour la Landing Page !</h2>
+        <p className="mt-3 text-lg opacity-60">https://www.pinterest.fr/pascalpiat/landing-page-inspiration/</p>
         <ArrowIcon className="mt-4" />
       </a>
-      </div>
-      <div className="md:first:rounded-t-lg lg:last:rounded-b-lg backdrop-blur-lg bg-pata-100/30 hover:bg-gray/30 transition border border-pata-500 dark:border-white border-opacity-10 border-b-0 last:border-b hover:border-b hovered-sibling:border-t-0">
-        <a className="py-6 lg:py-10 px-6 lg:px-16 block focus:outline-none focus:ring-4">
-          <h2 className="text-2xl md:text-3xl text-pata-400">Allez !</h2>
-          <p className="mt-3 text-lg opacity-60">
-          Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper
-          eget nulla facilisi etiam dignissim diam. Pulvinar elementum integer enim
-          eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla
-          posuere sollicitudin aliquam ultrices sagittis orci a.
-          Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper
-          eget nulla facilisi etiam dignissim diam. Pulvinar elementum integer enim
-          eleifend. 
-          </p>
-          <p className="mt-3 text-lg opacity-60">
-          Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper
-          eget nulla facilisi etiam dignissim diam. Pulvinar elementum integer enim
-          eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla
-          posuere sollicitudin aliquam ultrices sagittis orci a.
-          Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper
-          eget nulla facilisi etiam dignissim diam. Pulvinar elementum integer enim
-          eleifend. 
-          </p>
-          <ArrowIcon className="mt-4" />
-        </a>
-    </div>
+      </Link>
+   </div>
+     
 
     </section>
   );
