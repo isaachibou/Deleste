@@ -107,10 +107,7 @@ export default function Equips({ brands, equips, globalData }) {
                 href={`/matos/[matos]`}
               > 
                 <a className=" text-center py-6 lg:py-10 px-6 lg:px-4 block focus:outline-none focus:ring-4">
-                   <span className="flex flex-row p-2  text-pata-500 text-xl font-bold">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="mr-1 scale-x-[-1] inline-flex align-top feather feather-feather" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#d3a38f" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" class="feather feather-feather"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path><line x1="16" y1="8" x2="2" y2="22"></line><line x1="17.5" y1="15" x2="9" y2="15"></line></svg>
-                    {equip["Weight (Metric)"]} 
-                  </span>
+                   
                  
                   <Image className="mx-auto rounded-lg"
                     src={equip.Image}
@@ -121,6 +118,10 @@ export default function Equips({ brands, equips, globalData }) {
                   <h2 className="text-center">{equip.Brand}</h2>
                   <h2 className="text-center">{String(equip.Model).replace("Matelas","")}</h2>
                   <div className="text-left pl-5 pt-5 ">
+                  <span className=" flex flex-row p-2  text-pata-500 text-xl font-bold">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="mr-2 scale-x-[-1] inline-flex align-top feather feather-feather" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#d3a38f" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" class="feather feather-feather"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path><line x1="16" y1="8" x2="2" y2="22"></line><line x1="17.5" y1="15" x2="9" y2="15"></line></svg>
+                    {equip["Weight (Metric)"]} 
+                  </span>
                     <h3><span className="font-bold">Size: </span>{equip.Size}</h3>
                     <h3><span className="font-bold">R-value : </span>{equip["R-Value"]}</h3>
                     <h3><span className="font-bold">Color :</span> {equip.Color}</h3>
