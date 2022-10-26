@@ -1,8 +1,6 @@
 import * as React from 'react'
 import { useTable } from 'react-table'
-import Divider from '@mui/material/Divider';
-import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
-import RemoveOutlinedIcon from '@mui/icons-material/RemoveOutlined';
+
 
 
 export default function Table({ columns, data, updateMyData }) {

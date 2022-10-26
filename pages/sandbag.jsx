@@ -18,10 +18,12 @@ import Header from '../components/Header'
 import Divider from '@mui/material/Divider';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import RemoveOutlinedIcon from '@mui/icons-material/RemoveOutlined';
+import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 
 
 export default function Equips(props) {
 
+  const [totalWeight, setTotalWeight] = useState(0);
   const [bpSelected, setBpSelected] = useState("");
   const [bpList, setBpList] = useState(props.backpacks);
   const [bpName, setBpName] = useState("Your equipment name here ...");
@@ -51,7 +53,14 @@ export default function Equips(props) {
   },[bpSelected])
 
   useEffect(async () => {     
-    console.log("tableData updated", ...tableData) 
+    console.log("tableData updated", ...tableData)
+     let w = 0 
+     console.log("w " ,w)
+    for(let item of tableData) {
+      var p =  parseFloat(item["Weight (Metric)"])*1000
+      w+=p
+      setTotalWeight(w)
+    }
   },[tableData])
 
   const getUserId = async () => {
@@ -294,11 +303,14 @@ export default function Equips(props) {
             <Divider />
             <AddOutlinedIcon style={{ color: "#28384f" }} className="hover:cursor-pointer hover:bg-pata-500" onClick={() => setTableData([...tableData,{ _id: "", Model: "", Size: "", Color: "", "": "", type: "custom", quantity: "1" }])} />
             <RemoveOutlinedIcon style={{ color: "#28384f" }} className="hover:cursor-pointer hover:bg-pata-500" onClick={() => setTableData(tableData.slice(0,-1))  } />
+            <SaveOutlinedIcon style={{ color: "#28384f" }} className="hover:cursor-pointer hover:bg-pata-500 ml-5" onClick={handleSubmit} />
+            
+        </div>
+        <div className="mt-5 flex flex-row"> 
+          <span className="basis-3/6 text-right"></span>
+          <span className="basis-2/6 text-center border-[1px] border-pata-500 text-pata-500">Total Weight: {totalWeight} g</span>
         </div>
 
-        <button className="my-5 mx-auto rounded-full bg-cyan-100 w-1/5 border-2 border-black" type="submit" onClick={handleSubmit}>Submit</button>
-{/*     <button className="my-5 mx-auto rounded-full bg-cyan-100 w-1/5 border-2 border-black" type="submit" onClick={debug}>Debug</button>          
-*/}  
         
 
         {/*
