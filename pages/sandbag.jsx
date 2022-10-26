@@ -48,12 +48,13 @@ export default function Equips(props) {
     }
   ]);
 
-  useEffect(async () => {     
-    fetchBackpackMatos()  
+  useEffect(async () => {  
+    await fetchBackpackList()
+    await fetchBackpackMatos()  
   },[bpSelected])
 
   useEffect(async () => {     
-    console.log("tableData updated", ...tableData)
+    //console.log("tableData updated", ...tableData)
      let w = 0 
      console.log("w " ,w)
     for(let item of tableData) {
@@ -64,17 +65,17 @@ export default function Equips(props) {
   },[tableData])
 
   const getUserId = async () => {
+    console.log("loading userid")
     const session = await getSession();
     return session.user.id;
   }
 
   const fetchBackpackList = async () => {
-    console.log("fetch bp list")
-    /*[TRY INSTEAD]
-    const sessions = await getSession({ req })*/
-    const bps = await fetch('/api/backpacks?&owner='+props.currentUser, {headers: {'Content-Type': 'application/json'},method: 'GET'})
+    console.log(">fetchBackpackList fetch bp list")
+    let currentUser = await getUserId()
+    const bps = await fetch('/api/backpacks?&owner='+currentUser, {headers: {'Content-Type': 'application/json'},method: 'GET'})
     var response = await bps.json();
-    console.log("refresh bp list with", response)
+    console.log(">fetchBackpackList refresh bp list with", response)
     setBpList(response)
   }
 
@@ -82,7 +83,7 @@ export default function Equips(props) {
    * bpSelected is the id of the backpack I clicked 
    * on in the list */  
   const fetchBackpackMatos = async () => {  
-    var bptodisplay = props.backpacks.find(backpack => {return backpack._id === bpSelected})
+    var bptodisplay = bpList.find(backpack => {return backpack._id === bpSelected})
     console.log("bptodisplay ", bptodisplay)
     if (bptodisplay) {
       let tempdata=[]
@@ -137,15 +138,16 @@ export default function Equips(props) {
     alert(`You have updated ${equipName}`)
     console.log('upsert', JSONdata)
 
-    // Refresh backpack list
-    fetchBackpackList()
+    // Select new backpack
     console.log("upserted id :", result.success.upsertedId)
-    setBpSelected(result.success.upsertedId)
+    setBpSelected(result.success.upsertedId)   
+
+    // UseEffect on Set BpSelected will rerender bpList and fetch its matos
   } 
 
   const updateMyData = (rowIndex, columnId, value) => {
     // We also turn on the flag to not reset the page
-    console.log(tableData)
+    //console.log(tableData)
         setTableData(old =>
       old.map((row, index) => {
         if (index === rowIndex) {
