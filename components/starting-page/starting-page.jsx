@@ -17,12 +17,8 @@ function StartingPageContent() {
   if (status === "unauthenticated") {
     return (
       <section className={classes.starting}>
-        <Link
-                  as={`/auth`}
-                  href={`/auth`}
-                > 
-                <button className="my-5 mx-auto rounded-full bg-cyan-100 w-1/5 border-2 border-black">Login</button>
-
+        <Link as={`/auth`}  href={`/auth`}> 
+          <button className="my-5 mx-auto rounded-full bg-cyan-100 w-1/5 border-2 border-black">Login</button>
         </Link>
       </section>
     );

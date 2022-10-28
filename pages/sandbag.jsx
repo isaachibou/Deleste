@@ -53,7 +53,6 @@ export default function Equips(props) {
   },[bpSelected])
 
   useEffect(async () => {     
-    console.log("tableData updated", ...tableData)
     computeTotalWeight()
   },[tableData])
 

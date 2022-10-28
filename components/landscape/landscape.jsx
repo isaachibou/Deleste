@@ -14,7 +14,7 @@ const Landscape = ({ children }) => (
         quality={70}
       />
     </div>
-    <div className="relative py-6 overflow-hidden">
+    <div className="relative py-6 ">
         <div className="flex flex-col max-w-5xl w-full mx-auto">
         {children}
       </div>

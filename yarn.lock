@@ -2445,6 +2445,11 @@
   "resolved" "https://registry.npmjs.org/functions-have-names/-/functions-have-names-1.2.3.tgz"
   "version" "1.2.3"
 
+"fuse.js@^6.5.3", "fuse.js@^6.6.2":
+  "integrity" "sha512-cJaJkxCCxC8qIIcPBF9yGxY0W/tVZS3uEISDxhYIdtk8OL93pe+6Zj7LjCqVV4dzbqcriOZ+kQ/NE4RXZHsIGA=="
+  "resolved" "https://registry.npmjs.org/fuse.js/-/fuse.js-6.6.2.tgz"
+  "version" "6.6.2"
+
 "gensync@^1.0.0-beta.1":
   "integrity" "sha512-3hN7NaskYvMDLQY55gnW3NQ+mesEAepTqlg+VEbj7zzqEMBVNhzcGYYeqFo/TlYz6eQiFcp1HcsCZO+nGgS8zg=="
   "resolved" "https://registry.npmjs.org/gensync/-/gensync-1.0.0-beta.2.tgz"
@@ -4764,7 +4769,7 @@
     "dnd-core" "^11.1.3"
     "hoist-non-react-statics" "^3.3.0"
 
-"react-dom@^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0", "react-dom@^15.3.0 || ^16.0.0-alpha", "react-dom@^16.8.0 || ^17.0.0", "react-dom@^16.8.0 || ^17.0.2", "react-dom@^17.0.0", "react-dom@^17.0.0 || ^18.0.0", "react-dom@^17.0.1", "react-dom@^17.0.2", "react-dom@^17.0.2 || ^18", "react-dom@^17.0.2 || ^18.0.0-0", "react-dom@>= 16.8.0", "react-dom@>= 16.9.0", "react-dom@>=16", "react-dom@>=16.6.0", "react-dom@>=16.x <=18.x":
+"react-dom@^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0", "react-dom@^15.3.0 || ^16.0.0-alpha", "react-dom@^16.8.0 || ^17.0.0", "react-dom@^16.8.0 || ^17.0.2", "react-dom@^17.0.0", "react-dom@^17.0.0 || ^18.0.0", "react-dom@^17.0.1", "react-dom@^17.0.2", "react-dom@^17.0.2 || ^16.0.2 || ^18.0.0", "react-dom@^17.0.2 || ^18", "react-dom@^17.0.2 || ^18.0.0-0", "react-dom@>= 16.8.0", "react-dom@>= 16.9.0", "react-dom@>=16", "react-dom@>=16.6.0", "react-dom@>=16.x <=18.x":
   "integrity" "sha512-s4h96KtLDUQlsENhMn1ar8t2bEa+q/YAtj8pPPdIjPDGBDIVNsrD9aXNWqspUe6AzKCIG0C1HZZLqLV7qpOBGA=="
   "resolved" "https://registry.npmjs.org/react-dom/-/react-dom-17.0.2.tgz"
   "version" "17.0.2"
@@ -4787,6 +4792,14 @@
   "integrity" "sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA=="
   "resolved" "https://registry.npmjs.org/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz"
   "version" "3.0.4"
+
+"react-search-autocomplete@^8.0.0":
+  "integrity" "sha512-wzNcmLeN5LJ5XZ/VPj0QaZ8wvYkQOB8c21qWpySiv5jwIti9dPVnnR3uCsC3fw9vKH1kOqMaoX1d4rV7dd1zMw=="
+  "resolved" "https://registry.npmjs.org/react-search-autocomplete/-/react-search-autocomplete-8.0.0.tgz"
+  "version" "8.0.0"
+  dependencies:
+    "fuse.js" "^6.5.3"
+    "styled-components" "^5.3.3"
 
 "react-sortable-tree-patch-react-17@^2.9.0":
   "integrity" "sha512-Ngtdbf78OfjqCxLj7+N+K4zM9d1mQ/tfnUsOfICFDzNa5JHg6AjixAj69ijvz0ykEiA9lYop+0Fm4KCOqCdlKA=="
@@ -4837,7 +4850,7 @@
     "prop-types" "^15.7.2"
     "react-lifecycles-compat" "^3.0.4"
 
-"react@^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0", "react@^15.3.0 || ^16.0.0-alpha", "react@^16.8.0 || ^17.0.0", "react@^16.8.0 || ^17.0.0 || ^18.0.0", "react@^16.8.0 || ^17.0.2", "react@^16.8.0 || ^17.0.2 || ^18.0.0", "react@^16.8.3 || ^17.0.0-0 || ^18.0.0", "react@^17.0.0", "react@^17.0.0 || ^18.0.0", "react@^17.0.1", "react@^17.0.2", "react@^17.0.2 || ^18", "react@^17.0.2 || ^18.0.0-0", "react@>= 16.8.0", "react@>= 16.8.0 || 17.x.x || ^18.0.0-0", "react@>= 16.9.0", "react@>=16", "react@>=16.6.0", "react@>=16.8.0", "react@>=16.x <=18.x", "react@17.0.2":
+"react@^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0", "react@^15.3.0 || ^16.0.0-alpha", "react@^16.8.0 || ^17.0.0", "react@^16.8.0 || ^17.0.0 || ^18.0.0", "react@^16.8.0 || ^17.0.2", "react@^16.8.0 || ^17.0.2 || ^18.0.0", "react@^16.8.3 || ^17.0.0-0 || ^18.0.0", "react@^17.0.0", "react@^17.0.0 || ^18.0.0", "react@^17.0.1", "react@^17.0.2", "react@^17.0.2 || ^16.0.2 || ^18.0.0", "react@^17.0.2 || ^18", "react@^17.0.2 || ^18.0.0-0", "react@>= 16.8.0", "react@>= 16.8.0 || 17.x.x || ^18.0.0-0", "react@>= 16.9.0", "react@>=16", "react@>=16.6.0", "react@>=16.8.0", "react@>=16.x <=18.x", "react@17.0.2":
   "integrity" "sha512-gnhPt75i/dq/z3/6q/0asP78D0u592D5L1pd7M8P+dck6Fu/jJeL6iVVK23fptSUZj8Vjf++7wXA8UNclGQcbA=="
   "resolved" "https://registry.npmjs.org/react/-/react-17.0.2.tgz"
   "version" "17.0.2"
@@ -5406,7 +5419,7 @@
   dependencies:
     "inline-style-parser" "0.1.1"
 
-"styled-components@^5.3.5", "styled-components@>= 2":
+"styled-components@^5.3.3", "styled-components@^5.3.5", "styled-components@>= 2":
   "integrity" "sha512-ndETJ9RKaaL6q41B69WudeqLzOpY1A/ET/glXkNZ2T7dPjPqpPCXXQjDFYZWwNnE5co0wX+gTCqx9mfxTmSIPg=="
   "resolved" "https://registry.npmjs.org/styled-components/-/styled-components-5.3.5.tgz"
   "version" "5.3.5"

@@ -81,10 +81,10 @@ export default function Equips({ brands, equips, globalData }) {
       <SEO title={globalData.name} description={globalData.blogTitle} />
       <Header name={globalData.blogTitle} title={globalData.blogSubtitle}/>
       <main className="flex flex-col items-center max-w-4xl w-full mx-auto">
-        <h1 className="text-3xl lg:text-5xl text-center ">Everything we have in the books</h1>
-        <p className="text-2xl text-center md:text-3xl mb-10">
-          <small>(Scrapped straight from the source)</small>
-        </p>
+        <h1 className="text-3xl lg:text-5xl text-center ">
+          <svg xmlns="http://www.w3.org/2000/svg" className="mr-1 scale-x-[-1] inline-flex align-baseline feather feather-feather" width="35" height="35" viewBox="0 0 24 24" fill="none" stroke="#28384f" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"  ><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path><line x1="16" y1="8" x2="2" y2="22"></line><line x1="17.5" y1="15" x2="9" y2="15"></line></svg>
+          What will you put in your backpack ?
+        </h1>
         <div>
           <select name="types" id="itemTypes" className="basis-1/6 bg-transparent" onChange={fetchMatos}>
             {options.map((option) => (
@@ -107,8 +107,6 @@ export default function Equips({ brands, equips, globalData }) {
                 href={`/matos/[matos]`}
               > 
                 <a className=" text-center py-6 lg:py-10 px-6 lg:px-4 block focus:outline-none focus:ring-4">
-                   
-                 
                   <Image className="mx-auto rounded-lg"
                     src={equip.Image}
                     alt="Picture of the matos"

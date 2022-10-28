@@ -7,7 +7,7 @@ export const getGlobalData = () => {
     : 'Délesté.';
   const blogSubtitle = process.env.BLOG_SUBTITLE
     ? decodeURI(process.env.BLOG_SUBTITLE)
-    : 'A humble summer project by ';
+    : 'Gear packing by ';
   const footerText = process.env.BLOG_FOOTER_TEXT
     ? decodeURI(process.env.BLOG_FOOTER_TEXT)
     : 'All rights reserved.';

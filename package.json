@@ -31,6 +31,7 @@
     "@tanstack/react-table": "^8.5.15",
     "bcryptjs": "^2.4.3",
     "classnames": "^2.3.1",
+    "fuse.js": "^6.6.2",
     "gray-matter": "^4.0.2",
     "mongodb": "^4.8.1",
     "mongodb-client-encryption": "^2.2.0",
@@ -43,6 +44,7 @@
     "prismjs": "^1.25.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-search-autocomplete": "^8.0.0",
     "react-table": "^7.8.0",
     "styled-components": "^5.3.5"
   },
