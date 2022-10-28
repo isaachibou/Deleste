@@ -14,7 +14,8 @@ export default function SearchBar(props) {
 
   const handleOnSelect = (item) => {
     // the item selected
-    console.log("ITEM", item)
+    console.log("you selected ", item.Model)
+    item.quantity = 1
     props.setTableData(current => [...current, item]) 
   }
 
@@ -33,7 +34,7 @@ export default function SearchBar(props) {
   }
 
 return (
-	<div style={{ width: 400}}>
+	<div className="z-10" style={{ width: 400}}>
       <ReactSearchAutocomplete        
         items={props.items}
         fuseOptions={{ keys: ["_id", "Model"] }}

@@ -258,7 +258,7 @@ export default function Equips(props) {
        {
           Header: 'Image',
           accessor: 'Image',
-          Cell: ({value}) => value?<Image className="mx-auto rounded-lg"
+          Cell: ({value}) => value?<Image className="mx-auto rounded-lg border-2 border-pata-500"
                     src={value}
                     alt="Picture of the matos"
                     width={90}

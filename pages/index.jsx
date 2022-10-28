@@ -1,9 +1,9 @@
 import clientPromise from "../utils/mongodb"
 import Link from 'next/link';
-import Image from "next/image";
 import ArrowIcon from '../components/ArrowIcon';
 import { getGlobalData } from '../utils/global-data';
 import * as React from 'react'
+
 
 import { useState, useEffect, useRef } from 'react'
 import { getData, getAllModels } from './api/matos_2'
@@ -32,7 +32,8 @@ export default function Index(props) {
       <main className="">
         <h2 className="text-3xl md:text-3xl text-pata-400">What will you pack first ? </h2>
         <SearchBar items={props.equips} tableData={tableData} setTableData={setTableData} />
-        <ItemsTable tableData={tableData} setTableData={setTableData} itemModels={props.itemModels}/>
+        <ItemsTable   tableData={tableData} setTableData={setTableData} itemModels={props.itemModels}/>
+     
       </main>
     </Landscape>
   );
