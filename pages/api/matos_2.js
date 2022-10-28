@@ -89,7 +89,7 @@ export async function getAllModels(type) {
       "Model":{$exists:true},
       "Type": type
     })
-    .project({_id:1, Type:1, Model: 1, "Weight (Metric)": 1, Size:1, Color: 1 })
+    .project({_id:1, Type:1, Model: 1, Image: 1, "Weight (Metric)": 1, Size:1, Color: 1 })
     .sort({ Brand: -1, Model: 1, Size: 1 })
     .toArray();
 

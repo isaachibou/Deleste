@@ -21,6 +21,7 @@ import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 
 
 export default function Equips(props) {
+  console.log("itemModels ",props.itemModels)
 
   const [totalWeight, setTotalWeight] = useState(0);
   const [bpSelected, setBpSelected] = useState("");
@@ -29,6 +30,7 @@ export default function Equips(props) {
   const [tableData, setTableData] = useState([
     { 
         _id: "62bc45991baf30a4a46d86e5",
+        Image: '',
         Model: "Matelas NeoAir® XLite™",
         Size: "Regular",
         Color: "Lemon Curry",
@@ -39,6 +41,7 @@ export default function Equips(props) {
     {
         _id: "62bc46091baf30a4a46d8732",
         Model: "Couverture Juno™",
+        Image: '',
         Size: "No size",
         Color: "Warp Speed Print, Fun Guy Print, Deep Pacific, Tidepool Print",
         "Weight (Metric)": "0.38 kg",
@@ -156,8 +159,11 @@ export default function Equips(props) {
         if (index === rowIndex) {
           if(columnId == "Model") {
             if(props.itemModels[row.Type]) {
-                var item = props.itemModels[row.Type].find(item => item._id === value);
+                var item = props.itemModels[row.Type].find(item => item.Model === value);
+                if(item) {
                 Object.assign(row,item)
+                console.log("IMAGE ", item, " ", item.Model, " ", value)
+                }
               } else { console.log("no models available for this item type")}
           }
          if(columnId == "Type") {
@@ -201,8 +207,6 @@ export default function Equips(props) {
         setValue(e.target.value)
       }
 
-      
-
       React.useEffect(() => {
         updateMyData(index, id, value)
       },[value])
@@ -215,7 +219,7 @@ export default function Equips(props) {
       return (
         <select className="min-w-full basis-1/6 bg-transparent hover:bg-pata-500" value={value} onChange={onChange}>
           {options?.map((option) => (
-              <option key={props.index} value={option._id?option._id:option.value}>{option.label?option.label:option.Model}</option>
+              <option key={props.index} value={option.value}>{option.label?option.label:option.Model}</option>
           ))}
         </select>
       )
@@ -247,23 +251,34 @@ export default function Equips(props) {
       }, [initialValue])
 
       return <input className="max-w-[50px] block bg-transparent hover:bg-pata-500 cursor-pointer" value={value} onChange={onChange} onBlur={onBlur} />
-    }
-
-    
+    }  
 
     const columns = React.useMemo(
       () => [
+       {
+          Header: 'Image',
+          accessor: 'Image',
+          Cell: ({value}) => value?<Image className="mx-auto rounded-lg"
+                    src={value}
+                    alt="Picture of the matos"
+                    width={90}
+                    height={90}
+                  />:<span/>
+
+        },
         {
           Header: 'Type',
           accessor: 'Type',
           Cell: ({value, row,column}) => <DropdownCell value={value} options={typeOptions} row={row} column={column} updateMyData={updateMyData}/>
 
         },
+        
         {
           Header: 'Model',
           accessor: 'Model',
           Cell: ({value, row,column}) => <DropdownCell value={value} options={props.itemModels[row.original.Type]} row={row} column={column} updateMyData={updateMyData}/>
         },
+
         {
           Header: 'Qty',
           accessor: 'quantity',
@@ -306,7 +321,7 @@ export default function Equips(props) {
             <Divider />
             <ReactTablev7 columns={columns} data={tableData} updateMyData={updateMyData} bpName={bpName} setBpName={setBpName} />
             <Divider />
-            <AddOutlinedIcon style={{ color: "#28384f" }} className="hover:cursor-pointer hover:bg-pata-500" onClick={() => setTableData([...tableData,{ _id: "", Model: "", Size: "", Color: "", "": "", type: "custom", quantity: "1" }])} />
+            <AddOutlinedIcon style={{ color: "#28384f" }} className="hover:cursor-pointer hover:bg-pata-500" onClick={() => setTableData([...tableData,{ _id: "", Image:"", Model: "", Size: "", Color: "", "": "", type: "custom", quantity: "1" }])} />
             <RemoveOutlinedIcon style={{ color: "#28384f" }} className="hover:cursor-pointer hover:bg-pata-500" onClick={() => setTableData(tableData.slice(0,-1))  } />
             <SaveOutlinedIcon style={{ color: "#28384f" }} className="hover:cursor-pointer hover:bg-pata-500 ml-5" onClick={handleSubmit} />
             
