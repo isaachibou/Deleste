@@ -1,8 +1,9 @@
 import { ReactSearchAutocomplete } from 'react-search-autocomplete'
+import Image from "next/image"
 
 export default function SearchBar(props) {
   const handleOnSearch = (string, results) => {
-    // onSearch will have as the first callback parameter
+    // onSearch will have as the  first callback parameter
     // the string searched and for the second the results.
     //console.log(string, results)
   }
@@ -26,10 +27,18 @@ export default function SearchBar(props) {
   const formatResult = (item) => {
     //console.log(item)
     return (
-      <>
-        <span style={{ display: 'block', textAlign: 'left' }}>{item.Model}</span>
-        <span style={{ display: 'block', textAlign: 'left' }}>id: {item._id}</span>
-      </>
+      <div className="flex flex-row ">
+        <Image className="mx-auto rounded-lg border-4 border-pata-500"
+          src={item.Image}
+          alt="Picture of the matos"
+          width={50}
+          height={50}
+        />
+        <div className="flex-column">
+          <span className="block align-left ml-3 text-lg font-medium" /*style={{ display: 'block', textAlign: 'left' }}*/>{item.Model}</span>
+          <span className="block align-left ml-3 flex-column leading-tight font-bold  ">{item["Weight (Metric)"]}</span>
+        </div>
+      </div>
     )
   }
 
