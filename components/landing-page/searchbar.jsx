@@ -43,7 +43,7 @@ export default function SearchBar(props) {
   }
 
 return (
-	<div className="z-10" style={{ width: 400}}>
+	<div className="z-10" style={{ width: 500, /*margin: 'auto'*/}}>
       <ReactSearchAutocomplete        
         items={props.items}
         fuseOptions={{ keys: ["_id", "Model"] }}

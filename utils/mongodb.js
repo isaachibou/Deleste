@@ -1,6 +1,6 @@
 import { MongoClient } from 'mongodb'
 
-const uri = process.env.MONGODB_URI
+let uri = process.env.MONGODB_URI
 const options = {}
 
 let client
@@ -14,6 +14,7 @@ if (process.env.NODE_ENV === 'development') {
   // In development mode, use a global variable so that the value
   // is preserved across module reloads caused by HMR (Hot Module Replacement).
   if (!global._mongoClientPromise) {
+    uri = process.env.MONGODB_URI_LOCAL
     client = new MongoClient(uri, options)
     global._mongoClientPromise = client.connect()
   }
