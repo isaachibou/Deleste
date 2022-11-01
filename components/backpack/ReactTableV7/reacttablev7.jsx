@@ -17,6 +17,11 @@ export default function Table({ columns, data, updateMyData }) {
     columns,
     //defaultColumn,
     data,
+    initialState: {
+        hiddenColumns: columns.map(column => {
+            if (column.show === false) return column.accessor || column.id;
+        }),
+    },
     // updateMyData isn't part of the API, but
   	// anything we put into these options will
   	// automatically be available on the instance.
@@ -27,15 +32,16 @@ export default function Table({ columns, data, updateMyData }) {
 
   // Render the UI for your table
   return (
-    <table className="text-pata-400 my-3" {...getTableProps()}>
+    <table className="text-pata-400 my-3 " {...getTableProps()}>
       <thead>
         {headerGroups.map(headerGroup => (
           <tr className=" whitespace-nowrap text-center " {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map(column => (
-              <th className="px-1 font-normal underline underline-offset-3" {...column.getHeaderProps()}>{column.render('Header')}</th>
+              <th className="py-2 font-semibold underline-offset-3 " {...column.getHeaderProps()}>{column.render('Header')}</th>
             ))}
           </tr>
         ))}
+
       </thead>
       <tbody {...getTableBodyProps()}>
         {rows.map((row, i) => {
@@ -43,7 +49,7 @@ export default function Table({ columns, data, updateMyData }) {
           return (
             <tr {...row.getRowProps()}>
               {row.cells.map(cell => {
-                return <td className="min-w-full whitespace-nowrap px-2" {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                return <td className="min-w-fit whitespace-nowrap px-2" {...cell.getCellProps()}>{cell.render('Cell')}</td>
               })}
             </tr>
           )

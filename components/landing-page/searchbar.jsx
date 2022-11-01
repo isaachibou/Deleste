@@ -27,7 +27,7 @@ export default function SearchBar(props) {
   const formatResult = (item) => {
     //console.log(item)
     return (
-      <div className="flex flex-row ">
+      <div key={item.Model} className="flex flex-row ">
         <Image className="mx-auto rounded-lg border-4 border-pata-500"
           src={item.Image}
           alt="Picture of the matos"
@@ -43,7 +43,7 @@ export default function SearchBar(props) {
   }
 
 return (
-	<div className="first:pt-10 first:z-10" style={{ width: 500, /*margin: 'auto'*/}}>
+	<div id="searchbar" className="first:pt-10 first:z-10" style={{ width: 450, /*margin: 'auto'*/}}>
       <ReactSearchAutocomplete        
         items={props.items}
         fuseOptions={{ keys: ["_id", "Model"] }}

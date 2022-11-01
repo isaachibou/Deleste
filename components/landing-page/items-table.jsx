@@ -25,12 +25,10 @@ export default function ItemsTable(props) {
 				if(columnId == "Model") {
 					if(props.itemModels[row.Type]) {
 					    var item = props.itemModels[row.Type].find(item => item.Model === value);
-					    console.log("itteeeem", item)
 					    Object.assign(row,item)
 					} else { console.log("no models available for this item type")}
 				}
 				if(columnId == "Type") {
-					console.log("value")
 					if(props.itemModels[row.Type]) {
 						var item = props.itemModels[value][0]
 						Object.assign(row,item)
@@ -61,7 +59,7 @@ export default function ItemsTable(props) {
   	const DropdownCell = ({
 	    value: initialValue,
 	    options: options,
-	    row: { index },
+	    row: { index, original },
 	    column: { id },
 	    display,
 	    updateMyData,
@@ -71,6 +69,8 @@ export default function ItemsTable(props) {
 		      const onChange = e => {
 		        setValue(e.target.value)
 		      }
+
+		      
 
 		      React.useEffect(() => {
 		      	console.log("updating ", index, id , value)
@@ -86,7 +86,7 @@ export default function ItemsTable(props) {
 	      return (
 	        <select className="min-w-full basis-1/6 bg-transparent hover:bg-pata-500" value={value} onChange={onChange}>
 	          {options?.map((option) => (
-	              <option key={props.index} value={option.value}>{option.label?option.label:option.Model}</option>
+	              <option key={props.index} value={option.value}>{option.label?option.label:option.Model+" - "+original.Size}</option>
 	          ))}
 	        </select>
 	      )
@@ -129,8 +129,6 @@ export default function ItemsTable(props) {
       // We need to keep and update the state of the cell normally
       const [value, setValue] = React.useState(initialValue)
      // const [imageLoaded, setImageLoaed] = React.useState(initialValue)
-      console.log("ROOOOOW ", original)
-      console.log("initialValue ", initialValue)
 
       const onChange = e => {
       	console.log(e.target.value)
@@ -176,8 +174,13 @@ export default function ItemsTable(props) {
           Header: 'Model',
           accessor: 'Model',
 	        Cell: ({value, row,column}) => row.original.Type == "custom" ? <EditableCell value={value} size={300} row={row} column={column} updateMyData={updateMyData}/> : <DropdownCell value={value} options={props.itemModels[row.original.Type]} row={row} column={column} updateMyData={updateMyData}/>
+        },	
+         {
+          Header: 'Size',
+          accessor: 'Size',
+          show: false,
+	        Cell: ({value, row,column}) => <span>{value}</span>
         },
-
         {
           Header: 'Qty',
           accessor: 'quantity',
@@ -202,7 +205,7 @@ export default function ItemsTable(props) {
 
 return (
  	<div className="{classes.container}  p-2 md:first:rounded-t-lg lg:last:rounded-b-lg backdrop-blur-lg bg-pata-100/0 hover:bg-gray/30 transition border border-pata-500 dark:border-white border-opacity-10 border-b-0 last:border-b hover:border-b hovered-sibling:border-t-0">
-		<Divider />
+		 
 	    <ReactTablev7 
 	    	columns={columns} 
 	    	data={props.tableData} 

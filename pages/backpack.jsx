@@ -1,5 +1,6 @@
 import * as React from 'react'
 import clientPromise from "../utils/mongodb"
+import { useRouter } from "next/router"
 import { getSession } from 'next-auth/react'
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
@@ -21,20 +22,23 @@ import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 
 
 export default function Equips(props) {
+  const router = useRouter()
+const initialTableData = router.query
+  console.log("initialTableData-------------------", initialTableData)
   console.log("itemModels ",props.itemModels)
 
   const [totalWeight, setTotalWeight] = useState(0);
   const [bpSelected, setBpSelected] = useState("");
   const [bpList, setBpList] = useState(props.backpacks);
   const [bpName, setBpName] = useState("Your equipment name here ...");
-  const [tableData, setTableData] = useState([
+  const [tableData, setTableData] = useState(/*initialTableData ? initialTableData :*/ [
     { 
         _id: "62bc45991baf30a4a46d86e5",
         Image: '',
         Model: "Matelas NeoAir® XLite™",
         Size: "Regular",
         Color: "Lemon Curry",
-        "Weight (Metric)": "0.36 kg",
+        "Weight (Metric)": "3600 g",
         Type: "sleepingmat",
         quantity: "1"
     },
@@ -63,7 +67,7 @@ export default function Equips(props) {
   const computeTotalWeight = () => {
      let w = 0 
     for(let item of tableData) {
-      var p =  parseFloat(item["Weight (Metric)"])*1000*parseInt(item.quantity) 
+      var p =  parseFloat(item["Weight (Metric)"])*parseInt(item.quantity) 
       w+=p     
     }
     console.log("totalWeight ", totalWeight)
@@ -232,6 +236,7 @@ export default function Equips(props) {
     row: { index },
     column: { id },
     updateMyData, // This is a custom function that we supplied to our table instance
+    size
     }) => {
       // We need to keep and update the state of the cell normally
       const [value, setValue] = React.useState(initialValue)
@@ -250,7 +255,7 @@ export default function Equips(props) {
         setValue(initialValue)
       }, [initialValue])
 
-      return <input className="max-w-[50px] block bg-transparent hover:bg-pata-500 cursor-pointer" value={value} onChange={onChange} onBlur={onBlur} />
+      return <input className= {"max-w-["+size+"px] block bg-transparent hover:bg-pata-500 cursor-pointer"} value={value} onChange={onChange} onBlur={onBlur} />
     }  
 
     const columns = React.useMemo(
@@ -264,7 +269,6 @@ export default function Equips(props) {
                     width={90}
                     height={90}
                   />:<span/>
-
         },
         {
           Header: 'Type',
@@ -278,17 +282,16 @@ export default function Equips(props) {
           accessor: 'Model',
           Cell: ({value, row,column}) => <DropdownCell value={value} options={props.itemModels[row.original.Type]} row={row} column={column} updateMyData={updateMyData}/>
         },
-
         {
           Header: 'Qty',
           accessor: 'quantity',
-          Cell: ({value, row,column}) => <EditableCell value={value} row={row} column={column} updateMyData={updateMyData}/>
+          Cell: ({value, row,column}) => <EditableCell size={30} value={value} row={row} column={column} updateMyData={updateMyData}/>
         },
         {
           Header: 'Weight (g)',
           accessor: 'Weight (Metric)',
           Cell: ({value, row,column}) => {
-            let weight= parseInt(row.original.quantity)*parseFloat(value)*1000
+            let weight= parseInt(row.original.quantity)*parseFloat(value)
             return weight?weight:0
           }
         },

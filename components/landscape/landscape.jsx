@@ -14,8 +14,8 @@ const Landscape = ({ children }) => (
         quality={70}
       />
     </div>
-    <div className="relative py-6 ">
-        <div className="flex flex-col max-w-6xl w-full mx-auto">
+    <div className="relative">
+        <div className="flex flex-col max-w-[95%] w-full mx-auto">
         {children}
       </div>
     </div>
