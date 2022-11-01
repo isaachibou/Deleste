@@ -43,7 +43,7 @@ export default function SearchBar(props) {
   }
 
 return (
-	<div className="z-10" style={{ width: 500, /*margin: 'auto'*/}}>
+	<div className="first:pt-10 first:z-10" style={{ width: 500, /*margin: 'auto'*/}}>
       <ReactSearchAutocomplete        
         items={props.items}
         fuseOptions={{ keys: ["_id", "Model"] }}
@@ -53,6 +53,7 @@ return (
         onSelect={handleOnSelect}
         onFocus={handleOnFocus}
         autoFocus
+        disablePortal
         formatResult={formatResult}
         styling={
           {

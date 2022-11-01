@@ -31,6 +31,28 @@ module.exports = {
       }
     }
   },
+  variantOrder: [
+    'first',
+    'last',
+    'odd',
+    'even',
+    'visited',
+    'checked',
+    'group-hover',
+    'group-focus',
+    'focus-within',
+    'hover',
+    'focus',
+    'focus-visible',
+    'active',
+    'group-disabled', // Custom variant
+    'disabled',
+  ],
+  variants: {
+    extend: {
+       zIndex: ['first', 'last','first-of-type']
+    }
+  },
   darkMode: 'class', // or 'media' or 'class'
   presets: [require('./utils/tailwind-preset')],
 };

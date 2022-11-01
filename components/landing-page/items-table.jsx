@@ -19,29 +19,27 @@ export default function ItemsTable(props) {
 	const updateMyData = (rowIndex, columnId, value) => {
 		// We also turn on the flag to not reset the page
 		console.log("updateMyData ! ", columnId, value)
-	    props.setTableData(old =>
+	  props.setTableData(old =>
 		old.map((row, index) => {
 			if (index === rowIndex) {
 				if(columnId == "Model") {
-					console.log("MOOOOOOOOOOOODEEEl", value)
 					if(props.itemModels[row.Type]) {
 					    var item = props.itemModels[row.Type].find(item => item.Model === value);
 					    console.log("itteeeem", item)
 					    Object.assign(row,item)
 					} else { console.log("no models available for this item type")}
 				}
-				/*if(columnId == "Type") {
+				if(columnId == "Type") {
 					console.log("value")
 					if(props.itemModels[row.Type]) {
 						var item = props.itemModels[value][0]
 						Object.assign(row,item)
 					} else { console.log("no models available for this item type")}
-				}*/
+				}
 				var teub = {
 					...old[rowIndex],
 					[columnId]: value,
 				} 
-				console.log("teub ", teub)
 				return {
 					...old[rowIndex],
 					[columnId]: value,
@@ -70,7 +68,6 @@ export default function ItemsTable(props) {
 	    }) => {
 		      // We need to keep and update the state of the cell normally
 		      const [value, setValue] = React.useState(initialValue)
-		      console.log("value", value)
 		      const onChange = e => {
 		        setValue(e.target.value)
 		      }
@@ -101,6 +98,7 @@ export default function ItemsTable(props) {
     row: { index },
     column: { id },
     updateMyData, // This is a custom function that we supplied to our table instance
+    size
     }) => {
       // We need to keep and update the state of the cell normally
       const [value, setValue] = React.useState(initialValue)
@@ -119,8 +117,45 @@ export default function ItemsTable(props) {
         setValue(initialValue)
       }, [initialValue])
 
-      return <input className="max-w-[30px] block bg-transparent hover:bg-pata-500 cursor-pointer" value={value} onChange={onChange} onBlur={onBlur} />
+      return <input className= {"max-w-["+size+"px] block bg-transparent hover:bg-pata-500 cursor-pointer"} value={value} onChange={onChange} onBlur={onBlur} />
     }
+
+  const ImageCell = ({
+    value: initialValue,
+    row: { index, original },
+    column: { id },
+    updateMyData, // This is a custom function that we supplied to our table instance
+    }) => {
+      // We need to keep and update the state of the cell normally
+      const [value, setValue] = React.useState(initialValue)
+     // const [imageLoaded, setImageLoaed] = React.useState(initialValue)
+      console.log("ROOOOOW ", original)
+      console.log("initialValue ", initialValue)
+
+      const onChange = e => {
+      	console.log(e.target.value)
+		  	setValue(String(e.target.value))
+		  }
+
+			React.useEffect(() => {
+        console.log("re render after load iamge")
+      }, [value])
+      // If the initialValue is changed external, sync it up with our state
+      React.useEffect(() => {
+        setValue(initialValue)
+      }, [initialValue])
+
+/*      if(value || original.Type != "custom") {
+*/				return <Image className="min-w-fit mx-auto rounded-lg border-2 border-pata-500"
+		      src={value}
+		      alt="Picture of the matos"
+		      width={60}
+		      height={60}
+		    />    
+	  	/*} else {
+	  		return <input type="file" multiple accept="public/images/*" onChange={onChange} />
+	  	}*/
+	}
 
     
 
@@ -129,12 +164,7 @@ export default function ItemsTable(props) {
       	{
           Header: 'Image',
           accessor: 'Image',
-          Cell: ({value}) => value?<Image className="min-w-fit mx-auto rounded-lg border-2 border-pata-500"
-                    src={value}
-                    alt="Picture of the matos"
-                    width={60}
-                    height={60}
-                  />:<span/>
+          Cell: ({value, row, column}) => <ImageCell value={value} options={typeOptions} row={row} column={column} updateMyData={updateMyData}/>
 
         },
         {
@@ -145,27 +175,27 @@ export default function ItemsTable(props) {
         {
           Header: 'Model',
           accessor: 'Model',
-/*          Cell: ({value, row,column}) => <span>{value}</span>
-*/          Cell: ({value, row,column}) => <DropdownCell value={value} options={props.itemModels[row.original.Type]} row={row} column={column} updateMyData={updateMyData}/>
+	        Cell: ({value, row,column}) => row.original.Type == "custom" ? <EditableCell value={value} size={300} row={row} column={column} updateMyData={updateMyData}/> : <DropdownCell value={value} options={props.itemModels[row.original.Type]} row={row} column={column} updateMyData={updateMyData}/>
         },
 
         {
           Header: 'Qty',
           accessor: 'quantity',
-          Cell: ({value, row,column}) => <EditableCell value={value} row={row} column={column} updateMyData={updateMyData}/>
+          Cell: ({value, row,column}) => <EditableCell value={value} size={30} row={row} column={column} updateMyData={updateMyData}/>
         },
         {
           Header: 'Weight (g)',
           accessor: 'Weight (Metric)',
           Cell: ({value, row,column}) => {
-            let weight= parseInt(row.original.quantity)*parseFloat(value)
-            return weight
+          	if(row.original.Type != "custom") {
+          	  let weight= parseInt(row.original.quantity)*parseFloat(value)
+	            return weight?weight:0
+          	}
+          	else {
+          		return <EditableCell value={value} size={50} row={row} column={column} updateMyData={updateMyData}/>
+          	}
           }
-        },
-        /*{
-          Header: 'Color',
-          accessor: 'Color',
-        }*/
+        }
       ],
       []
     )
@@ -180,7 +210,7 @@ return (
 	    	bpName={bpName} 
 	    	setBpName={setBpName} />
 	    <Divider />
-	    <AddOutlinedIcon style={{ color: "#28384f" }} className="hover:cursor-pointer hover:bg-pata-500" onClick={() => props.setTableData([...props.tableData,{ _id: "", Model: "", Size: "", Color: "", "": "", type: "custom", quantity: "1" }])} />
+	    <AddOutlinedIcon style={{ color: "#28384f" }} className="hover:cursor-pointer hover:bg-pata-500" onClick={() => props.setTableData([...props.tableData,{ _id: "", Image: "", Model: "", Size: "custom", Color: "", "": "", Type: "custom", quantity: "1" }])} />
 	    <RemoveOutlinedIcon style={{ color: "#28384f" }} className="hover:cursor-pointer hover:bg-pata-500" onClick={() => props.setTableData(props.tableData.slice(0,-1))  } />
 {/*	    <SaveOutlinedIcon style={{ color: "#28384f" }} className="hover:cursor-pointer hover:bg-pata-500 ml-5" onClick={handleSubmit} />
 */}	</div>
