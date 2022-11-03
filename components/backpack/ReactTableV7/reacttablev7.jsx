@@ -35,7 +35,7 @@ export default function Table({ columns, data, updateMyData }) {
     <table className="text-pata-400 my-3 " {...getTableProps()}>
       <thead>
         {headerGroups.map(headerGroup => (
-          <tr className=" whitespace-nowrap text-center " {...headerGroup.getHeaderGroupProps()}>
+          <tr key={column.index} className=" whitespace-nowrap text-center " {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map(column => (
               <th key={column.index} className="py-2 font-semibold underline-offset-3 " {...column.getHeaderProps()}>{column.render('Header')}</th>
             ))}
@@ -47,7 +47,7 @@ export default function Table({ columns, data, updateMyData }) {
         {rows.map((row, i) => {
           prepareRow(row)
           return (
-            <tr {...row.getRowProps()}>
+            <tr key={column.index} {...row.getRowProps()}>
               {row.cells.map(cell => {
                 return <td key={row.index} className="min-w-fit whitespace-nowrap px-2" {...cell.getCellProps()}>{cell.render('Cell')}</td>
               })}
