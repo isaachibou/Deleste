@@ -35,9 +35,9 @@ export default function Table({ columns, data, updateMyData }) {
     <table className="text-pata-400 my-3 " {...getTableProps()}>
       <thead>
         {headerGroups.map(headerGroup => (
-          <tr className=" whitespace-nowrap text-center " {...headerGroup.getHeaderGroupProps()}>
+          <tr key={headerGroup} className=" whitespace-nowrap text-center " {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map(column => (
-              <th className="py-2 font-semibold underline-offset-3 " {...column.getHeaderProps()}>{column.render('Header')}</th>
+              <th key={column.index} className="py-2 font-semibold underline-offset-3 " {...column.getHeaderProps()}>{column.render('Header')}</th>
             ))}
           </tr>
         ))}
@@ -47,9 +47,9 @@ export default function Table({ columns, data, updateMyData }) {
         {rows.map((row, i) => {
           prepareRow(row)
           return (
-            <tr {...row.getRowProps()}>
+            <tr key={row} {...row.getRowProps()}>
               {row.cells.map(cell => {
-                return <td className="min-w-fit whitespace-nowrap px-2" {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                return <td key={row.index} className="min-w-fit whitespace-nowrap px-2" {...cell.getCellProps()}>{cell.render('Cell')}</td>
               })}
             </tr>
           )
