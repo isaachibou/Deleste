@@ -98,7 +98,8 @@ export default function ItemsTable(props) {
     row: { index },
     column: { id },
     updateMyData, // This is a custom function that we supplied to our table instance
-    size
+    size,
+    type
     }) => {
       // We need to keep and update the state of the cell normally
       const [value, setValue] = React.useState(initialValue)
@@ -117,7 +118,7 @@ export default function ItemsTable(props) {
         setValue(initialValue)
       }, [initialValue])
 
-      return <input className= {`max-w-[${size}px] block bg-transparent hover:bg-pata-500 cursor-pointer`} value={value} onChange={onChange} onBlur={onBlur} />
+      return <input type={type} className={`max-w-[${size}px] block bg-transparent hover:bg-pata-500 cursor-pointer`} value={value} onChange={onChange} onBlur={onBlur} />
     }
 
   const ImageCell = ({
@@ -184,7 +185,7 @@ export default function ItemsTable(props) {
         {
           Header: 'Qty',
           accessor: 'quantity',
-          Cell: ({value, row,column}) => <EditableCell value={value} size={30} row={row} column={column} updateMyData={updateMyData}/>
+          Cell: ({value, row,column}) => <EditableCell value={value} type="number" size={30} row={row} column={column} updateMyData={updateMyData}/>
         },
         {
           Header: 'Weight (g)',
