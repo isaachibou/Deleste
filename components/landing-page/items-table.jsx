@@ -118,7 +118,7 @@ export default function ItemsTable(props) {
         setValue(initialValue)
       }, [initialValue])
 
-      return <input className= {`${size} block bg-transparent hover:bg-pata-500 cursor-pointer`} value={value} onChange={onChange} onBlur={onBlur} />
+      return <input className= {`${size} block bg-transparent hover:bg-pata-500 cursor-pointer`} type="number" value={value} onChange={onChange} onBlur={onBlur} />
     }
 
   const ImageCell = ({
@@ -129,7 +129,7 @@ export default function ItemsTable(props) {
     }) => {
       // We need to keep and update the state of the cell normally
       const [value, setValue] = React.useState(initialValue)
-     // const [imageLoaded, setImageLoaed] = React.useState(initialValue)
+      // const [imageLoaded, setImageLoaded] = React.useState(initialValue)
 
       const onChange = e => {
       	console.log(e.target.value)
