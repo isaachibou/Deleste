@@ -56,7 +56,7 @@ export default function ItemsTable(props) {
 		{label: "Custom",value: "custom",}  
 	];
 
-  	const DropdownCell = ({
+  const DropdownCell = ({
 	    value: initialValue,
 	    options: options,
 	    row: { index, original },
@@ -86,7 +86,7 @@ export default function ItemsTable(props) {
 	      return (
 	        <select className="min-w-full basis-1/6 bg-transparent hover:bg-pata-500" value={value} onChange={onChange}>
 	          {options?.map((option) => (
-	              <option key={props.index} value={option.value}>{option.label?option.label:option.Model+" - "+original.Size}</option>
+	              <option key={props.index+option.value} value={option.value}>{option.label?option.label:option.Model+" - "+original.Size}</option>
 	          ))}
 	        </select>
 	      )
@@ -144,16 +144,17 @@ export default function ItemsTable(props) {
         setValue(initialValue)
       }, [initialValue])
 
-/*      if(value || original.Type != "custom") {
-*/				return <Image className="min-w-fit mx-auto rounded-lg border-2 border-pata-500"
+      if(value || original.Type != "custom") {
+			return <Image className="min-w-fit mx-auto rounded-lg border-2 border-pata-500"
 		      src={value}
 		      alt="Picture of the matos"
 		      width={60}
 		      height={60}
 		    />    
-	  	/*} else {
-	  		return <input type="file" multiple accept="public/images/*" onChange={onChange} />
-	  	}*/
+	  	} else {
+/*	  		return <input type="file" multiple accept="public/images/*" onChange={onChange} />
+*/	  		return <span>{value}</span>
+	  	}
 	}
 
     

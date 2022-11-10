@@ -3,7 +3,7 @@ import Link from 'next/link';
 import ArrowIcon from '../components/ArrowIcon';
 import { getGlobalData } from '../utils/global-data';
 import * as React from 'react'
-
+import { getSession } from 'next-auth/react'
 
 import { useState, useEffect, useRef } from 'react'
 import { getData, getAllModels } from './api/matos_2'
@@ -16,21 +16,83 @@ import SearchBar from "../components/landing-page/searchbar"
 import ItemsTable from "../components/landing-page/items-table"
 
 
+
+
 export default function Index(props) {
   const [tableData, setTableData] = useState([]);
   const [display, setDisplay] = useState("hidden");
   const [title, setTitle] = useState("What will you pack first ? ");
+  const [shareUrl, setShareUrl] = useState("pas encore d'url gros")
 
  useEffect(async () => {     
     console.log("tableData: updated ", tableData)
     if(tableData.length != 0) {
       setDisplay("")
-      setTitle("OK ! What next ?)")
+      setTitle("OK ! What next :)")
     } else { 
       setDisplay("hidden")
       setTitle("What will you pack first ?")
     }
   },[tableData])
+
+ const getUserId = async () => {
+    console.log("loading userid")
+    const session = await getSession();
+    return session.user.id;
+ }
+
+ const handleSubmit = async () => {
+  var rows = document.querySelectorAll("li")
+  var nameselector = document.querySelector("input[name='EquipmentName']");
+/*  let equipName = nameselector.value; 
+*/  let equipName="Tous les sacs ont le même nom pour l'instant"
+
+  console.log("tableData in submit", tableData)
+    
+  var backpackObject = {
+    owner: await getUserId (),
+    name: equipName,
+    items: {
+    } 
+  };
+
+  var items=[]
+  for(let item of tableData) {
+    
+    items.push({ 
+      type: item.Type,
+      _id: item._id,
+      quantity: item.quantity
+    })
+  }
+  console.log("items", items)
+  backpackObject.items = [...items]
+  
+  console.log("data", backpackObject)
+  const JSONdata = JSON.stringify(backpackObject)
+
+  const response = await fetch('/api/backpacks', {
+    body: JSONdata,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    method: 'POST',
+  })
+
+ // embeddd
+ //  const r = await client.db(dbName).collection(collName).findOneAndUpdate(objFilter, { $push: { ts: getDateStandardWithSeconds(), ...objToUpdateOrInsert } }, { upsert: true, returnOriginal: false });
+
+  const result = await response.json()
+  alert(`You have updated ${equipName}`)
+  console.log('upsert', JSONdata)
+
+  // Share Url of new backpack
+  console.log("upserted id :", result)
+  if(result.success.upsertedId) { setShareUrl(result.success.upsertedId) }
+  
+
+  // UseEffect on Set BpSelected will rerender bpList and fetch its matos
+} 
 
   return (
     <Landscape>
@@ -47,11 +109,20 @@ export default function Index(props) {
         <div className={`mx-auto col-span-2 my-12 max-w-fit ${display}`}>
           <ItemsTable tableData={tableData} setTableData={setTableData} itemModels={props.itemModels}/>
         </div>
-        <Link href={{
+    {/*     <Link href={{
           pathname: '/backpack',
           query: JSON.stringify(tableData)
         }}>
-            <button className={`mx-auto col-span-2 max-w-fit ${display}`}> Keep Going ! </button>
+            <button className={`mx-auto col-span-2 max-w-fit ${display}`} onClick={handleSubmit}> Keep Going ! </button>
+        </Link>*/}
+        <button className={`mx-auto col-span-2 max-w-fit ${display}`} onClick={handleSubmit}> Keep Going ! </button>
+        <Link
+          as={`/backpack/${shareUrl}`}
+          href={`/backpack/[backpack]`}
+        > 
+          <a>
+            <span className="text-center"> Share: <span className="text-pata-500">{shareUrl}</span> </span>
+          </a>
         </Link>
       </main>
     </Landscape>

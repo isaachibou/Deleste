@@ -17,6 +17,21 @@ export default async function handler(req, res) {
   }
 };
 
+export async function getBackpackById(id) {
+  const client = await clientPromise;
+
+  const backpack = await client
+    .db("Délesté"+process.env.NEXT_PUBLIC_DB_SUFFIX)
+    .collection("Backpacks")
+    .find({
+      "_id": ObjectId(id),
+    })
+    .sort({ SKU: -1 })
+    .toArray();
+   
+   return backpack
+};
+
 export async function getBackpacks(owner) {
 
     const client = await clientPromise;
