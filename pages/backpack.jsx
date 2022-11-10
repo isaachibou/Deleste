@@ -255,7 +255,7 @@ export default function Equips(props) {
         setValue(initialValue)
       }, [initialValue])
 
-      return <input className= {"max-w-["+size+"px] block bg-transparent hover:bg-pata-500 cursor-pointer"} value={value} onChange={onChange} onBlur={onBlur} />
+      return <input className= {`${size} block bg-transparent hover:bg-pata-500 cursor-pointer`} value={value} onChange={onChange} onBlur={onBlur} />
     }  
 
     const columns = React.useMemo(
@@ -285,7 +285,7 @@ export default function Equips(props) {
         {
           Header: 'Qty',
           accessor: 'quantity',
-          Cell: ({value, row,column}) => <EditableCell size={30} value={value} row={row} column={column} updateMyData={updateMyData}/>
+          Cell: ({value, row,column}) => <EditableCell size="max-w-[30px]" value={value} row={row} column={column} updateMyData={updateMyData}/>
         },
         {
           Header: 'Weight (g)',
