@@ -91,13 +91,18 @@ export default function Backpack(props)	{
         })
       )
   }
-   const handleSubmit = async () => {
+
+  const getUserId = async () => {
+    console.log("loading userid")
+    const session = await getSession();
+    return session.user.id;
+  }
+
+  const handleSubmit = async () => {
     var rows = document.querySelectorAll("li")
     var nameselector = document.querySelector("input[name='EquipmentName']");
     let equipName = nameselector.value; 
 
-    console.log("tableData in submit", tableData)
-      
     var backpackObject = {
       owner: await getUserId (),
       name: equipName,
@@ -128,10 +133,7 @@ export default function Backpack(props)	{
 
     // Select new backpack
     console.log("upserted id :", result.success.upsertedId)
-    setBpSelected(result.success.upsertedId)   
-
-    // UseEffect on Set BpSelected will rerender bpList and fetch its matos
-  } 
+} 
 
   const columns = React.useMemo(
       () => [
