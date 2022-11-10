@@ -117,7 +117,7 @@ export default function ItemsTable(props) {
         setValue(initialValue)
       }, [initialValue])
 
-      return <input className= {`max-w-[${size}px] block bg-transparent hover:bg-pata-500 cursor-pointer`} value={value} onChange={onChange} onBlur={onBlur} />
+      return <input className= {`${size} block bg-transparent hover:bg-pata-500 cursor-pointer`} value={value} onChange={onChange} onBlur={onBlur} />
     }
 
   const ImageCell = ({
@@ -173,7 +173,7 @@ export default function ItemsTable(props) {
         {
           Header: 'Model',
           accessor: 'Model',
-	        Cell: ({value, row,column}) => row.original.Type == "custom" ? <EditableCell value={value} size={300} row={row} column={column} updateMyData={updateMyData}/> : <DropdownCell value={value} options={props.itemModels[row.original.Type]} row={row} column={column} updateMyData={updateMyData}/>
+	        Cell: ({value, row,column}) => row.original.Type == "custom" ? <EditableCell value={value} size="max-w-[300px]" row={row} column={column} updateMyData={updateMyData}/> : <DropdownCell value={value} options={props.itemModels[row.original.Type]} row={row} column={column} updateMyData={updateMyData}/>
         },	
          {
           Header: 'Size',
@@ -184,7 +184,7 @@ export default function ItemsTable(props) {
         {
           Header: 'Qty',
           accessor: 'quantity',
-          Cell: ({value, row,column}) => <EditableCell value={value} size={30} row={row} column={column} updateMyData={updateMyData}/>
+          Cell: ({value, row,column}) => <EditableCell value={value} size="max-w-[30px]" row={row} column={column} updateMyData={updateMyData}/>
         },
         {
           Header: 'Weight (g)',
