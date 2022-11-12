@@ -7,6 +7,10 @@ import RemoveOutlinedIcon from '@mui/icons-material/RemoveOutlined';
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 
 import ReactTablev7 from '../../components/backpack/ReactTableV7/reacttablev7'
+import EditableCell from '../../components/backpack/ReactTableV7/editablecell'
+import DropdownCell from '../../components/backpack/ReactTableV7/dropdowncell'
+import ImageCell from '../../components/backpack/ReactTableV7/imagecell'
+
 import Image from "next/image";
 
 import { ReactSearchAutocomplete } from 'react-search-autocomplete'
@@ -56,110 +60,7 @@ export default function ItemsTable(props) {
 		{label: "Custom",value: "custom",}  
 	];
 
-  const DropdownCell = ({
-	    value: initialValue,
-	    options: options,
-	    row: { index, original },
-	    column: { id },
-	    display,
-	    updateMyData,
-	    }) => {
-		      // We need to keep and update the state of the cell normally
-		      const [value, setValue] = React.useState(initialValue)
-		      const onChange = e => {
-		        setValue(e.target.value)
-		      }
-
-		      
-
-		      React.useEffect(() => {
-		      	console.log("updating ", index, id , value)
-		        updateMyData(index, id, value)
-		      },[value])
-
-		      // If the initialValue is changed external, sync it up with our state
-		      React.useLayoutEffect(() => {
-		      	console.log("resetting to" , initialValue)
-		        setValue(initialValue)
-		      }, [initialValue])
-
-	      return (
-	        <select className="min-w-full basis-1/6 bg-transparent hover:bg-pata-500" value={value} onChange={onChange}>
-	          {options?.map((option) => (
-	              <option key={props.index+option.value} value={option.value}>{option.label?option.label:option.Model+" - "+original.Size}</option>
-	          ))}
-	        </select>
-	      )
-
-    		}
-  
-  const EditableCell = ({
-    value: initialValue,
-    row: { index },
-    column: { id },
-    updateMyData, // This is a custom function that we supplied to our table instance
-    size,
-    type
-    }) => {
-      // We need to keep and update the state of the cell normally
-      const [value, setValue] = React.useState(initialValue)
-
-      const onChange = e => {
-        setValue(e.target.value)
-      }
-
-      // We'll only update the external data when the input is blurred
-      const onBlur = () => {
-        updateMyData(index, id, value)
-      }		
-
-      // If the initialValue is changed external, sync it up with our state
-      React.useEffect(() => {
-        setValue(initialValue)
-      }, [initialValue])
-
-      return <input className= {`${size} block bg-transparent hover:bg-pata-500 cursor-pointer`} type="number" value={value} onChange={onChange} onBlur={onBlur} />
-    }
-
-  const ImageCell = ({
-    value: initialValue,
-    row: { index, original },
-    column: { id },
-    updateMyData, // This is a custom function that we supplied to our table instance
-    }) => {
-      // We need to keep and update the state of the cell normally
-      const [value, setValue] = React.useState(initialValue)
-      // const [imageLoaded, setImageLoaded] = React.useState(initialValue)
-
-      const onChange = e => {
-      	console.log(e.target.value)
-		  	setValue(String(e.target.value))
-		  }
-
-			React.useEffect(() => {
-        console.log("re render after load iamge")
-      }, [value])
-      // If the initialValue is changed external, sync it up with our state
-      React.useEffect(() => {
-        setValue(initialValue)
-      }, [initialValue])
-
-      if(value || original.Type != "custom") {
-			return <Image className="min-w-fit mx-auto rounded-lg border-2 border-pata-500"
-		      src={value}
-		      alt="Picture of the matos"
-		      width={60}
-		      height={60}
-		    />    
-	  	} else {
-/*	  		return <input type="file" multiple accept="public/images/*" onChange={onChange} />
-*/	  		return <span>{value}</span>
-	  	}
-	}
-
-    
-
-    const columns = React.useMemo(
+  const columns = React.useMemo(
       () => [
       	{
           Header: 'Image',

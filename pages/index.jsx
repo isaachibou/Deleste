@@ -125,7 +125,7 @@ export default function Index(props) {
           href={`/b/[backpack]`}
         > 
           <a>
-            <ShareOutlinedIcon style={{ color: "#28384f" }} className="hover:cursor-pointer hover:bg-pata-500" />
+            < ShareOutlinedIcon style={{ color: "#28384f" }} className="hover:cursor-pointer hover:bg-pata-500" />
             <span className="text-center text-pata-400"> Share: <span className="text-pata-500">{shareUrl}</span> </span>
           </a>         
         </Link>
