@@ -1,9 +1,11 @@
 import * as React from 'react'
 import { useState, useEffect, useRef } from 'react'
 import Image from "next/image"
+import Link from 'next/link';
 
 
 export default function ImageCell({
+    matosUrl,
     value: initialValue,
     row: { index, original },
     column: { id },
@@ -27,12 +29,17 @@ export default function ImageCell({
       }, [initialValue])
 
       if(value || original.Type != "custom") {
-			return <Image className="min-w-fit mx-auto rounded-lg border-2 border-pata-500"
-		      src={value}
-		      alt="Picture of the matos"
-		      width={60}
-		      height={60}
-		    />    
+			return (
+        <Link href={matosUrl}> 
+          <a target="_blank">
+            <Image className="min-w-fit mx-auto rounded-lg border-2 border-pata-500"
+    		      src={value}
+    		      alt="Picture of the matos"
+    		      width={60}
+    		      height={60}
+    		    />   
+          </a>
+        </Link> )
 	  	} else {
 /*	  		return <input type="file" multiple accept="public/images/*" onChange={onChange} />
 */	  		return <span>{value}</span>

@@ -65,7 +65,7 @@ export default function ItemsTable(props) {
       	{
           Header: 'Image',
           accessor: 'Image',
-          Cell: ({value, row, column}) => <ImageCell value={value} options={typeOptions} row={row} column={column} updateMyData={updateMyData}/>
+          Cell: ({value, row, column}) => <ImageCell value={value} matosUrl={row.original.ManufacturerURL} options={typeOptions} row={row} column={column} updateMyData={updateMyData}/>
 
         },
         {
@@ -78,8 +78,14 @@ export default function ItemsTable(props) {
           accessor: 'Model',
 	        Cell: ({value, row,column}) => row.original.Type == "custom" ? <EditableCell value={value} size="max-w-[300px]" row={row} column={column} updateMyData={updateMyData}/> : <DropdownCell value={value} options={props.itemModels[row.original.Type]} row={row} column={column} updateMyData={updateMyData}/>
         },	
-         {
+        {
           Header: 'Size',
+          accessor: 'ManufacturerURL',
+          show: false,
+	        Cell: ({value, row,column}) => <span>{value}</span>
+        },
+        {
+          Header: 'Link',
           accessor: 'Size',
           show: false,
 	        Cell: ({value, row,column}) => <span>{value}</span>

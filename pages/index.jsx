@@ -16,10 +16,6 @@ import SearchBar from "../components/landing-page/searchbar"
 import ItemsTable from "../components/landing-page/items-table"
 import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined';
 
-
-
-
-
 export default function Index(props) {
   const [tableData, setTableData] = useState([]);
   const [display, setDisplay] = useState("hidden");
