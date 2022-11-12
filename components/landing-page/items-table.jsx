@@ -197,7 +197,7 @@ export default function ItemsTable(props) {
 	            return weight?weight:0
           	}
           	else {
-          		return <EditableCell value={value} size={50} row={row} column={column} updateMyData={updateMyData}/>
+          		return <EditableCell value={value} size="max-w-[50px]" row={row} column={column} updateMyData={updateMyData}/>
           	}
           }
         }
@@ -206,14 +206,12 @@ export default function ItemsTable(props) {
     )
 
 return (
- 	<div className="{classes.container}  p-2 md:first:rounded-t-lg lg:last:rounded-b-lg backdrop-blur-lg bg-pata-100/0 hover:bg-gray/30 transition border border-pata-500 dark:border-white border-opacity-10 border-b-0 last:border-b hover:border-b hovered-sibling:border-t-0">
-		 
+ 	<div className="{classes.container}  p-2 md:first:rounded-t-lg lg:last:rounded-b-lg backdrop-blur-lg bg-pata-100/0 hover:bg-gray/30 transition border border-pata-500 dark:border-white border-opacity-10 border-b-0 last:border-b hover:border-b hovered-sibling:border-t-0">		 
 	    <ReactTablev7 
 	    	columns={columns} 
 	    	data={props.tableData} 
 	    	updateMyData={updateMyData} 
-	    	bpName={bpName} 
-	    	setBpName={setBpName} />
+	    />
 	    <Divider />
 	    <AddOutlinedIcon style={{ color: "#28384f" }} className="hover:cursor-pointer hover:bg-pata-500" onClick={() => props.setTableData([...props.tableData,{ _id: "", Image: "", Model: "", Size: "custom", Color: "", "": "", Type: "custom", quantity: "1" }])} />
 	    <RemoveOutlinedIcon style={{ color: "#28384f" }} className="hover:cursor-pointer hover:bg-pata-500" onClick={() => props.setTableData(props.tableData.slice(0,-1))  } />

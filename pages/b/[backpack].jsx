@@ -143,8 +143,8 @@ export default function Backpack(props)	{
           Cell: ({value}) => value?<Image className="mx-auto rounded-lg border-2 border-pata-500"
                     src={value}
                     alt="Picture of the matos"
-                    width={90}
-                    height={90}
+                    width={60}
+                    height={60}
                   />:<span/>
         },
         {

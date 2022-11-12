@@ -14,6 +14,8 @@ import Landscape from '../components/landscape/landscape'
 import Header from '../components/Header'
 import SearchBar from "../components/landing-page/searchbar"
 import ItemsTable from "../components/landing-page/items-table"
+import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined';
+
 
 
 
@@ -22,7 +24,9 @@ export default function Index(props) {
   const [tableData, setTableData] = useState([]);
   const [display, setDisplay] = useState("hidden");
   const [title, setTitle] = useState("What will you pack first ? ");
-  const [shareUrl, setShareUrl] = useState("pas encore d'url gros")
+  const [shareUrl, setShareUrl] = useState(null)
+  const [bpName, setBpName] = useState();
+
 
  useEffect(async () => {     
     console.log("tableData: updated ", tableData)
@@ -42,13 +46,8 @@ export default function Index(props) {
  }
 
  const handleSubmit = async () => {
-  var rows = document.querySelectorAll("li")
-  var nameselector = document.querySelector("input[name='EquipmentName']");
-/*  let equipName = nameselector.value; 
-*/  let equipName="Tous les sacs ont le même nom pour l'instant"
+  let equipName=bpName
 
-  console.log("tableData in submit", tableData)
-    
   var backpackObject = {
     owner: await getUserId (),
     name: equipName,
@@ -107,6 +106,10 @@ export default function Index(props) {
           <SearchBar items={props.equips} tableData={tableData} setTableData={setTableData} />
         </div>
         <div className={`mx-auto col-span-2 my-12 max-w-fit ${display}`}>
+          <div className="flex flex-row mx-auto">
+            <svg xmlns="http://www.w3.org/2000/svg" className="scale-x-[-1] inline-flex align-baseline feather feather-feather" width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#28384f" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"  ><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path><line x1="16" y1="8" x2="2" y2="22"></line><line x1="17.5" y1="15" x2="9" y2="15"></line></svg>
+            <input name="EquipmentName" className="min-w-max ml-1 whitespace-nowrap w-52 text-left text-pata-400 text-xl bg-transparent  placeholder:text-pata-400" value={bpName} onChange={((e) => setBpName(e.target.value))} type="text" placeholder="Your equipment name here ..."/>
+          </div>
           <ItemsTable tableData={tableData} setTableData={setTableData} itemModels={props.itemModels}/>
         </div>
     {/*     <Link href={{
@@ -116,14 +119,17 @@ export default function Index(props) {
             <button className={`mx-auto col-span-2 max-w-fit ${display}`} onClick={handleSubmit}> Keep Going ! </button>
         </Link>*/}
         <button className={`mx-auto col-span-2 max-w-fit ${display}`} onClick={handleSubmit}> Keep Going ! </button>
+        { shareUrl &&
         <Link
-          as={`/backpack/${shareUrl}`}
-          href={`/backpack/[backpack]`}
+          as={`/b/${shareUrl}`}
+          href={`/b/[backpack]`}
         > 
           <a>
-            <span className="text-center"> Share: <span className="text-pata-500">{shareUrl}</span> </span>
-          </a>
+            <ShareOutlinedIcon style={{ color: "#28384f" }} className="hover:cursor-pointer hover:bg-pata-500" />
+            <span className="text-center text-pata-400"> Share: <span className="text-pata-500">{shareUrl}</span> </span>
+          </a>         
         </Link>
+        }
       </main>
     </Landscape>
   );
