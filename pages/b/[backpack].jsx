@@ -12,6 +12,7 @@ import BackpackList from "../../components/backpack/list"
 import ReactTablev7 from '../../components/backpack/ReactTableV7/reacttablev7'
 import DropdownCell from '../../components/backpack/ReactTableV7/dropdowncell'
 import EditableCell from '../../components/backpack/ReactTableV7/editablecell'
+import ImageCell from '../../components/backpack/ReactTableV7/imagecell'
 import classes from '../../components/backpack/table.module.css'
 import Landscape from '../../components/landscape/landscape'
 import Header from '../../components/Header'
@@ -137,49 +138,55 @@ export default function Backpack(props)	{
 
   const columns = React.useMemo(
       () => [
-       {
+        {
           Header: 'Image',
           accessor: 'Image',
-          Cell: ({value}) => value?<Image className="mx-auto rounded-lg border-2 border-pata-500"
-                    src={value}
-                    alt="Picture of the matos"
-                    width={60}
-                    height={60}
-                  />:<span/>
+          Cell: ({value, row, column}) => <ImageCell height={60} width={60} value={value} matosUrl={row.original.ManufacturerURL} options={typeOptions} row={row} column={column} updateMyData={updateMyData}/>
+
         },
         {
           Header: 'Type',
           accessor: 'Type',
           Cell: ({value, row,column}) => <DropdownCell value={value} options={typeOptions} row={row} column={column} updateMyData={updateMyData}/>
-
         },
-        
         {
           Header: 'Model',
           accessor: 'Model',
-          Cell: ({value, row,column}) => <DropdownCell value={value} options={props.itemModels[row.original.Type]} row={row} column={column} updateMyData={updateMyData}/>
+          Cell: ({value, row,column}) => row.original.Type == "custom" ? <EditableCell value={value} size="max-w-[300px]" row={row} column={column} updateMyData={updateMyData}/> : <DropdownCell value={value} options={props.itemModels[row.original.Type]} row={row} column={column} updateMyData={updateMyData}/>
+        },  
+        {
+          Header: 'Size',
+          accessor: 'ManufacturerURL',
+          show: false,
+          Cell: ({value, row,column}) => <span>{value}</span>
+        },
+        {
+          Header: 'Link',
+          accessor: 'Size',
+          show: false,
+          Cell: ({value, row,column}) => <span>{value}</span>
         },
         {
           Header: 'Qty',
           accessor: 'quantity',
-          Cell: ({value, row,column}) => <EditableCell size={30} value={value} row={row} column={column} updateMyData={updateMyData}/>
+          Cell: ({value, row,column}) => <EditableCell value={value} size="max-w-[30px]" row={row} column={column} updateMyData={updateMyData}/>
         },
         {
           Header: 'Weight (g)',
           accessor: 'Weight (Metric)',
           Cell: ({value, row,column}) => {
-            let weight= parseInt(row.original.quantity)*parseFloat(value)
-            return weight?weight:0
+            if(row.original.Type != "custom") {
+              let weight= parseInt(row.original.quantity)*parseFloat(value)
+              return weight?weight:0
+            }
+            else {
+              return <EditableCell value={value} size="max-w-[50px]" row={row} column={column} updateMyData={updateMyData}/>
+            }
           }
-        },
-        {
-          Header: 'Color',
-          accessor: 'Color',
         }
       ],
       []
     )
-
   return (
     <Landscape>
       <SEO title={props.globalData.name} description={props.globalData.blogTitle} /> 

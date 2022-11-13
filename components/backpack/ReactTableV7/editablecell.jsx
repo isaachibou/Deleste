@@ -26,7 +26,7 @@ export default function EditableCell({
     setValue(initialValue)
   }, [initialValue])
 
-  return <input className= {`max-w-[${size}px] block bg-transparent hover:bg-pata-500 cursor-pointer`} value={value} onChange={onChange} onBlur={onBlur} />
+  return <input className= {`${size} block bg-transparent hover:bg-pata-500 cursor-pointer`} value={value} onChange={onChange} onBlur={onBlur} />
 }  
 
   

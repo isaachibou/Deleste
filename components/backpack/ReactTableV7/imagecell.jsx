@@ -5,6 +5,8 @@ import Link from 'next/link';
 
 
 export default function ImageCell({
+    width,
+    height,
     matosUrl,
     value: initialValue,
     row: { index, original },
@@ -35,8 +37,8 @@ export default function ImageCell({
             <Image className="min-w-fit mx-auto rounded-lg border-2 border-pata-500"
     		      src={value}
     		      alt="Picture of the matos"
-    		      width={60}
-    		      height={60}
+    		      width={width}
+    		      height={height}
     		    />   
           </a>
         </Link> )

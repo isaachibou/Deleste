@@ -65,7 +65,7 @@ export default function ItemsTable(props) {
       	{
           Header: 'Image',
           accessor: 'Image',
-          Cell: ({value, row, column}) => <ImageCell value={value} matosUrl={row.original.ManufacturerURL} options={typeOptions} row={row} column={column} updateMyData={updateMyData}/>
+          Cell: ({value, row, column}) => <ImageCell height={60} width={60}  value={value} matosUrl={row.original.ManufacturerURL} options={typeOptions} row={row} column={column} updateMyData={updateMyData}/>
 
         },
         {
