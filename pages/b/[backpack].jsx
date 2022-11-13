@@ -41,11 +41,9 @@ export default function Backpack(props)	{
    * bpSelected is the id of the backpack I clicked 
    * on in the list */  
   const fetchBackpackMatos = async () => {  
-    var bptodisplay = bpList.find(backpack => {return backpack._id === bpSelected})
-    console.log("bptodisplay ", bptodisplay)
-    if (bptodisplay) {
+    if (props.backpack[0].items) {
       let tempdata=[]
-      for (const [key, value] of Object.entries(bptodisplay.items)) {
+      for (const [key, value] of Object.entries(props.backpack[0].items)) {
         var responsematos = await fetch('/api/matos_2?usecase=fillTable&id='+value._id, {headers: {'Content-Type': 'application/json'},method: 'GET'})
         var matos = await responsematos.json();
         matos["Type"] = key;
@@ -61,6 +59,21 @@ export default function Backpack(props)	{
     console.log("fetched table data is ", tableData)
   }
 
+  const isInitialMount = useRef(true);
+   useEffect(async () => {    
+      if (isInitialMount.current) {
+        console.log("InitialMount")
+          await fetchBackpackMatos()
+        isInitialMount.current = false;
+
+      } else {
+        console.log("Not InitialMount")
+      
+        
+      }
+    })
+
+  
   const updateMyData = (rowIndex, columnId, value) => {
     // We also turn on the flag to not reset the page
       console.log("updateMyData !")
@@ -187,6 +200,7 @@ export default function Backpack(props)	{
       ],
       []
     )
+   
   return (
     <Landscape>
       <SEO title={props.globalData.name} description={props.globalData.blogTitle} /> 
