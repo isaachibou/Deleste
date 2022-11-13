@@ -2,6 +2,7 @@ import * as React from 'react'
 import { useState, useEffect, useRef } from 'react'
 
 export default function EditableCell({
+    type,
     value: initialValue,
     row: { index },
     column: { id },
@@ -26,7 +27,7 @@ export default function EditableCell({
     setValue(initialValue)
   }, [initialValue])
 
-  return <input className= {`${size} block bg-transparent hover:bg-pata-500 cursor-pointer`} value={value} onChange={onChange} onBlur={onBlur} />
+  return <input className= {`${size} block bg-transparent hover:bg-pata-500 cursor-pointer`} type={type} value={value} onChange={onChange} onBlur={onBlur} />
 }  
 
   

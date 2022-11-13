@@ -93,7 +93,7 @@ export default function ItemsTable(props) {
         {
           Header: 'Qty',
           accessor: 'quantity',
-          Cell: ({value, row,column}) => <EditableCell value={value} size="max-w-[30px]" row={row} column={column} updateMyData={updateMyData}/>
+          Cell: ({value, row,column}) => <EditableCell value={value} size="max-w-[40px]" type="number" row={row} column={column} updateMyData={updateMyData}/>
         },
         {
           Header: 'Weight (g)',

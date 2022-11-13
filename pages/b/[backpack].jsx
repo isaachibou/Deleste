@@ -169,7 +169,7 @@ export default function Backpack(props)	{
         {
           Header: 'Qty',
           accessor: 'quantity',
-          Cell: ({value, row,column}) => <EditableCell value={value} size="max-w-[30px]" row={row} column={column} updateMyData={updateMyData}/>
+          Cell: ({value, row,column}) => <EditableCell value={value} type="number" size="max-w-[40px]" row={row} column={column} updateMyData={updateMyData}/>
         },
         {
           Header: 'Weight (g)',
