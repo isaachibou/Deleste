@@ -76,7 +76,7 @@ export default function ItemsTable(props) {
         {
           Header: 'Model',
           accessor: 'Model',
-	        Cell: ({value, row,column}) => row.original.Type == "custom" ? <EditableCell value={value} size="max-w-[300px]" row={row} column={column} updateMyData={updateMyData}/> : <DropdownCell value={value} options={props.itemModels[row.original.Type]} row={row} column={column} updateMyData={updateMyData}/>
+	        Cell: ({value, row,column}) => row.original.Type == "custom" ? <EditableCell value={value} size="max-w-[220px]" row={row} column={column} updateMyData={updateMyData}/> : <DropdownCell value={value} size="max-w-[300px]" options={props.itemModels[row.original.Type]} row={row} column={column} updateMyData={updateMyData}/>
         },	
         {
           Header: 'Size',
@@ -120,7 +120,7 @@ return (
 	    	updateMyData={updateMyData} 
 	    />
 	    <Divider />
-	    <AddOutlinedIcon style={{ color: "#28384f" }} className="hover:cursor-pointer hover:bg-pata-500" onClick={() => props.setTableData([...props.tableData,{ _id: "", Image: "", Model: "", Size: "custom", Color: "", "": "", Type: "custom", quantity: "1" }])} />
+	    <AddOutlinedIcon style={{ color: "#28384f" }} className="hover:cursor-pointer hover:bg-pata-500" onClick={() => props.setTableData([...props.tableData,{ _id: "", Image: "", Model: "", Size: "custom", Color: "", Type: "custom", quantity: "1" }])} />
 	    <RemoveOutlinedIcon style={{ color: "#28384f" }} className="hover:cursor-pointer hover:bg-pata-500" onClick={() => props.setTableData(props.tableData.slice(0,-1))  } />
 {/*	    <SaveOutlinedIcon style={{ color: "#28384f" }} className="hover:cursor-pointer hover:bg-pata-500 ml-5" onClick={handleSubmit} />
 */}	</div>

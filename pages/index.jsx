@@ -22,9 +22,8 @@ export default function Index(props) {
   const [title, setTitle] = useState("What will you pack first ? ");
   const [shareUrl, setShareUrl] = useState(null)
   const [bpName, setBpName] = useState();
-
-
- useEffect(async () => {     
+ 
+  useEffect(async () => {     
     console.log("tableData: updated ", tableData)
     if(tableData.length != 0) {
       setDisplay("")
@@ -35,37 +34,84 @@ export default function Index(props) {
     }
   },[tableData])
 
- const getUserId = async () => {
+  const getUserId = async () => {
     console.log("loading userid")
     const session = await getSession();
-    return session.user.id;
- }
-
- const handleSubmit = async () => {
-  let equipName=bpName
-
-  var backpackObject = {
-    owner: await getUserId (),
-    name: equipName,
-    items: {
-    } 
-  };
-
-  var items=[]
-  for(let item of tableData) {
-    
-    items.push({ 
-      type: item.Type,
-      _id: item._id,
-      quantity: item.quantity
-    })
+    if(session) return session.user.id;
   }
-  console.log("items", items)
+
+  const entry = {
+    "Size": "",
+    "Type": "",
+    "Brand": "",
+    "Model": "",
+    "Image": "",
+    "ManufacturerURL": "",
+    "SKU": "",
+    "Color": "",
+    "R-Value": "",
+    "Weight (Standard)": "",
+    "Weight (Metric)": "",
+    "Width (Standard)": "",
+    "Width (Metric)": "",
+    "Length (Standard)": "",
+    "Length (Metric)": "",
+    "Height (Standard)": "",
+    "Height (Metric)": "",
+    "Thickness (Standard)": "",
+    "Thickness (Metric)": "",
+    "Packed dimension (Standard)": "",
+    "Packed dimension (Metric)": "",
+    "Top fabric type": "",
+    "Bottom fabric type": "",
+    "What's Included": "",
+  }
+
+  const handleSubmit = async () => {
+    let equipName=bpName
+
+    var backpackObject = {
+      owner: await getUserId (),
+      name: equipName,
+      items: {
+      } 
+    };
+
+    var items=[]
+    for(let item of tableData) {
+      console.log("item___________",item)
+      if(item.Type == "custom") {
+        console.log(item)
+        var matos = Object.assign(entry,item)
+        console.log("matinos------------",matos)
+
+        const JSONdata = JSON.stringify(matos)
+        const response = await fetch('/api/matos_2', {
+          body: JSONdata,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          method: 'POST',
+        })
+
+        const result = await response.json()
+        alert(`You have inserted ${matos.Model}`)
+
+        console.log("inserted id :", result.success)
+        item._id = result.success.insertedId
+
+      }
+
+      items.push({ 
+        type: item.Type,
+        _id: item._id,
+        quantity: item.quantity
+      })
+    }
+
   backpackObject.items = [...items]
   
-  console.log("data", backpackObject)
   const JSONdata = JSON.stringify(backpackObject)
-
   const response = await fetch('/api/backpacks', {
     body: JSONdata,
     headers: {
@@ -115,6 +161,7 @@ export default function Index(props) {
             <button className={`mx-auto col-span-2 max-w-fit ${display}`} onClick={handleSubmit}> Keep Going ! </button>
         </Link>*/}
         <button className={`mx-auto col-span-2 max-w-fit ${display}`} onClick={handleSubmit}> Keep Going ! </button>
+        {/* this is Short circuit */}
         { shareUrl &&
         <Link
           as={`/b/${shareUrl}`}

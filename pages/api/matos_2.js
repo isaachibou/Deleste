@@ -15,7 +15,10 @@ export default async (req, res) => {
   if(use == "fillTable") {
     var matos = await getMatosByID(id)
     res.end(JSON.stringify(matos, undefined, 2));
-  } else {
+  }
+  else if(req.method == 'POST') {
+    return addCustomMatos(req, res);
+  }else {
     const equips = await getData(type, brand)
     res.end(JSON.stringify(equips, undefined, 2));
   }
@@ -24,50 +27,43 @@ export default async (req, res) => {
 export async function getData(type, brand) {
 
 	const client = await clientPromise;
-  /*const equips = await client
-    .db("Délesté"+process.env.NEXT_PUBLIC_DB_SUFFIX)
-    .collection("Matos")
-    .find({"Model":{$exists:true}, "Type": type == "all" ? {$exists:true} : type, "Brand": String(brand).toLowerCase() == "all" ? {$exists:true} : brand })
-    .sort({ Model: 1, SKU: 1 })
-    //.limit(20)
-    .toArray();*/
-
-    let pipeline = [];
-    if(type && type != "all") { 
-      pipeline.push({
-          $match: { 
-            "Type" : type
-          }
-      })
-    }
-
-    if(brand && brand != "All") { 
-      pipeline.push({
-          $match: { 
-            "Brand" : brand
-          }
-      })
-    }
-
+  let pipeline = [];
+    
+  if(type && type != "all") { 
     pipeline.push({
-            "$group": {
-              _id: "$Model",
-              Models: {
-                "$first": "$$ROOT"
-              }
-            }
-        },)
+        $match: { 
+          "Type" : type
+        }
+    })
+  }
 
-    const equips = await client
-    .db("Délesté"+process.env.NEXT_PUBLIC_DB_SUFFIX)
-    .collection("Matos")
-    .aggregate(pipeline)
-    .sort({ Model: 1, SKU: 1 })
-    .toArray();
+  if(brand && brand != "All") { 
+    pipeline.push({
+        $match: { 
+          "Brand" : brand
+        }
+    })
+  }
+
+  pipeline.push({
+          "$group": {
+            _id: "$Model",
+            Models: {
+              "$first": "$$ROOT"
+            }
+          }
+      },)
+
+  const equips = await client
+  .db("Délesté"+process.env.NEXT_PUBLIC_DB_SUFFIX)
+  .collection("Matos")
+  .aggregate(pipeline)
+  .sort({ Model: 1, SKU: 1 })
+  .toArray();
     
-    
-    return equips.map((pipe) => pipe["Models"])
+  return equips.map((pipe) => pipe["Models"])
 }
+
 export async function getAllBrands() {
   const client = await clientPromise;
   const brands = await client
@@ -161,4 +157,28 @@ export async function getNextMatos(id) {
     .toArray();
 
 	return nextMatos
+}
+
+async function addCustomMatos(req, res) {
+  try {
+    let matos = req.body;
+    
+    //connect to database
+    const client = await clientPromise;
+    const db = client.db("Délesté"+process.env.NEXT_PUBLIC_DB_SUFFIX);
+
+    //POST request
+    const response = await db.collection('Matos').insertOne(matos);
+  
+    return res.json({
+        message: 'Details updated successfully',
+        success: response
+    });
+  } catch (error) {
+        // return an error
+        return res.json({
+            message: new Error(error).message,
+            success: false,
+        })
+  }
 }
