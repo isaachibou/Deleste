@@ -27,7 +27,7 @@ export default function Index(props) {
     console.log("tableData: updated ", tableData)
     if(tableData.length != 0) {
       setDisplay("")
-      setTitle("OK ! What next :)")
+      setTitle("OK ! What next ?")
     } else { 
       setDisplay("hidden")
       setTitle("What will you pack first ?")
@@ -83,6 +83,10 @@ export default function Index(props) {
       if(item.Type == "custom") {
         console.log(item)
         var matos = Object.assign(entry,item)
+        
+        // let mongodb handle _id
+        delete matos._id;
+
         console.log("matinos------------",matos)
 
         const JSONdata = JSON.stringify(matos)

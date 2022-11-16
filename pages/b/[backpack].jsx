@@ -243,10 +243,14 @@ export async function getServerSideProps(context) {
   
   let initialTableData=[]
   for (const [key, value] of Object.entries(backpack[0].items)) {
+    console.log("quick",backpack)
     var matos = await getMatosByID(value._id)
-    matos["Type"] = value.type;
-    matos["quantity"]=value.quantity
-    initialTableData.push(matos);      
+    if(matos) {
+      matos["Type"] = value.type;
+      matos["quantity"]=value.quantity
+      initialTableData.push(matos); 
+    }
+         
   }
   
 
