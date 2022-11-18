@@ -28,6 +28,12 @@ import Image from 'next/image'
 export default function Backpack(props)	{
   const [bpName, setBpName] = useState(props.backpack[0].name);
   const [tableData, setTableData] = useState(props.initialTableData)
+  console.log("instanciate", tableData)
+
+  console.log("Selected backpack", props.backpack[0])
+  console.log("Initial matos", props.initialTableData)
+  console.log("instanciate", tableData)
+
 
   const typeOptions = [
     {label: "Backpack",value: "backpack",},
@@ -37,43 +43,6 @@ export default function Backpack(props)	{
     {label: "Custom",value: "custom",}  
   ];  
 
-  /* backpacks contains all bp from the logged in user
-   * bpSelected is the id of the backpack I clicked 
-   * on in the list */  
-  const fetchBackpackMatos = async () => {  
-    if (props.backpack[0].items) {
-      let tempdata=[]
-      for (const [key, value] of Object.entries(props.backpack[0].items)) {
-        var responsematos = await fetch('/api/matos_2?usecase=fillTable&id='+value._id, {headers: {'Content-Type': 'application/json'},method: 'GET'})
-        var matos = await responsematos.json();
-        matos["Type"] = key;
-        matos["quantity"]=value.quantity
-        tempdata.push(matos);      
-      }
-      var target = Object.assign(tableData,tempdata)
-      console.log("fetch backpack items: " ,target)
-      setTableData(tempdata)  // And not target because it would not trigger any useeffect
-    } else {
-      //setTableData()
-    }
-    console.log("fetched table data is ", tableData)
-  }
-
-  const isInitialMount = useRef(true);
-   useEffect(async () => {    
-      if (isInitialMount.current) {
-        console.log("InitialMount")
-          await fetchBackpackMatos()
-        isInitialMount.current = false;
-
-      } else {
-        console.log("Not InitialMount")
-      
-        
-      }
-    })
-
-  
   const updateMyData = (rowIndex, columnId, value) => {
     // We also turn on the flag to not reset the page
       console.log("updateMyData !")
@@ -84,8 +53,7 @@ export default function Backpack(props)	{
               if(props.itemModels[row.Type]) {
                   var item = props.itemModels[row.Type].find(item => item.Model === value);
                   if(item) {
-                  Object.assign(row,item)
-                  console.log("IMAGE ", item, " ", item.Model, " ", value)
+                    Object.assign(row,item)
                   }
                 } else { console.log("no models available for this item type")}
             }
@@ -154,7 +122,7 @@ export default function Backpack(props)	{
         {
           Header: 'Image',
           accessor: 'Image',
-          Cell: ({value, row, column}) => <ImageCell height={50} width={50} value={value} matosUrl={row.original.ManufacturerURL} options={typeOptions} row={row} column={column} updateMyData={updateMyData}/>
+          Cell: ({value, row, column}) => <ImageCell height={60} width={60}  value={value} matosUrl={row.original.ManufacturerURL} options={typeOptions} row={row} column={column} updateMyData={updateMyData}/>
 
         },
         {
@@ -165,7 +133,7 @@ export default function Backpack(props)	{
         {
           Header: 'Model',
           accessor: 'Model',
-          Cell: ({value, row,column}) => row.original.Type == "custom" ? <EditableCell value={value} size="max-w-[300px]" row={row} column={column} updateMyData={updateMyData}/> : <DropdownCell value={value} options={props.itemModels[row.original.Type]} row={row} column={column} updateMyData={updateMyData}/>
+          Cell: ({value, row,column}) => row.original.Type == "custom" ? <EditableCell value={value} size="max-w-[220px]" row={row} column={column} updateMyData={updateMyData}/> : <DropdownCell value={value} size="max-w-[300px]" options={props.itemModels[row.original.Type]} row={row} column={column} updateMyData={updateMyData}/>
         },  
         {
           Header: 'Size',
@@ -182,7 +150,7 @@ export default function Backpack(props)	{
         {
           Header: 'Qty',
           accessor: 'quantity',
-          Cell: ({value, row,column}) => <EditableCell value={value} type="number" size="max-w-[40px]" row={row} column={column} updateMyData={updateMyData}/>
+          Cell: ({value, row,column}) => <EditableCell value={value} size="max-w-[40px]" type="number" row={row} column={column} updateMyData={updateMyData}/>
         },
         {
           Header: 'Weight (g)',
@@ -200,7 +168,7 @@ export default function Backpack(props)	{
       ],
       []
     )
-   
+
   return (
     <Landscape>
       <SEO title={props.globalData.name} description={props.globalData.blogTitle} /> 
@@ -214,7 +182,11 @@ export default function Backpack(props)	{
               <input name="EquipmentName" className=" font-bold min-w-max ml-1 whitespace-nowrap w-52 text-left text-pata-400 text-xl bg-transparent  placeholder:text-pata-400" value={bpName} onChange={((e) => setBpName(e.target.value))} type="text" placeholder="Your equipment name here ..."/>
             </div>
             <Divider />
-            <ReactTablev7 columns={columns} data={tableData} updateMyData={updateMyData} bpName={bpName} setBpName={setBpName} />
+            <ReactTablev7 
+              columns={columns} 
+              data={tableData} 
+              updateMyData={updateMyData} 
+            />
             <Divider />
             <AddOutlinedIcon style={{ color: "#28384f" }} className="hover:cursor-pointer hover:bg-pata-500" onClick={() => setTableData([...tableData,{ _id: "", Image:"", Model: "", Size: "", Color: "", "": "", type: "custom", quantity: "1" }])} />
             <RemoveOutlinedIcon style={{ color: "#28384f" }} className="hover:cursor-pointer hover:bg-pata-500" onClick={() => setTableData(tableData.slice(0,-1))  } />
@@ -243,21 +215,24 @@ export async function getServerSideProps(context) {
   
   let initialTableData=[]
   for (const [key, value] of Object.entries(backpack[0].items)) {
-    console.log("quick",backpack)
-    var matos = await getMatosByID(value._id)
+/*    console.log("fetching "+value._id+" of matos " + key)
+*/    var matos = await getMatosByID(value._id)
+    
     if(matos) {
       matos["Type"] = value.type;
+      matos["Type"] = value.type;
       matos["quantity"]=value.quantity
-      initialTableData.push(matos); 
+      initialTableData.push(matos);   
     }
-         
   }
-  
 
+/*  console.log("sending this as initial", initialTableData)
+*/
   const itemModels = new Object();
   itemModels.pillow = await getAllModels("pillow");
   itemModels.sleepingbag = await getAllModels("sleepingbag");
   itemModels.sleepingmat = await getAllModels("sleepingmat");
+  itemModels.custom = await getAllModels("custom");
   
   return {
     props: {

@@ -81,11 +81,13 @@ export default function Index(props) {
     for(let item of tableData) {
       console.log("item___________",item)
       if(item.Type == "custom") {
-        console.log(item)
+        console.log("ITEM CUSTOM ", item)
         var matos = Object.assign(entry,item)
         
         // let mongodb handle _id
-        delete matos._id;
+        if(matos.id=="") {
+          delete matos._id;
+        }
 
         console.log("matinos------------",matos)
 
@@ -101,8 +103,14 @@ export default function Index(props) {
         const result = await response.json()
         alert(`You have inserted ${matos.Model}`)
 
+        console.log(matos)
+
         console.log("inserted id :", result.success)
-        item._id = result.success.insertedId
+        if(result.success) {matos._id = result.success.insertedId}
+
+          Object.assign(matos,item)
+        console.log("avant depush" ,item)
+        
 
       }
 
@@ -191,6 +199,8 @@ export async function getServerSideProps(context) {
   itemModels.pillow = await getAllModels("pillow");
   itemModels.sleepingbag = await getAllModels("sleepingbag");
   itemModels.sleepingmat = await getAllModels("sleepingmat");
+  itemModels.custom = await getAllModels("sleepingmat");
+
 
   return {
     props: {

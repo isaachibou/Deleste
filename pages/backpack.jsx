@@ -12,6 +12,10 @@ import SEO from '../components/SEO'
 import MenuDrawer from '../components/menu/PerstDrawer'
 import BackpackList from "../components/backpack/list"
 import ReactTablev7 from '../components/backpack/ReactTableV7/reacttablev7'
+import EditableCell from '../components/backpack/ReactTableV7/editablecell'
+import DropdownCell from '../components/backpack/ReactTableV7/dropdowncell'
+import ImageCell from '../components/backpack/ReactTableV7/imagecell'
+
 import classes from '../components/backpack/table.module.css'
 import Landscape from '../components/landscape/landscape'
 import Header from '../components/Header'
@@ -77,7 +81,7 @@ export default function Equips(props) {
   const getUserId = async () => {
     console.log("loading userid")
     const session = await getSession();
-    return session.user.id;
+    return session?session.user.id:"";
   }
 
   const fetchBackpackList = async () => {
@@ -257,51 +261,58 @@ export default function Equips(props) {
       return <input className= {`${size} block bg-transparent hover:bg-pata-500 cursor-pointer`} value={value} onChange={onChange} onBlur={onBlur} />
     }  
 
-    const columns = React.useMemo(
+  const columns = React.useMemo(
       () => [
-       {
+        {
           Header: 'Image',
           accessor: 'Image',
-          Cell: ({value}) => value?<Image className="mx-auto rounded-lg border-2 border-pata-500"
-                    src={value}
-                    alt="Picture of the matos"
-                    width={90}
-                    height={90}
-                  />:<span/>
+          Cell: ({value, row, column}) => <ImageCell height={60} width={60}  value={value} matosUrl={row.original.ManufacturerURL} options={typeOptions} row={row} column={column} updateMyData={updateMyData}/>
+
         },
         {
           Header: 'Type',
           accessor: 'Type',
           Cell: ({value, row,column}) => <DropdownCell value={value} options={typeOptions} row={row} column={column} updateMyData={updateMyData}/>
-
         },
-        
         {
           Header: 'Model',
           accessor: 'Model',
-          Cell: ({value, row,column}) => <DropdownCell value={value} options={props.itemModels[row.original.Type]} row={row} column={column} updateMyData={updateMyData}/>
+          Cell: ({value, row,column}) => row.original.Type == "custom" ? <EditableCell value={value} size="max-w-[220px]" row={row} column={column} updateMyData={updateMyData}/> : <DropdownCell value={value} size="max-w-[300px]" options={props.itemModels[row.original.Type]} row={row} column={column} updateMyData={updateMyData}/>
+        },  
+        {
+          Header: 'Size',
+          accessor: 'ManufacturerURL',
+          show: false,
+          Cell: ({value, row,column}) => <span>{value}</span>
+        },
+        {
+          Header: 'Link',
+          accessor: 'Size',
+          show: false,
+          Cell: ({value, row,column}) => <span>{value}</span>
         },
         {
           Header: 'Qty',
           accessor: 'quantity',
-          Cell: ({value, row,column}) => <EditableCell size="max-w-[30px]" value={value} row={row} column={column} updateMyData={updateMyData}/>
+          Cell: ({value, row,column}) => <EditableCell value={value} size="max-w-[40px]" type="number" row={row} column={column} updateMyData={updateMyData}/>
         },
         {
           Header: 'Weight (g)',
           accessor: 'Weight (Metric)',
           Cell: ({value, row,column}) => {
-            let weight= parseInt(row.original.quantity)*parseFloat(value)
-            return weight?weight:0
+            if(row.original.Type != "custom") {
+              let weight= parseInt(row.original.quantity)*parseFloat(value)
+              return weight?weight:0
+            }
+            else {
+              return <EditableCell value={value} size="max-w-[50px]" row={row} column={column} updateMyData={updateMyData}/>
+            }
           }
-        },
-        {
-          Header: 'Color',
-          accessor: 'Color',
         }
       ],
       []
     )
-  
+
   return (
     <Landscape>
       <SEO title={props.globalData.name} description={props.globalData.blogTitle} /> 

@@ -103,14 +103,15 @@ export async function getMatosByID(id) {
     	{ "_id": ObjectId(id) },
     	{ projection: { 
     		/*_id: 1, */
-    		"SKU": 0,
     		"Weight (Standard)": 0, 
     		"Width (Standard)": 0, 
     		"Length (Standard)": 0,
     		"Height (Standard)": 0,
     		"Thickness (Standard)": 0,
     		"Packed dimension (Standard)": 0,
-    		"Country of Origin": 0
+    		"Country of Origin": 0,
+        "Type": 0,
+        "ManufacturerURL": 0
     	} 
     });
  
@@ -168,7 +169,13 @@ async function addCustomMatos(req, res) {
     const db = client.db("Délesté"+process.env.NEXT_PUBLIC_DB_SUFFIX);
 
     //POST request
-    const response = await db.collection('Matos').insertOne(matos);
+    //const response = await db.collection('Matos').insertOne(matos);
+    
+    //POST request
+    const query = { Model: matos.Model };
+    const replacement = matos
+    const options = { upsert: true };
+    const response = await db.collection('Matos').replaceOne(query, replacement, options);
   
     return res.json({
         message: 'Details updated successfully',

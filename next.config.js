@@ -5,7 +5,7 @@ module.exports = {
     // limit of 25 imageSizes values
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     // limit of 50 domains values
-    domains: ['www.thermarest.com', 'contents.mediadecathlon.com', "C:\\fakepath\\"],
+    domains: ['www.thermarest.com', 'contents.mediadecathlon.com'],
     // path prefix for Image Optimization API, useful with `loader`
     path: '/_next/image',
     // loader can be 'default', 'imgix', 'cloudinary', 'akamai', or 'custom'
@@ -25,7 +25,12 @@ module.exports = {
   experimental: {
     images: {
       // limit of 50 objects
-      remotePatterns: [],
+      remotePatterns: [
+        {
+          protocol: "https",
+          hostname: "**",
+        },
+      ],
       // when true, every image will be unoptimized
       unoptimized: false,
       // when true, allow `next/future/image` to be imported

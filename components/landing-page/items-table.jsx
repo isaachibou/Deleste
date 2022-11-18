@@ -32,6 +32,14 @@ export default function ItemsTable(props) {
 					    Object.assign(row,item)
 					} else { console.log("no models available for this item type")}
 				}
+				if(columnId == "Image") {
+					console.log("DEBUG IMAGE", rowIndex, columnId, value)
+					let newRow={}
+					newRow.Image = value
+					
+					// Manage here to update the state ....
+
+				}
 				if(columnId == "Type") {
 					if(props.itemModels[row.Type]) {
 						var item = props.itemModels[value][0]
@@ -42,6 +50,7 @@ export default function ItemsTable(props) {
 					...old[rowIndex],
 					[columnId]: value,
 				} 
+				console.log("BILAN", teub)
 				return {
 					...old[rowIndex],
 					[columnId]: value,

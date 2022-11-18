@@ -17,10 +17,21 @@ export default function DropdownCell({
         setValue(e.target.value)
       }
 
-      React.useEffect(() => {
-        updateMyData(index, id, value)
-      },[value])
+      const didMountRef = useRef(false);
 
+      useEffect(() => {
+
+        // Are we on he initial render? No! Let's run some code:
+        if ( didMountRef.current ) { 
+                          updateMyData(index, id, value)
+
+        } else {
+          didMountRef.current = true;
+        }    
+
+      }, [value]);
+
+     
       // If the initialValue is changed external, sync it up with our state
       React.useLayoutEffect(() => {
         setValue(initialValue)
