@@ -155,7 +155,7 @@ export default function Index(props) {
     <Landscape>
     
       <SEO title={props.globalData.name} description={props.globalData.blogTitle} />
-      <Header name={props.globalData.blogTitle} title={props.globalData.blogSubtitle}/>
+      <Header name={props.globalData.blogTitle} title={props.globalData.blogSubtitle} shareUrl={shareUrl}/>
 
       <main className="flex flex-col grid-col-2 gap-x-2">
         <div className="mt-8 mx-auto">
@@ -178,17 +178,7 @@ export default function Index(props) {
         </Link>*/}
         <button className={`mx-auto col-span-2 max-w-fit ${display}`} onClick={handleSubmit}> Keep Going ! </button>
         {/* this is Short circuit */}
-        { shareUrl &&
-        <Link
-          as={`/b/${shareUrl}`}
-          href={`/b/[backpack]`}
-        > 
-          <a>
-            < ShareOutlinedIcon style={{ color: "#28384f" }} className="hover:cursor-pointer hover:bg-pata-500" />
-            <span className="text-center text-pata-400"> Share: <span className="text-pata-500">{shareUrl}</span> </span>
-          </a>         
-        </Link>
-        }
+        
       </main>
     </Landscape>
   );

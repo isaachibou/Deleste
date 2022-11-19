@@ -20,6 +20,8 @@ import Divider from '@mui/material/Divider';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import RemoveOutlinedIcon from '@mui/icons-material/RemoveOutlined';
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
+import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined';
+
 
 import Head from 'next/head';
 import Link from 'next/link';
@@ -30,7 +32,7 @@ export default function Backpack(props)	{
   const [tableData, setTableData] = useState(props.initialTableData)
   const [totalWeight, setTotalWeight] = useState(0);
   const [display, setDisplay] = useState("hidden");
-  const [shareUrl, setShareUrl] = useState(null)
+  const [shareUrl, setShareUrl] = useState(props.backpack[0]._id)
 
 
 
@@ -265,7 +267,7 @@ export default function Backpack(props)	{
   return (
     <Landscape>
       <SEO title={props.globalData.name} description={props.globalData.blogTitle} /> 
-      <Header name={props.globalData.blogTitle} title={props.globalData.blogSubtitle}/>
+      <Header name={props.globalData.blogTitle} title={props.globalData.blogSubtitle} shareUrl={shareUrl}/>
 
         <main  className="flex flex-col max-w-4xl w-full mx-auto ">      
       
