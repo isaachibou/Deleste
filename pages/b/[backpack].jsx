@@ -28,11 +28,15 @@ import Image from 'next/image'
 export default function Backpack(props)	{
   const [bpName, setBpName] = useState(props.backpack[0].name);
   const [tableData, setTableData] = useState(props.initialTableData)
-  console.log("instanciate", tableData)
+  const [totalWeight, setTotalWeight] = useState(0);
+  const [display, setDisplay] = useState("hidden");
+  const [shareUrl, setShareUrl] = useState(null)
 
-  console.log("Selected backpack", props.backpack[0])
+
+
+  /*console.log("Selected backpack", props.backpack[0])
   console.log("Initial matos", props.initialTableData)
-  console.log("instanciate", tableData)
+  console.log("instanciate", tableData)*/
 
 
   const typeOptions = [
@@ -42,6 +46,48 @@ export default function Backpack(props)	{
     {label: "Pillows",value: "pillow",},
     {label: "Custom",value: "custom",}  
   ];  
+  
+  const entry = {
+    "Size": "",
+    "Type": "",
+    "Brand": "",
+    "Model": "",
+    "Image": "",
+    "ManufacturerURL": "",
+    "SKU": "",
+    "Color": "",
+    "R-Value": "",
+    "Weight (Standard)": "",
+    "Weight (Metric)": "",
+    "Width (Standard)": "",
+    "Width (Metric)": "",
+    "Length (Standard)": "",
+    "Length (Metric)": "",
+    "Height (Standard)": "",
+    "Height (Metric)": "",
+    "Thickness (Standard)": "",
+    "Thickness (Metric)": "",
+    "Packed dimension (Standard)": "",
+    "Packed dimension (Metric)": "",
+    "Top fabric type": "",
+    "Bottom fabric type": "",
+    "What's Included": "",
+  }
+
+  useEffect(async () => {     
+    console.log("tableData updated", ...tableData)
+    computeTotalWeight()
+  },[tableData])
+
+  const computeTotalWeight = () => {
+     let w = 0 
+    for(let item of tableData) {
+      var p =  parseFloat(item["Weight (Metric)"])*parseInt(item.quantity) 
+      w+=p     
+    }
+    console.log("totalWeight ", totalWeight)
+    setTotalWeight(w)
+  }
 
   const updateMyData = (rowIndex, columnId, value) => {
     // We also turn on the flag to not reset the page
@@ -77,13 +123,11 @@ export default function Backpack(props)	{
   const getUserId = async () => {
     console.log("loading userid")
     const session = await getSession();
-    return session.user.id;
+    if(session) return session.user.id;
   }
 
   const handleSubmit = async () => {
-    var rows = document.querySelectorAll("li")
-    var nameselector = document.querySelector("input[name='EquipmentName']");
-    let equipName = nameselector.value; 
+    let equipName=bpName
 
     var backpackObject = {
       owner: await getUserId (),
@@ -92,29 +136,78 @@ export default function Backpack(props)	{
       } 
     };
 
-    // this system does not let you add several sleepingbags for example... work on that
+    var items=[]
     for(let item of tableData) {
-      backpackObject.items[item.Type] = {};
-      backpackObject.items[item.Type]._id = item._id
-      backpackObject.items[item.Type].quantity = item.quantity
+      if(item.Type == "custom") {
+        console.log("ITEM CUSTOM ", item)
+        var matos = Object.assign(entry,item)
+        
+        // let mongodb handle _id
+        console.log("id", matos._id)
+        if(matos._id == '') {
+          console.log("delete id")
+          delete matos._id;
+          console.log("matos", matos)
+        }
+
+        const JSONdata = JSON.stringify(matos)
+        const response = await fetch('/api/matos_2', {
+          body: JSONdata,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          method: 'POST',
+        })
+
+        const result = await response.json()
+        alert(`You have upsertedId ${matos.Model}`)
+
+        console.log(matos)
+
+        console.log("upsertedId id :", result.success)
+        if(result.success) {
+          if(result.success.upsertedId) {
+            item._id = result.success.upsertedId
+          }
+        }  
+
+          Object.assign(matos,item)
+        console.log("avant depush" ,item)
+        
+
+      }
+
+      items.push({ 
+        type: item.Type,
+        _id: item._id,
+        quantity: item.quantity
+      })
     }
 
-    const JSONdata = JSON.stringify(backpackObject)
+  backpackObject.items = [...items]
+  
+  const JSONdata = JSON.stringify(backpackObject)
+  const response = await fetch('/api/backpacks', {
+    body: JSONdata,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    method: 'POST',
+  })
 
-    const response = await fetch('/api/backpacks', {
-      body: JSONdata,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      method: 'POST',
-    })
+ // embeddd
+ //  const r = await client.db(dbName).collection(collName).findOneAndUpdate(objFilter, { $push: { ts: getDateStandardWithSeconds(), ...objToUpdateOrInsert } }, { upsert: true, returnOriginal: false });
 
-    const result = await response.json()
-    alert(`You have updated ${equipName}`)
-    console.log('upsert', JSONdata)
+  const result = await response.json()
+  alert(`You have updated ${equipName}`)
+  console.log('upsert', JSONdata)
 
-    // Select new backpack
-    console.log("upserted id :", result.success.upsertedId)
+  // Share Url of new backpack
+  console.log("upserted id :", result)
+  if(result.success.upsertedId) { setShareUrl(result.success.upsertedId) }
+  
+
+  // UseEffect on Set BpSelected will rerender bpList and fetch its matos
 } 
 
   const columns = React.useMemo(
@@ -142,7 +235,7 @@ export default function Backpack(props)	{
           Cell: ({value, row,column}) => <span>{value}</span>
         },
         {
-          Header: 'Link',
+          Header: 'Size',
           accessor: 'Size',
           show: false,
           Cell: ({value, row,column}) => <span>{value}</span>
@@ -192,13 +285,25 @@ export default function Backpack(props)	{
             <RemoveOutlinedIcon style={{ color: "#28384f" }} className="hover:cursor-pointer hover:bg-pata-500" onClick={() => setTableData(tableData.slice(0,-1))  } />
             <SaveOutlinedIcon style={{ color: "#28384f" }} className="hover:cursor-pointer hover:bg-pata-500 ml-5" onClick={handleSubmit} />
         </div>
-      {/*  <div className="mt-5 flex flex-row"> 
-          <span className="basis-4/6 text-right"></span>
-          <span className="p-2 border-b-4 border-pata-500 text-pata-500 text-3xl font-bold">
+        <div className="mt-8 flex flex-row"> 
+          <span className="basis-3/6 text-right"></span>
+          <div className="p-2 border-pata-500 border-b-2 text-pata-500 text-2xl font-bold">
             <svg xmlns="http://www.w3.org/2000/svg" className="mr-1 scale-x-[-1] inline-flex align-top feather feather-feather" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#d3a38f" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path><line x1="16" y1="8" x2="2" y2="22"></line><line x1="17.5" y1="15" x2="9" y2="15"></line></svg>
-            {totalWeight<10000?totalWeight+" g":totalWeight/1000+" kg"} 
-          </span>
-        </div>    */}
+            <span className="">{totalWeight<10000?totalWeight+" g":totalWeight/1000+" kg"} </span>
+          </div>
+        </div>    
+        <button className={`mx-auto col-span-2 max-w-fit ${display}`} onClick={handleSubmit}> Keep Going ! </button>
+        {/* this is Short circuit */}
+        { shareUrl &&
+        <Link
+          as={`/b/${shareUrl}`}
+          href={`/b/[backpack]`}
+        > 
+          <a>
+            < ShareOutlinedIcon style={{ color: "#28384f" }} className="hover:cursor-pointer hover:bg-pata-500" />
+            <span className="text-center text-pata-400"> Share: <span className="text-pata-500">{shareUrl}</span> </span>
+          </a>         
+        </Link>}
       </main>
     </Landscape>
   );
@@ -213,13 +318,14 @@ export async function getServerSideProps(context) {
   let bpid = context.resolvedUrl.split("/").pop()
   const backpack = await getBackpackById(bpid)
   
+  console.log("--backpack", backpack[0])
   let initialTableData=[]
   for (const [key, value] of Object.entries(backpack[0].items)) {
-/*    console.log("fetching "+value._id+" of matos " + key)
-*/    var matos = await getMatosByID(value._id)
+    console.log("fetching "+value._id+" of matos " + key)
+    var matos = await getMatosByID(value._id)
     
     if(matos) {
-      matos["Type"] = value.type;
+      console.log("BEN ALOOORS", matos)
       matos["Type"] = value.type;
       matos["quantity"]=value.quantity
       initialTableData.push(matos);   

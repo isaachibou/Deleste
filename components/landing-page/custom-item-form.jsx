@@ -26,13 +26,14 @@ export default function CustomItemForm({url, setUrl}) {
   };
 
   return (
-    <div>
-      <AddPhotoAlternateOutlinedIcon style={{ margin: "auto",height: "60px", width:"60px",color: "#28384f" }} className="max-w-min hover:cursor-pointer hover:bg-pata-500" onClick={handleClickOpen}/>
-
+    <div className=" max-w-min hover:cursor-pointer hover:bg-pata-500" onClick={handleClickOpen}>
+      <AddPhotoAlternateOutlinedIcon style={{ margin: "auto",height: "20", width:"20px",color: "#28384f" }}  />
+        <span className="text-xs"> Add </span>
       {/*<Button variant="outlined" onClick={handleClickOpen}>
         Open form dialog
       </Button>*/}
       <Dialog open={open} onClose={handleClose}>
+
         <DialogTitle>Add Item image</DialogTitle>
         <DialogContent>
           <DialogContentText>

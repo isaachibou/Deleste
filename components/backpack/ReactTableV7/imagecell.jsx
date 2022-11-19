@@ -79,7 +79,6 @@ export default function ImageCell({
                 <img className="min-w-fit mx-auto w-[60px] h-[60px] rounded-lg border-2 border-pata-500"
                   src={value}
                   alt="Picture of the matos"
-                  height={height}
                     />   
               </a>
             </Link>

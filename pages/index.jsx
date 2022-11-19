@@ -79,17 +79,17 @@ export default function Index(props) {
 
     var items=[]
     for(let item of tableData) {
-      console.log("item___________",item)
       if(item.Type == "custom") {
         console.log("ITEM CUSTOM ", item)
         var matos = Object.assign(entry,item)
         
         // let mongodb handle _id
-        if(matos.id=="") {
+        console.log("id", matos._id)
+        if(matos._id == '') {
+          console.log("delete id")
           delete matos._id;
+          console.log("matos", matos)
         }
-
-        console.log("matinos------------",matos)
 
         const JSONdata = JSON.stringify(matos)
         const response = await fetch('/api/matos_2', {
@@ -101,12 +101,16 @@ export default function Index(props) {
         })
 
         const result = await response.json()
-        alert(`You have inserted ${matos.Model}`)
+    //    alert(`You have upsertedId ${matos.Model}`)
 
         console.log(matos)
 
-        console.log("inserted id :", result.success)
-        if(result.success) {matos._id = result.success.insertedId}
+        console.log("upsertedId id :", result.success)
+        if(result.success) {
+          if(result.success.upsertedId) {
+            item._id = result.success.upsertedId
+          }
+        }  
 
           Object.assign(matos,item)
         console.log("avant depush" ,item)
