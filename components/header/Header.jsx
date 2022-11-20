@@ -3,9 +3,7 @@ import Image from 'next/image';
 import { signOut } from 'next-auth/react';
 import Divider from '@mui/material/Divider';
 import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined';
-
-
-
+import SharePopper from './sharepopper'
 
 export default function Header(props) {
 
@@ -26,18 +24,12 @@ export default function Header(props) {
           </a>
         </Link>
       </div>
-      <div className="p-5">
-      { props.shareUrl &&
-        <Link
-          as={`/b/${props.shareUrl}`}
-          href={`/b/[backpack]`}
-        > 
-          <a>
-            < ShareOutlinedIcon style={{ color: "#28384f" }} className="hover:cursor-pointer hover:bg-pata-500" />
-            <span className="text-center text-pata-400 text-xl"> Share: </span>  {process.env.NEXT_PUBLIC_URL}b/{props.shareUrl} 
-          </a>         
-        </Link>
-        }
+      <div className="p-5 ml-[30%] place-self-end  ">
+        <SharePopper shareUrl={props.shareUrl}/>
+      </div>
+      <div className="p-5 ml-[1%] place-self-end  ">
+        <span className="p-2 text-center text-pata-400 text-xl border-2 border-pata-400 hover:cursor-pointer hover:bg-pata-500"> Sign In </span>
+
       </div>
       <Divider className="border-pata-500"/>
     </header>
