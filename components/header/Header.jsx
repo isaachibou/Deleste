@@ -9,7 +9,7 @@ export default function Header(props) {
 
   return (
     <header className="flex flex-row min-w-fit items-left mb-8">
-      <div className="p-3 justify-center">
+      <div className="w-[80%] p-3 justify-center">
         <Link href="/">
           <a className="flex flex-row">
             <div className="my-auto">
@@ -24,9 +24,11 @@ export default function Header(props) {
           </a>
         </Link>
       </div>
-      <div className="p-5 ml-[30%] place-self-end  ">
-        <SharePopper shareUrl={props.shareUrl}/>
-      </div>
+      { props.shareUrl &&
+        <div className="p-5 place-self-end  ">
+          <SharePopper shareUrl={props.shareUrl}/>
+        </div>
+      }
       <div className="p-5 ml-[1%] place-self-end  ">
         <span className="p-2 text-center text-pata-400 text-xl border-2 border-pata-400 hover:cursor-pointer hover:bg-pata-500"> Sign In </span>
 

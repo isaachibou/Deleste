@@ -122,7 +122,7 @@ export default function ItemsTable(props) {
     )
 
 return (
- 	<div className="{classes.container}  p-2 md:first:rounded-t-lg lg:last:rounded-b-lg backdrop-blur-lg bg-pata-100/0 hover:bg-gray/30 transition border border-pata-500 dark:border-white border-opacity-10 border-b-0 last:border-b hover:border-b hovered-sibling:border-t-0">		 
+ 	<div className="{classes.container}  p-3  md:first:rounded-t-lg lg:last:rounded-b-lg backdrop-blur-lg bg-pata-100/0 hover:bg-gray/30 transition border border-pata-500 dark:border-white border-opacity-10 border-b-0 last:border-b hover:border-b hovered-sibling:border-t-0">		 
 	    <ReactTablev7 
 	    	columns={columns} 
 	    	data={props.tableData} 

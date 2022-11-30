@@ -39,8 +39,8 @@ export default function DropdownCell({
 
       return (
         <select className="min-w-full basis-1/6 bg-transparent hover:bg-pata-500" value={value} onChange={onChange}>
-          {options?.map((option) => (
-              <option key={index} value={option.value}>{option.label?option.label:option.Model}</option>
+          {options?.map((option,i) => (
+              <option key={"dd"+i} value={option.value}>{option.label?option.label:option.Model}</option>
           ))}
         </select>
       )

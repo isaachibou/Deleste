@@ -111,7 +111,7 @@ export async function getMatosByID(id) {
     		"Packed dimension (Standard)": 0,
     		"Country of Origin": 0,
         "Type": 0,
-        "ManufacturerURL": 0
+
     	} 
     });
  

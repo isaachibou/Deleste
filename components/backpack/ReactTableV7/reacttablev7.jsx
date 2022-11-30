@@ -32,12 +32,12 @@ export default function Table({ columns, data, updateMyData }) {
 
   // Render the UI for your table
   return (
-    <table className="text-pata-400 my-3 " {...getTableProps()}>
+    <table className="w-full text-pata-400 my-3 " {...getTableProps()}>
       <thead>
         {headerGroups.map(headerGroup => (
-          <tr key={headerGroup} className=" whitespace-nowrap text-center " {...headerGroup.getHeaderGroupProps()}>
+          <tr key={headerGroup} className=" whitespace-nowrap text-left " {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map(column => (
-              <th key={column.index} className="py-2 font-semibold underline-offset-3 " {...column.getHeaderProps()}>{column.render('Header')}</th>
+              <th key={column.index} className="  font-semibold underline-offset-3 " {...column.getHeaderProps()}>{column.render('Header')}</th>
             ))}
           </tr>
         ))}
@@ -49,7 +49,7 @@ export default function Table({ columns, data, updateMyData }) {
           return (
             <tr key={row} {...row.getRowProps()}>
               {row.cells.map(cell => {
-                return <td key={row.index} className="min-w-fit whitespace-nowrap px-2" {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                return <td key={row.index} className="min-w-fit whitespace-nowrap" {...cell.getCellProps()}>{cell.render('Cell')}</td>
               })}
             </tr>
           )
