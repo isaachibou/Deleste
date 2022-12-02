@@ -66,7 +66,7 @@ export default function ImageCell({
         if(!value) {
           return ( 
             <div>
-              <label for="file-input">
+              <label htmlFor="file-input">
                <CustomItemForm url={value} setUrl={setValue}/>
              </label>
             </div>
