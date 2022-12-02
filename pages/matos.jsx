@@ -8,7 +8,7 @@ import Link from 'next/link';
 import Image from 'next/image'
 
 import Footer from '../components/Footer';
-import Header from '../components/Header';
+import Header from '../components/header/Header';
 import Landscape from '../components/landscape/landscape'
 import { getGlobalData } from '../utils/global-data';
 import SEO from '../components/SEO';

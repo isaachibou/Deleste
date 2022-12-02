@@ -4,7 +4,7 @@ import { getGlobalData } from '../utils/global-data';
 import UserProfile from '../components/profile/user-profile';
 import MenuDrawer from '../components/menu/PerstDrawer'
 import Landscape from '../components/landscape/landscape'
-import Header from '../components/Header'
+import Header from '../components/header/Header'
 import SEO from '../components/SEO';
 
 function ProfilePage({globalData}) {

@@ -3,7 +3,7 @@ import { getSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 
 import AuthForm from '../components/auth/auth-form';
-import Header from '../components/Header';
+import Header from '../components/header/Header';
 import Landscape from '../components/landscape/landscape'
 import Layout, { GradientBackground } from '../components/Layout';
 import { getGlobalData } from '../utils/global-data';

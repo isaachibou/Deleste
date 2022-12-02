@@ -18,7 +18,7 @@ import ImageCell from '../components/backpack/ReactTableV7/imagecell'
 
 import classes from '../components/backpack/table.module.css'
 import Landscape from '../components/landscape/landscape'
-import Header from '../components/Header'
+import Header from '../components/header/Header'
 import Divider from '@mui/material/Divider';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import RemoveOutlinedIcon from '@mui/icons-material/RemoveOutlined';

@@ -12,7 +12,7 @@ import Image from 'next/image'
 
 import ArrowIcon from '../../components/ArrowIcon';
 
-import Header from '../../components/Header';
+import Header from '../../components/header/Header';
 import Landscape from '../../components/landscape/landscape';
 import SEO from '../../components/SEO';
 
