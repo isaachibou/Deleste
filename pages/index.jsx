@@ -11,7 +11,7 @@ import { getData, getAllModels } from './api/matos_2'
 import SEO from '../components/SEO';
 import { ReactSearchAutocomplete } from 'react-search-autocomplete'
 import Landscape from '../components/landscape/landscape'
-import Header from '../components/header/Header/Header'
+import Header from '../components/header/Header'
 import SearchBar from "../components/landing-page/searchbar"
 import ItemsTable from "../components/landing-page/items-table"
 import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined';
